@@ -1,5 +1,6 @@
 package io.github.mintynoura.mintyblends;
 
+import io.github.mintynoura.mintyblends.registry.ModBlocks;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -11,6 +12,6 @@ public class MintyBlends implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		ModBlocks.registerModBlocks();
 	}
 }
