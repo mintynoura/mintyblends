@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "mintyblends",
+	"version": "${version}",
+	"name": "Minty Blends",
+	"description": "A mod about herbs, flowers, and blending them.",
+	"authors": [
+		"mintynoura"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/mintyblends/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.mintynoura.mintyblends.MintyBlends"
+		],
+		"client": [
+			"io.github.mintynoura.mintyblends.MintyBlendsClient"
+		],
+		"fabric-datagen": [
+			"io.github.mintynoura.mintyblends.MintyBlendsDataGenerator"
+		]
+	},
+	"mixins": [
+		"mintyblends.mixins.json",
+		{
+			"config": "mintyblends.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
