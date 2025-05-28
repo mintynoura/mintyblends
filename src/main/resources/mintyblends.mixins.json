@@ -3,7 +3,7 @@
 	"package": "io.github.mintynoura.mintyblends.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"BeeEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

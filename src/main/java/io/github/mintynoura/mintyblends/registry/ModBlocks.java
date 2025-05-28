@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.block.HerbBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
@@ -18,7 +19,8 @@ import net.minecraft.util.Identifier;
 import java.util.function.Function;
 
 public class ModBlocks {
-    public static final Block MINT = registerBlock("mint", settings -> new FlowerBlock(StatusEffects.FIRE_RESISTANCE, 3f, settings), AbstractBlock.Settings.create()          .mapColor(MapColor.DARK_GREEN)
+    public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(StatusEffects.FIRE_RESISTANCE, 3f, settings), AbstractBlock.Settings.create()
+            .mapColor(MapColor.DARK_GREEN)
             .noCollision()
             .breakInstantly()
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
@@ -46,8 +48,6 @@ public class ModBlocks {
     }
 
     public static void registerModBlocks() {
-        MintyBlends.LOGGER.info("Registering mod blocks for " + MintyBlends.MOD_ID);
-
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(fabricItemGroupEntries -> {
             fabricItemGroupEntries.add(ModBlocks.MINT);
         });
