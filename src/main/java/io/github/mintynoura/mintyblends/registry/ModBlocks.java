@@ -26,6 +26,13 @@ public class ModBlocks {
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
             .pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(StatusEffects.INSTANT_HEALTH, 1f, settings), AbstractBlock.Settings.create()
+            .mapColor(MapColor.DARK_GREEN)
+            .noCollision()
+            .breakInstantly()
+            .sounds(BlockSoundGroup.CHERRY_SAPLING)
+            .offset(AbstractBlock.OffsetType.XZ)
+            .pistonBehavior(PistonBehavior.DESTROY));
 
     public static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         RegistryKey<Block> blockRegistryKey = keyOfBlock(name);
@@ -47,9 +54,10 @@ public class ModBlocks {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
     }
 
-    public static void registerModBlocks() {
+    public static void addModBlocks() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(fabricItemGroupEntries -> {
             fabricItemGroupEntries.add(ModBlocks.MINT);
+            fabricItemGroupEntries.add(ModBlocks.MEDICINAL_HERB);
         });
     }
 }
