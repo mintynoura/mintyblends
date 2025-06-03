@@ -22,6 +22,7 @@ public class CatnipLeavesItem extends Item {
         if (entity instanceof CatEntity && !((CatEntity) entity).isTamed()) {
             if (!entity.getWorld().isClient) {
                 ((CatEntity) entity).setTamedBy(user);
+                ((CatEntity) entity).setSitting(true);
                 entity.playSound(SoundEvents.ENTITY_CAT_PURR);
                 entity.getWorld().sendEntityStatus(entity, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
             }
@@ -40,6 +41,12 @@ public class CatnipLeavesItem extends Item {
                     ((OcelotEntityInvoker) entity).invokeShowEmoteParticle(true);
                     entity.playSound(SoundEvents.ENTITY_CAT_PURR);
                     entity.getWorld().sendEntityStatus(entity, EntityStatuses.TAME_OCELOT_SUCCESS);
+                }
+                return ActionResult.SUCCESS;
+            }
+            if (((OcelotEntityInvoker) entity).invokeIsTrusting()) {
+                if (!entity.getWorld().isClient) {
+                    entity.playSound(SoundEvents.ENTITY_CAT_PURR);
                 }
                 return ActionResult.SUCCESS;
             }

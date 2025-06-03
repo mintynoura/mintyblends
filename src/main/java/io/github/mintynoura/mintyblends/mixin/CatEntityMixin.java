@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTables;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
@@ -43,15 +44,14 @@ public abstract class CatEntityMixin extends TameableEntity {
             this.playSound(SoundEvents.ENTITY_CAT_PURR);
             if (!this.getWorld().isClient) {
                 this.forEachGiftedItem((ServerWorld) this.getWorld(),
-                    LootTables.CAT_MORNING_GIFT_GAMEPLAY,
-                    (world, stack) -> world.spawnEntity(
-                            new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
-                    ));
+                        LootTables.CAT_MORNING_GIFT_GAMEPLAY,
+                        (world, stack) -> world.spawnEntity(
+                                new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
+                        ));
                 this.eat(player, hand, player.getStackInHand(hand));
-                this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
+                ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER,this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
                 this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
-        }
-
+            }
             cir.setReturnValue(ActionResult.SUCCESS);
         }
     }
