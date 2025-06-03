@@ -1,6 +1,8 @@
 {
   "values": [
     "mintyblends:mint_leaves",
-    "mintyblends:medicinal_leaves"
+    "mintyblends:catnip_leaves",
+    "mintyblends:medicinal_leaves",
+    "mintyblends:culinary_leaves"
   ]
 }

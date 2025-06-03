@@ -26,7 +26,21 @@ public class ModBlocks {
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
             .pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(StatusEffects.SPEED, 5f, settings), AbstractBlock.Settings.create()
+            .mapColor(MapColor.DARK_GREEN)
+            .noCollision()
+            .breakInstantly()
+            .sounds(BlockSoundGroup.CHERRY_SAPLING)
+            .offset(AbstractBlock.OffsetType.XZ)
+            .pistonBehavior(PistonBehavior.DESTROY));
     public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(StatusEffects.INSTANT_HEALTH, 1f, settings), AbstractBlock.Settings.create()
+            .mapColor(MapColor.DARK_GREEN)
+            .noCollision()
+            .breakInstantly()
+            .sounds(BlockSoundGroup.CHERRY_SAPLING)
+            .offset(AbstractBlock.OffsetType.XZ)
+            .pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(StatusEffects.SATURATION, 0.35f, settings), AbstractBlock.Settings.create()
             .mapColor(MapColor.DARK_GREEN)
             .noCollision()
             .breakInstantly()
@@ -57,7 +71,9 @@ public class ModBlocks {
     public static void addModBlocks() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(fabricItemGroupEntries -> {
             fabricItemGroupEntries.add(ModBlocks.MINT);
+            fabricItemGroupEntries.add(ModBlocks.CATNIP);
             fabricItemGroupEntries.add(ModBlocks.MEDICINAL_HERB);
+            fabricItemGroupEntries.add(ModBlocks.CULINARY_HERB);
         });
     }
 }

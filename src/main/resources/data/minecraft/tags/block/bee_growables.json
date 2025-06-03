@@ -1,6 +1,5 @@
 {
   "values": [
-    "mintyblends:mint",
-    "mintyblends:medicinal_herb"
+    "#mintyblends:herbs"
   ]
 }

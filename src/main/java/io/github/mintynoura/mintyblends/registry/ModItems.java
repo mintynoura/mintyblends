@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.item.CatnipLeavesItem;
 import io.github.mintynoura.mintyblends.item.MedicinalLeavesItem;
 import io.github.mintynoura.mintyblends.item.MintLeavesItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -17,7 +18,9 @@ import java.util.function.Function;
 
 public class ModItems {
     public static final Item MINT_LEAVES = registerItem("mint_leaves", MintLeavesItem::new, new Item.Settings().food(new FoodComponent(0, 0, true)));
+    public static final Item CATNIP_LEAVES = registerItem("catnip_leaves", CatnipLeavesItem::new, new Item.Settings());
     public static final Item MEDICINAL_LEAVES = registerItem("medicinal_leaves", MedicinalLeavesItem::new, new Item.Settings().food(new FoodComponent(0, 0, true)));
+    public static final Item CULINARY_LEAVES = registerItem("culinary_leaves", Item::new, new Item.Settings().food(new FoodComponent(2, 0.2f, false)));
 
     public static Item registerItem(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
         RegistryKey<Item> itemRegistryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
@@ -29,7 +32,9 @@ public class ModItems {
     public static void addModItems() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(fabricItemGroupEntries -> {
             fabricItemGroupEntries.add(ModItems.MINT_LEAVES);
+            fabricItemGroupEntries.add(ModItems.CATNIP_LEAVES);
             fabricItemGroupEntries.add(ModItems.MEDICINAL_LEAVES);
+            fabricItemGroupEntries.add(ModItems.CULINARY_LEAVES);
         });
     }
 }
