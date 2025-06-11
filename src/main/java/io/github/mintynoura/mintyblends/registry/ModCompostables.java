@@ -17,7 +17,7 @@ public class ModCompostables {
     }
 
     public static void compostSixtyFive(Item item) {
-       CompostingChanceRegistry.INSTANCE.add(item, 0.65f);
+        CompostingChanceRegistry.INSTANCE.add(item, 0.65f);
     }
 
     public static void compostThirty(Item item) {

@@ -1,9 +1,7 @@
 package io.github.mintynoura.mintyblends;
 
 import com.mojang.serialization.Codec;
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
-import io.github.mintynoura.mintyblends.registry.ModCompostables;
-import io.github.mintynoura.mintyblends.registry.ModItems;
+import io.github.mintynoura.mintyblends.registry.*;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -24,5 +22,8 @@ public class MintyBlends implements ModInitializer {
 		ModBlocks.addModBlocks();
 		ModItems.addModItems();
 		ModCompostables.registerCompostableItems();
+		ModBlockEntities.registerBlockEntities();
+		ModScreenHandlers.registerScreenHandlers();
+		ModRecipes.registerRecipes();
 	}
 }

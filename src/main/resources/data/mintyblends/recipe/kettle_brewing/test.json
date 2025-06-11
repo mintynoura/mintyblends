@@ -1,0 +1,10 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:mint_leaves",
+    "mintyblends:mint_leaves"
+  ],
+  "result": {
+    "id": "minecraft:potion"
+  }
+}

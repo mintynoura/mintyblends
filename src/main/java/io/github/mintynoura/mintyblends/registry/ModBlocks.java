@@ -2,6 +2,8 @@ package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.HerbBlock;
+import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
+import io.github.mintynoura.mintyblends.block.KettleBlock;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
@@ -25,33 +27,54 @@ public class ModBlocks {
             .breakInstantly()
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY));
+            .pistonBehavior(PistonBehavior.DESTROY),
+            true);
     public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(StatusEffects.SPEED, 5f, settings), AbstractBlock.Settings.create()
             .mapColor(MapColor.DARK_GREEN)
             .noCollision()
             .breakInstantly()
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY));
+            .pistonBehavior(PistonBehavior.DESTROY),
+            true);
     public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(StatusEffects.INSTANT_HEALTH, 1f, settings), AbstractBlock.Settings.create()
             .mapColor(MapColor.DARK_GREEN)
             .noCollision()
             .breakInstantly()
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY));
+            .pistonBehavior(PistonBehavior.DESTROY),
+            true);
     public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(StatusEffects.SATURATION, 0.35f, settings), AbstractBlock.Settings.create()
             .mapColor(MapColor.DARK_GREEN)
             .noCollision()
             .breakInstantly()
             .sounds(BlockSoundGroup.CHERRY_SAPLING)
             .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY));
+            .pistonBehavior(PistonBehavior.DESTROY),
+            true);
 
-    public static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+    public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .ticksRandomly()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CROP)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            false);
+
+    public static final Block KETTLE = registerBlock("kettle", KettleBlock::new, AbstractBlock.Settings.create()
+            .strength(3.5F)
+            .sounds(BlockSoundGroup.LANTERN)
+            .nonOpaque(),
+            true);
+
+    public static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         RegistryKey<Block> blockRegistryKey = keyOfBlock(name);
         Block block = factory.apply(settings.registryKey(blockRegistryKey));
-        registerBlockItem(name, block);
+        if (shouldRegisterItem) {
+            registerBlockItem(name, block);
+        }
         return Registry.register(Registries.BLOCK, blockRegistryKey, block);
     }
 
