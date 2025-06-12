@@ -34,30 +34,48 @@ public abstract class CatEntityMixin extends TameableEntity {
     }
 
     @WrapOperation(method = "method_58365", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isIn(Lnet/minecraft/registry/tag/TagKey;)Z"))
-    private static boolean addCatnipToGoal(ItemStack instance, TagKey<Item> tag, Operation<Boolean> original) {
+    private static boolean mintyBlends$addCatnipToGoal(ItemStack instance, TagKey<Item> tag, Operation<Boolean> original) {
         return original.call(instance, tag) || instance.isIn(ModTags.Items.CAT_LOVED);
     }
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    public void catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (this.isTamed() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 && this.isOwner(player) && player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
-            this.playSound(SoundEvents.ENTITY_CAT_PURR);
-            if (!this.getWorld().isClient) {
-                this.forEachGiftedItem((ServerWorld) this.getWorld(),
-                        LootTables.CAT_MORNING_GIFT_GAMEPLAY,
-                        (world, stack) -> world.spawnEntity(
-                                new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
-                        ));
-                this.eat(player, hand, player.getStackInHand(hand));
-                ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER,this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
-                this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
+    public void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        if (player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
+            if (!this.isTamed()) {
+                this.playSound(SoundEvents.ENTITY_CAT_PURR);
+                if (!this.getWorld().isClient) {
+                    this.setTamedBy(player);
+                    this.setSitting(true);
+                    this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
+                }
+                cir.setReturnValue(ActionResult.SUCCESS);
+
             }
-            cir.setReturnValue(ActionResult.SUCCESS);
+
+            if (this.isTamed() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 && this.isOwner(player)) {
+                this.playSound(SoundEvents.ENTITY_CAT_PURR);
+                if (!this.getWorld().isClient) {
+                    this.forEachGiftedItem((ServerWorld) this.getWorld(),
+                            LootTables.CAT_MORNING_GIFT_GAMEPLAY,
+                            (world, stack) -> world.spawnEntity(
+                                    new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
+                            ));
+                    this.eat(player, hand, player.getStackInHand(hand));
+                    ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER,this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
+                    this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
+                }
+                cir.setReturnValue(ActionResult.SUCCESS);
+            }
+
+            if (this.isTamed() && (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0 || !this.isOwner(player))) {
+                this.playSound(SoundEvents.ENTITY_CAT_PURR);
+                cir.setReturnValue(ActionResult.SUCCESS);
+            }
         }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    public void tickCatnipCooldown(CallbackInfo ci) {
+    public void mintyBlends$tickCatnipCooldown(CallbackInfo ci) {
         if (!(this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0) && this.getAttached(MintyBlends.CATNIP_COOLDOWN) != null) {
             this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
         }

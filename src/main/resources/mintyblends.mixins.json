@@ -5,7 +5,6 @@
   "mixins": [
     "BeeEntityMixin",
     "CatEntityMixin",
-    "OcelotEntityInvoker",
     "OcelotEntityMixin"
   ],
   "injectors": {

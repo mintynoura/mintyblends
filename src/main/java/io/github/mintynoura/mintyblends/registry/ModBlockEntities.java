@@ -8,6 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
+@SuppressWarnings("deprecation")
 public class ModBlockEntities {
     public static final BlockEntityType<KettleBlockEntity> KETTLE_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(MintyBlends.MOD_ID, "kettle_block_entity"),
             FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, ModBlocks.KETTLE).build(null));

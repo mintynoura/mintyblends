@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     private final List<Ingredient> ingredients;
