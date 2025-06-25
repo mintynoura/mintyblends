@@ -1,3 +1,10 @@
 {
-  "mintyblends.container.kettle": "Kettle"
+  "mintyblends.container.kettle": "Kettle",
+
+  "item.mintyblends.herbal_brew": "Herbal Brew",
+
+  "brew.mintyblends.extinguish": "Mint",
+  "brew.mintyblends.heal": "Medicinal Herb",
+  "brew.mintyblends.convert_positive_to_negative": "Inversion Blend",
+  "brew.mintyblends.convert_negative_to_positive": "Reversal Blend"
 }

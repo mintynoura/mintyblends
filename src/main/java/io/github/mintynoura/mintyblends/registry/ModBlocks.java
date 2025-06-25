@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.block.CureflowerBlock;
 import io.github.mintynoura.mintyblends.block.HerbBlock;
 import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
 import io.github.mintynoura.mintyblends.block.KettleBlock;
@@ -22,36 +23,64 @@ import java.util.function.Function;
 
 public class ModBlocks {
     public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(StatusEffects.FIRE_RESISTANCE, 3f, settings), AbstractBlock.Settings.create()
-            .mapColor(MapColor.DARK_GREEN)
-            .noCollision()
-            .breakInstantly()
-            .sounds(BlockSoundGroup.CHERRY_SAPLING)
-            .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY),
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY),
             true);
     public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(StatusEffects.SPEED, 5f, settings), AbstractBlock.Settings.create()
-            .mapColor(MapColor.DARK_GREEN)
-            .noCollision()
-            .breakInstantly()
-            .sounds(BlockSoundGroup.CHERRY_SAPLING)
-            .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY),
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY),
             true);
     public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(StatusEffects.INSTANT_HEALTH, 1f, settings), AbstractBlock.Settings.create()
-            .mapColor(MapColor.DARK_GREEN)
-            .noCollision()
-            .breakInstantly()
-            .sounds(BlockSoundGroup.CHERRY_SAPLING)
-            .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY),
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY),
             true);
     public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(StatusEffects.SATURATION, 0.35f, settings), AbstractBlock.Settings.create()
-            .mapColor(MapColor.DARK_GREEN)
-            .noCollision()
-            .breakInstantly()
-            .sounds(BlockSoundGroup.CHERRY_SAPLING)
-            .offset(AbstractBlock.OffsetType.XZ)
-            .pistonBehavior(PistonBehavior.DESTROY),
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY),
+            true);
+
+    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new CureflowerBlock(StatusEffects.REGENERATION, 7f, settings), AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.NETHER_SPROUTS)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY)
+            ,
+            true);
+    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new CureflowerBlock(ModStatusEffects.RENDING, 3f, settings), AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.NETHER_SPROUTS)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY)
+            ,
+            true);
+    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(ModStatusEffects.STEALTH, 7f, settings), AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.GRASS)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .pistonBehavior(PistonBehavior.DESTROY)
+            ,
             true);
 
     public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, AbstractBlock.Settings.create()
@@ -64,9 +93,9 @@ public class ModBlocks {
             false);
 
     public static final Block KETTLE = registerBlock("kettle", KettleBlock::new, AbstractBlock.Settings.create()
-            .strength(3.5F)
-            .sounds(BlockSoundGroup.LANTERN)
-            .nonOpaque(),
+                    .strength(3.5F)
+                    .sounds(BlockSoundGroup.LANTERN)
+                    .nonOpaque(),
             true);
 
     public static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
@@ -97,6 +126,9 @@ public class ModBlocks {
             fabricItemGroupEntries.add(ModBlocks.CATNIP);
             fabricItemGroupEntries.add(ModBlocks.MEDICINAL_HERB);
             fabricItemGroupEntries.add(ModBlocks.CULINARY_HERB);
+            fabricItemGroupEntries.add(ModBlocks.CUREFLOWER);
+            fabricItemGroupEntries.add(ModBlocks.RENDFLOWER);
+            fabricItemGroupEntries.add(ModBlocks.SILENT_FLOWER);
         });
     }
 }

@@ -46,7 +46,7 @@ public abstract class OcelotEntityMixin extends AnimalEntity {
     }
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-    public void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
        if (player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
            if (!this.isTrusting()) {
                this.playSound(SoundEvents.ENTITY_CAT_PURR);
@@ -81,8 +81,8 @@ public abstract class OcelotEntityMixin extends AnimalEntity {
     }
 
     @Inject(method = "mobTick", at = @At("HEAD"), cancellable = true)
-    public void mintyBlends$tickCatnipCooldown(CallbackInfo ci) {
-        if (!(this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0) && this.getAttached(MintyBlends.CATNIP_COOLDOWN) != null) {
+    private void mintyBlends$tickCatnipCooldown(CallbackInfo ci) {
+        if (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0 && this.getAttached(MintyBlends.CATNIP_COOLDOWN) != null) {
             this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
         }
     }

@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends;
 
 import com.mojang.serialization.Codec;
 import io.github.mintynoura.mintyblends.registry.*;
+import io.github.mintynoura.mintyblends.util.StatusEffectMap;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -25,5 +26,9 @@ public class MintyBlends implements ModInitializer {
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
 		ModRecipes.registerRecipes();
+		ModLootTables.registerLootTables();
+		ModStatusEffects.registerStatusEffects();
+		ModComponents.registerComponents();
+		StatusEffectMap.addEffectsToMap();
 	}
 }

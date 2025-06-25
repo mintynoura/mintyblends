@@ -8,8 +8,15 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FireChargeItem;
+import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -17,9 +24,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class KettleBlock extends BlockWithEntity implements BlockEntityProvider {
+
+    public static final BooleanProperty LIT = Properties.LIT;
 
     private static final VoxelShape SHAPE = Block.createCuboidShape(2.0, 0.0, 2.0, 14, 13, 14);
 
@@ -27,6 +37,19 @@ public class KettleBlock extends BlockWithEntity implements BlockEntityProvider 
 
     public KettleBlock(Settings settings) {
         super(settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(LIT, false));
+    }
+
+    public static boolean canBeLit(BlockState state, World world, BlockPos pos) {
+        return tryLight(state, world, pos);
+    }
+
+    private static boolean tryLight(BlockState state, World world, BlockPos pos) {
+        KettleBlockEntity blockEntity = (KettleBlockEntity) world.getBlockEntity(pos);
+        if (!state.get(LIT)) {
+            blockEntity.light();
+            return true;
+        } else return false;
     }
 
     @Override
@@ -52,13 +75,34 @@ public class KettleBlock extends BlockWithEntity implements BlockEntityProvider 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos,
                                          PlayerEntity player, Hand hand, BlockHitResult hit) {
+        ItemStack heldStack = player.getStackInHand(hand);
+        boolean isFireCharge = heldStack.getItem() instanceof FireChargeItem;
+        boolean isFlintAndSteel = heldStack.getItem() instanceof FlintAndSteelItem;
+        KettleBlockEntity blockEntity = (KettleBlockEntity) world.getBlockEntity(pos);
+        if ((isFireCharge || isFlintAndSteel) && !state.get(LIT)) {
+            blockEntity.light();
+            if (isFireCharge) {
+                world.playSound(player, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0F, (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.2F + 1.0F);
+                player.getStackInHand(hand).decrement(1);
+            } else {
+                world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
+                player.getStackInHand(hand).damage(1, player);
+            }
+            world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+            return ActionResult.SUCCESS;
+        }
         if (!world.isClient) {
-            NamedScreenHandlerFactory screenHandlerFactory = ((KettleBlockEntity) world.getBlockEntity(pos));
+            NamedScreenHandlerFactory screenHandlerFactory = blockEntity;
             if (screenHandlerFactory != null) {
                 player.openHandledScreen(screenHandlerFactory);
             }
         }
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(LIT);
     }
 
     @Override

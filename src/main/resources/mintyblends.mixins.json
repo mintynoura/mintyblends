@@ -5,7 +5,10 @@
   "mixins": [
     "BeeEntityMixin",
     "CatEntityMixin",
-    "OcelotEntityMixin"
+    "DispenserLightingMixin",
+    "LivingEntityMixin",
+    "OcelotEntityMixin",
+    "VibrationsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

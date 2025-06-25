@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 public class KettleScreen extends HandledScreen<KettleScreenHandler> {
     private static final Identifier TEXTURE = Identifier.of(MintyBlends.MOD_ID, "textures/gui/container/kettle.png");
     private static final Identifier PROGRESS_TEXTURE = Identifier.of(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/progress.png");
+    private static final Identifier LIT = Identifier.of(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/lit.png");
 
     public KettleScreen(KettleScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -22,7 +23,12 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
         int y = (height - backgroundHeight) / 2;
         context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
         if (handler.isBrewing()) {
-            context.drawTexture(RenderLayer::getGuiTextured, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, handler.getArrowProgress(), 16, 24, 16);        }
+            context.drawTexture(RenderLayer::getGuiTextured, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, handler.getArrowProgress(), 16, 24, 16);
+        }
+        if (handler.getLitUses() > 0) {
+            int currentHeight = handler.getLitProgress();
+            context.drawTexture(RenderLayer::getGuiTextured, LIT, x + 83, y + 50 + 16 - currentHeight, 0, 16 - currentHeight, 16, currentHeight, 16, 16);
+        }
     }
 
     @Override

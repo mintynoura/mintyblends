@@ -1,5 +1,6 @@
 package io.github.mintynoura.mintyblends.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
@@ -20,12 +21,19 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     private final List<Ingredient> ingredients;
     private final ItemStack result;
+    private final int brewingTime;
     @Nullable
     private IngredientPlacement ingredientPlacement;
+    public static final int defaultBrewingTime = 100;
 
-    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result) {
+    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, int brewingTime) {
         this.ingredients = ingredients;
         this.result = result;
+        this.brewingTime = brewingTime;
+    }
+
+    public int getBrewingTime() {
+        return this.brewingTime;
     }
 
     @Override
@@ -71,7 +79,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         private static final MapCodec<KettleBrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
-                                ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+                                ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                Codec.INT.fieldOf("brewing_time").orElse(defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
                         )
                         .apply(instance, KettleBrewingRecipe::new)
         );
@@ -80,6 +89,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                 recipe -> recipe.ingredients,
                 ItemStack.PACKET_CODEC,
                 recipe -> recipe.result,
+                PacketCodecs.INTEGER,
+                recipe -> recipe.brewingTime,
                 KettleBrewingRecipe::new
         );
 

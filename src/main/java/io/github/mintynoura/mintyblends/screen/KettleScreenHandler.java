@@ -19,7 +19,7 @@ public class KettleScreenHandler extends ScreenHandler {
     private final PropertyDelegate propertyDelegate;
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(2));
+        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(3));
     }
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity kettleBlockEntity, PropertyDelegate propertyDelegate) {
@@ -28,11 +28,11 @@ public class KettleScreenHandler extends ScreenHandler {
         this.kettleBlockEntity = (KettleBlockEntity) kettleBlockEntity;
         this.propertyDelegate = propertyDelegate;
 
-        this.addSlot(new Slot(inventory, 0, 50, 40));
-        this.addSlot(new Slot(inventory, 1, 50, 20));
-        this.addSlot(new Slot(inventory, 2, 50, 0));
-        this.addSlot(new Slot(inventory, 3, 20, 0));
-        this.addSlot(new Slot(inventory, 4, 100, 0));
+        this.addSlot(new Slot(inventory, 0, 31, 26));
+        this.addSlot(new Slot(inventory, 1, 49, 26));
+        this.addSlot(new Slot(inventory, 2, 31, 44));
+        this.addSlot(new Slot(inventory, 3, 49, 44));
+        this.addSlot(new Slot(inventory, 4, 116, 35));
 
         int m;
         int l;
@@ -52,12 +52,23 @@ public class KettleScreenHandler extends ScreenHandler {
         return propertyDelegate.get(0) > 0;
     }
 
+    public int getLitUses() {
+        return this.propertyDelegate.get(2);
+    }
+
     public int getArrowProgress() {
         int progress = this.propertyDelegate.get(0);
         int brewTime = this.propertyDelegate.get(1);
         int arrowPixelSize = 24;
 
         return brewTime != 0 && progress != 0 ? progress * arrowPixelSize / brewTime : 0;
+    }
+
+    public int getLitProgress() {
+        int litUses = this.propertyDelegate.get(2);
+        int litPixelSize = 16;
+
+        return litUses != 0 ? litUses * litPixelSize / 3 : 0;
     }
 
     @Override

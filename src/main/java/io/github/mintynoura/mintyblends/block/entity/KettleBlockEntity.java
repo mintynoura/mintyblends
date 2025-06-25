@@ -1,11 +1,13 @@
 package io.github.mintynoura.mintyblends.block.entity;
 
+import io.github.mintynoura.mintyblends.block.KettleBlock;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
 import io.github.mintynoura.mintyblends.registry.ModBlockEntities;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
 import io.github.mintynoura.mintyblends.screen.KettleScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,8 +37,12 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private int progress = 0;
-    int brewTime = 100;
+    private int brewTime;
+    private int litUses = 0;
+    private final int maxLitUses = 3;
     private static final int OUTPUT_SLOT = 4;
+
+    public boolean canBeLit = this.litUses != this.maxLitUses;
 
     protected final PropertyDelegate propertyDelegate;
 
@@ -48,6 +54,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 return switch (index) {
                     case 0 -> KettleBlockEntity.this.progress;
                     case 1 -> KettleBlockEntity.this.brewTime;
+                    case 2 -> KettleBlockEntity.this.litUses;
                     default -> 0;
                 };
             }
@@ -61,12 +68,15 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                     case 1:
                         KettleBlockEntity.this.brewTime = value;
                         break;
+                    case 2:
+                        KettleBlockEntity.this.litUses = value;
+                        break;
                 }
             }
 
             @Override
             public int size() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -82,6 +92,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         Inventories.readNbt(nbt, items, registries);
         progress = nbt.getInt("kettle.progress", 0);
         brewTime = nbt.getInt("kettle.brew_time", 0);
+        litUses = nbt.getInt("kettle.lit_uses", 0);
     }
 
     @Override
@@ -90,6 +101,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         Inventories.writeNbt(nbt, items, registries);
         nbt.putInt("kettle.progress", progress);
         nbt.putInt("kettle.brew_time", brewTime);
+        nbt.putInt("kettle.lit_uses", litUses);
     }
 
     @Override
@@ -118,15 +130,27 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         return new KettleScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
+    public void light() {
+        this.litUses = maxLitUses;
+    }
+
+    public boolean isLit() {
+        return this.litUses > 0;
+    }
+
     private boolean canCraftRecipe() {
         Optional<RecipeEntry<KettleBrewingRecipe>> recipeEntry = getRecipe();
-        return recipeEntry.isPresent();
+        return recipeEntry.isPresent() && this.isLit();
     }
 
     private Optional<RecipeEntry<KettleBrewingRecipe>> getRecipe() {
         if (world != null) {
             return world.getServer().getRecipeManager().getFirstMatch(ModRecipes.KETTLE_BREWING_RECIPE_TYPE, new KettleBrewingRecipeInput(items), world);
         } else return Optional.empty();
+    }
+
+    private int getBrewingTime(RecipeEntry<KettleBrewingRecipe> recipeEntry) {
+        return recipeEntry.value().getBrewingTime();
     }
 
     private boolean canAcceptRecipeOutput(
@@ -156,11 +180,18 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
+        boolean changed = state.get(KettleBlock.LIT) ^ this.isLit();
+        if (changed) {
+            state = state.with(KettleBlock.LIT, this.isLit());
+            world.setBlockState(pos, state, Block.NOTIFY_ALL);
+        }
         if (canCraftRecipe() && canAcceptRecipeOutput(world.getRegistryManager(), getRecipe().get(), new KettleBrewingRecipeInput(items), items, getMaxCountPerStack())) {
             this.progress++;
+            this.brewTime = this.getBrewingTime(getRecipe().get());
             markDirty(world, pos, state);
             if (this.progress == this.brewTime) {
                 craftRecipe(world.getRegistryManager(), getRecipe().get(), new KettleBrewingRecipeInput(items));
+                this.litUses -= 1;
                 this.progress = 0;
             }
         } else {

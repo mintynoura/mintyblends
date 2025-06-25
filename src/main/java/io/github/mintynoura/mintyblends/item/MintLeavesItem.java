@@ -16,9 +16,7 @@ public class MintLeavesItem extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         ConsumableComponent consumableComponent = stack.get(DataComponentTypes.CONSUMABLE);
         if (!world.isClient) {
-            if (user.getFireTicks() > 0) {
-                user.extinguishWithSound();
-            }
+            user.extinguishWithSound();
         }
         return consumableComponent != null ? consumableComponent.finishConsumption(world, user, stack) : stack;
     }
