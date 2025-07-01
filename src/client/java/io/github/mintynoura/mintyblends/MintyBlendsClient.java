@@ -17,10 +17,14 @@ public class MintyBlendsClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CATNIP, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MEDICINAL_HERB, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CULINARY_HERB, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SAGEBRUSH, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CUREFLOWER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.RENDFLOWER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SILENT_FLOWER, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.HORTENSIA_CROP, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PURPLE_HORTENSIA, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PINK_HORTENSIA, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.BLUE_HORTENSIA, RenderLayer.getCutout());
 
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
 				if (view != null && pos != null) {
@@ -31,9 +35,9 @@ public class MintyBlendsClient implements ClientModInitializer {
 						return 0x9945eb;
 					} else if (coldTag) {
 						return 0xff339c;
-					} else if (warmTag) {
+					} else {
 						return 0x3495eb;
-					} else return 0xff339c;
+					}
 				} else return 0x9945eb;
         }, ModBlocks.HORTENSIA_CROP);
 

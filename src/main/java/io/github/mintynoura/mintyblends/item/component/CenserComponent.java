@@ -8,8 +8,6 @@ import io.github.mintynoura.mintyblends.util.HerbalEffectType;
 import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.component.type.Consumable;
-import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -28,16 +26,22 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import net.minecraft.util.dynamic.Codecs;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects) implements Consumable, TooltipAppender {
-    public static final Codec<HerbalBrewComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(HerbalBrewComponent::herbalEffects),
-            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(HerbalBrewComponent::potionEffects)
-            ).apply(builder, HerbalBrewComponent::new));
+public record CenserComponent(float range, List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects) implements TooltipAppender {
+    public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+            Codecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
+            Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(CenserComponent::herbalEffects),
+            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects)
+    ).apply(builder, CenserComponent::new));
+
+    @Override
+    public float range() {
+        return range;
+    }
 
     public List<StatusEffectInstance> potionEffects() {
         return Lists.transform(this.potionEffects, StatusEffectInstance::new);
@@ -141,11 +145,11 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
             textConsumer.accept(Text.literal("Herbs:").formatted(Formatting.GRAY));
             for (Identifier herbalEffectId : herbalEffects) {
                 textConsumer.accept(
-                    ScreenTexts.space().append(
-                            Text.translatable(
-                                    herbalEffectId.toTranslationKey("brew")
-                            ).formatted(Formatting.DARK_AQUA)
-                    )
+                        ScreenTexts.space().append(
+                                Text.translatable(
+                                        herbalEffectId.toTranslationKey("brew")
+                                ).formatted(Formatting.DARK_AQUA)
+                        )
                 );
             }
             textConsumer.accept(ScreenTexts.EMPTY);
@@ -153,11 +157,11 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
         buildTooltip(this.getEffects(), textConsumer, components.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F), context.getUpdateTickRate());
     }
 
-    @Override
-    public void onConsume(World world, LivingEntity user, ItemStack stack, ConsumableComponent consumable) {
-        for (Identifier herbalEffect : herbalEffects) {
-            HerbalEffectType.applyHerb(user, herbalEffect);
+    public void applyIncense(LivingEntity entity, ItemStack stack) {
+        for (Identifier herbalEffect : this.herbalEffects) {
+            HerbalEffectType.applyHerb(entity, herbalEffect);
         }
-        this.apply(user, stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F));
+        this.apply(entity, stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F));
     }
 }
+

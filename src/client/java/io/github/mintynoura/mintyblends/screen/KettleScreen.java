@@ -26,7 +26,7 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
             context.drawTexture(RenderLayer::getGuiTextured, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, handler.getArrowProgress(), 16, 24, 16);
         }
         if (handler.getLitUses() > 0) {
-            int currentHeight = handler.getLitProgress();
+            int currentHeight = handler.getLitProgress() - 1;
             context.drawTexture(RenderLayer::getGuiTextured, LIT, x + 83, y + 50 + 16 - currentHeight, 0, 16 - currentHeight, 16, currentHeight, 16, 16);
         }
     }

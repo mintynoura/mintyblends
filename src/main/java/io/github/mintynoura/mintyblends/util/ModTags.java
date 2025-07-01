@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends.util;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -10,16 +11,18 @@ import net.minecraft.world.biome.Biome;
 
 public class ModTags {
     public static class Items {
-        public static final TagKey<Item> HERBAL_LEAVES = createTag("herbal_leaves");
-
-        public static final TagKey<Item> CAT_LOVED = createTag("cat_loved");
 
         public static final TagKey<Item> HERBS = createTag("herbs");
+        public static final TagKey<Item> HERBAL_LEAVES = createTag("herbal_leaves");
+        public static final TagKey<Item> BLENDING_INGREDIENTS = createTag("blending_ingredients");
+        public static final TagKey<Item> CENSERS = createTag("censers");
+        public static final TagKey<Item> CAT_LOVED = createTag("cat_loved");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
         }
     }
+
     public static class Blocks {
         public static final TagKey<Block> HERBS = createTag("herbs");
 
@@ -35,6 +38,14 @@ public class ModTags {
 
         private static TagKey<Biome> createTag(String name) {
             return TagKey.of(RegistryKeys.BIOME, Identifier.of(MintyBlends.MOD_ID, name));
+        }
+    }
+
+    public static class EntityTypes {
+        public static final TagKey<EntityType<?>> IGNORES_CENSER = createTag("ignores_censer");
+
+        private static TagKey<EntityType<?>> createTag(String name) {
+            return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(MintyBlends.MOD_ID, name));
         }
     }
 }

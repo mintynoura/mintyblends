@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class ModStatusEffects {
     public static final RegistryEntry<StatusEffect> RENDING = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "rending"), new MintyStatusEffect(StatusEffectCategory.HARMFUL, 0xd5a3dc));
-    public static final RegistryEntry<StatusEffect> STEALTH = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "stealth"), new MintyStatusEffect(StatusEffectCategory.HARMFUL, 0xb91ccf));
+    public static final RegistryEntry<StatusEffect> STEALTH = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "stealth"), new MintyStatusEffect(StatusEffectCategory.BENEFICIAL, 0xb91ccf));
 
     public static void registerStatusEffects() {}
 }

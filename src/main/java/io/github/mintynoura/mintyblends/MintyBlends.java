@@ -20,8 +20,8 @@ public class MintyBlends implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModBlocks.addModBlocks();
-		ModItems.addModItems();
+		ModBlocks.registerBlocks();
+		ModItems.registerItems();
 		ModCompostables.registerCompostableItems();
 		ModBlockEntities.registerBlockEntities();
 		ModScreenHandlers.registerScreenHandlers();
