@@ -4,10 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.potion.Potions;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.registry.RegistryWrapper;
@@ -21,19 +24,27 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     private final List<Ingredient> ingredients;
     private final ItemStack result;
+    private final ItemStack container;
     private final int brewingTime;
     @Nullable
     private IngredientPlacement ingredientPlacement;
+
+    public static final ItemStack defaultContainer = PotionContentsComponent.createStack(Items.POTION, Potions.WATER);
     public static final int defaultBrewingTime = 100;
 
-    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, int brewingTime) {
+    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, ItemStack container, int brewingTime) {
         this.ingredients = ingredients;
         this.result = result;
+        this.container = container;
         this.brewingTime = brewingTime;
     }
 
+    public ItemStack getContainer() {
+        return container;
+    }
+
     public int getBrewingTime() {
-        return this.brewingTime;
+        return brewingTime;
     }
 
     @Override
@@ -66,7 +77,6 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         if (this.ingredientPlacement == null) {
             this.ingredientPlacement = IngredientPlacement.forShapeless(this.ingredients);
         }
-
         return this.ingredientPlacement;
     }
 
@@ -80,6 +90,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                 instance -> instance.group(
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
                                 ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStack.VALIDATED_CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
                                 Codec.INT.fieldOf("brewing_time").orElse(defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
                         )
                         .apply(instance, KettleBrewingRecipe::new)
@@ -89,6 +100,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                 recipe -> recipe.ingredients,
                 ItemStack.PACKET_CODEC,
                 recipe -> recipe.result,
+                ItemStack.PACKET_CODEC,
+                recipe -> recipe.container,
                 PacketCodecs.INTEGER,
                 recipe -> recipe.brewingTime,
                 KettleBrewingRecipe::new

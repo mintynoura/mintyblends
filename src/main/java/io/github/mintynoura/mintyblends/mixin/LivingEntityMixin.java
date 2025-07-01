@@ -1,6 +1,8 @@
 package io.github.mintynoura.mintyblends.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
+import io.github.mintynoura.mintyblends.status_effect.MintyStatusEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -31,8 +33,13 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "modifyAppliedDamage", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$addRendingDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
         if (this.hasStatusEffect(ModStatusEffects.RENDING) && !source.isIn(DamageTypeTags.BYPASSES_EFFECTS)) {
-            float rendingModifier = (float) (1 + (this.getStatusEffect(ModStatusEffects.RENDING).getAmplifier() + 1) * 0.2);
+            float rendingModifier = 1 + (this.getStatusEffect(ModStatusEffects.RENDING).getAmplifier() + 1) * MintyStatusEffect.rendingDamageModifier;
             cir.setReturnValue(amount * rendingModifier);
         }
+    }
+
+    @ModifyReturnValue(method = "getAttackDistanceScalingFactor", at = @At("RETURN"))
+    private double mintyBlends$modifyStealthDetection(double original) {
+        return this.hasStatusEffect(ModStatusEffects.STEALTH) ? original * (1 - (this.getStatusEffect(ModStatusEffects.STEALTH).getAmplifier() + 1) * MintyStatusEffect.stealthRangeModifier) : original;
     }
 }

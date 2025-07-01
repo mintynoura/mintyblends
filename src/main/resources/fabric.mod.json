@@ -8,8 +8,7 @@
 		"mintynoura"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/mintynoura/mintyblends"
 	},
 	"license": "MIT",
 	"icon": "assets/mintyblends/icon.png",
