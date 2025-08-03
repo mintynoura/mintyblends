@@ -1,7 +1,7 @@
 {
   "type": "mintyblends:kettle_brewing",
   "ingredients": [
-    "mintyblends:mint_leaves"
+    "mintyblends:kettle"
   ],
   "container": {
     "id": "minecraft:feather"

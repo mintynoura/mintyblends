@@ -1,5 +1,6 @@
 package io.github.mintynoura.mintyblends.screen;
 
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
 import io.github.mintynoura.mintyblends.registry.ModScreenHandlers;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,12 +12,16 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 public class KettleScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     public final KettleBlockEntity kettleBlockEntity;
     private final PropertyDelegate propertyDelegate;
+    private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.of(MintyBlends.MOD_ID, "container/kettle/empty_container");
+
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
         this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(3));
@@ -32,7 +37,7 @@ public class KettleScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(inventory, 1, 49, 26));
         this.addSlot(new Slot(inventory, 2, 31, 44));
         this.addSlot(new Slot(inventory, 3, 49, 44));
-        this.addSlot(new Slot(inventory, 4, 116, 35));
+        this.addSlot(new ContainerSlot(inventory, 4, 116, 35));
 
         int m;
         int l;
@@ -68,7 +73,7 @@ public class KettleScreenHandler extends ScreenHandler {
         int litUses = this.propertyDelegate.get(2);
         int litPixelSize = 16;
 
-        return litUses != 0 ? litUses * litPixelSize / 3 : 0;
+        return litUses != 0 ? litUses * litPixelSize / KettleBlockEntity.maxLitUses : 0;
     }
 
     @Override
@@ -99,5 +104,16 @@ public class KettleScreenHandler extends ScreenHandler {
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
+    }
+
+    static class ContainerSlot extends Slot {
+        public ContainerSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public @Nullable Identifier getBackgroundSprite() {
+            return EMPTY_CONTAINER_SLOT_TEXTURE;
+        }
     }
 }

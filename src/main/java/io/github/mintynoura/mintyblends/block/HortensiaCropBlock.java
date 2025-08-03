@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class HortensiaCropBlock extends PitcherCropBlock implements Fertilizable {
+public class HortensiaCropBlock extends PitcherCropBlock {
     public static final int MAX_AGE = 4;
     public static final IntProperty AGE = Properties.AGE_4;
     public static final EnumProperty<DoubleBlockHalf> HALF = TallPlantBlock.HALF;
@@ -29,14 +29,12 @@ public class HortensiaCropBlock extends PitcherCropBlock implements Fertilizable
     }
 
     private Function<BlockState, VoxelShape> createShapeFunction() {
-        int[] is = new int[]{0, 9, 11, 22, 26};
+        int[] is = new int[]{5, 10, 17, 22, 22};
         return this.createShapeFunction(state -> {
-            int i = (state.get(AGE) == 0 ? 4 : 6) + is[state.get(AGE)];
-            int j = state.get(AGE) == 0 ? 6 : 10;
-
+            int i = 6 + is[state.get(AGE)];
             return switch (state.get(HALF)) {
-                case LOWER -> Block.createColumnShape(j, -1.0, Math.min(16, -1 + i));
-                case UPPER -> Block.createColumnShape(j, 0.0, Math.max(0, -1 + i - 16));
+                case LOWER -> Block.createColumnShape(10, -1.0, Math.min(16, -1 + i));
+                case UPPER -> Block.createColumnShape(10, 0.0, Math.max(0, -1 + i - 16));
             };
         });
     }
@@ -50,7 +48,6 @@ public class HortensiaCropBlock extends PitcherCropBlock implements Fertilizable
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return VoxelShapes.empty();
     }
-
 
     private static boolean canGrowAt(WorldView world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
@@ -83,7 +80,7 @@ public class HortensiaCropBlock extends PitcherCropBlock implements Fertilizable
 
 
     private static boolean isDoubleTallAtAge(int age) {
-        return age >= 3;
+        return age >= 2;
     }
 
 

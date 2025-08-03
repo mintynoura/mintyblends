@@ -1,0 +1,10 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "minecraft:sweet_berries",
+    "minecraft:sweet_berries"
+  ],
+  "result": {
+    "id": "mintyblends:sweet_berry_tea"
+  }
+}

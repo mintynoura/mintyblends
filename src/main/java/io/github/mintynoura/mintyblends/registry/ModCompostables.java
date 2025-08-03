@@ -21,8 +21,8 @@ public class ModCompostables {
         compost65.add(ModBlocks.MEDICINAL_HERB.asItem());
         compost65.add(ModBlocks.CULINARY_HERB.asItem());
         compost65.add(ModBlocks.SAGEBRUSH.asItem());
-        compost65.add(ModBlocks.CUREFLOWER.asItem());
-        compost65.add(ModBlocks.RENDFLOWER.asItem());
+        compost65.add(ModItems.CUREFLOWER.asItem());
+        compost65.add(ModItems.RENDFLOWER.asItem());
         compost65.add(ModBlocks.SILENT_FLOWER.asItem());
 
         compost30.add(ModItems.MINT_LEAVES);

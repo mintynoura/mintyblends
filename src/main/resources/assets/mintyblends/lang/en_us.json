@@ -1,10 +1,52 @@
 {
   "mintyblends.container.kettle": "Kettle",
 
-  "item.mintyblends.herbal_brew": "Herbal Brew",
+  "block.mintyblends.mint": "Mint",
+  "block.mintyblends.catnip": "Catnip",
+  "block.mintyblends.medicinal_herb": "Medicinal Herb",
+  "block.mintyblends.culinary_herb": "Culinary Herb",
+  "block.mintyblends.sagebrush": "Sagebrush",
+  "block.mintyblends.cureflower": "Cureflower",
+  "block.mintyblends.rendflower": "Rendflower",
+  "block.mintyblends.silent_flower": "Silent Flower",
+  "block.mintyblends.hortensia_crop": "Hortensia Crop",
+  "block.mintyblends.pink_hortensia": "Pink Hortensia",
+  "block.mintyblends.purple_hortensia": "Purple Hortensia",
+  "block.mintyblends.blue_hortensia": "Blue Hortensia",
+  "block.mintyblends.kettle": "Kettle",
 
-  "brew.mintyblends.extinguish": "Mint",
-  "brew.mintyblends.heal": "Medicinal Herb",
-  "brew.mintyblends.convert_positive_to_negative": "Inversion Blend",
-  "brew.mintyblends.convert_negative_to_positive": "Reversal Blend"
+  "item.mintyblends.mint_leaves": "Mint Leaves",
+  "item.mintyblends.catnip_leaves": "Catnip Leaves",
+  "item.mintyblends.medicinal_leaves": "Medicinal Leaves",
+  "item.mintyblends.culinary_leaves": "Culinary Leaves",
+  "item.mintyblends.sagebrush_leaves": "Sagebrush Leaves",
+  "item.mintyblends.hortensia_seeds": "Hortensia Seeds",
+  "item.mintyblends.herbal_brew": "Herbal Brew",
+  "item.mintyblends.mint_jelly": "Mint Jelly",
+  "item.mintyblends.mint_tea": "Mint Tea",
+  "item.mintyblends.steak_tartare": "Steak Tartare",
+  "item.mintyblends.beetroot_salad": "Beetroot Salad",
+  "item.mintyblends.copper_censer": "Copper Censer",
+  "item.mintyblends.iron_censer": "Iron Censer",
+  "item.mintyblends.golden_censer": "Golden Censer",
+
+  "tooltip.mintyblends.ingredients": "Ingredients:",
+  "tooltip.mintyblends.no_effects": "No Status Effects",
+
+  "effect.mintyblends.reaching": "Reaching",
+  "effect.mintyblends.rending": "Rending",
+  "effect.mintyblends.stealth": "Stealth",
+
+  "subtitles.mintyblends.block.kettle.ambient": "Burner heats",
+  "subtitles.mintyblends.block.kettle.extinguish": "Burner extinguishes",
+  "subtitles.mintyblends.item.censer.burn": "Censer burns",
+
+  "blend.mintyblends.convert_positive_to_negative": "Inversion Blend",
+  "blend.mintyblends.convert_negative_to_positive": "Reversal Blend",
+
+  "tag.item.mintyblends.herbs": "Herbs",
+  "tag.item.mintyblends.herbal_leaves": "Herbal Leaves",
+  "tag.item.mintyblends.blending_ingredients": "Blending Ingredients",
+  "tag.item.mintyblends.cat_loved": "Loved by Cats",
+  "tag.item.mintyblends.censers": "Censers"
 }

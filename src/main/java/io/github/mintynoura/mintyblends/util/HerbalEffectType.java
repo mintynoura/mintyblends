@@ -1,14 +1,18 @@
 package io.github.mintynoura.mintyblends.util;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.SnifferEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +24,21 @@ public class HerbalEffectType {
     public static final List<StatusEffectInstance> effectRemoval = new ArrayList<>();
     public static final List<StatusEffectInstance> effectAddition = new ArrayList<>();
 
-    public static Identifier EXTINGUISH = createHerbId("extinguish");
-    public static Identifier HEAL = createHerbId("heal");
-    public static Identifier CURE_POISON_AND_WITHER = createHerbId("cure_poison_and_wither");
-    public static Identifier CURE_WEAKNESS_AND_RENDING = createHerbId("cure_weakness_and_rending");
-    public static Identifier CONVERT_NEGATIVE_TO_POSITIVE = createHerbId("convert_negative_to_positive");
-    public static Identifier CONVERT_POSITIVE_TO_NEGATIVE = createHerbId("convert_positive_to_negative");
-    public static Identifier CLEAR_EFFECTS = createHerbId("clear_effects");
-    public static Identifier CLEAR_NEGATIVE = createHerbId("clear_negative");
-    public static Identifier CLEAR_POSITIVE = createHerbId("clear_positive");
+    public static Identifier EXTINGUISH = createEffectId("extinguish");
+    public static Identifier HEAL = createEffectId("heal");
+    public static Identifier FEED = createEffectId("feed");
+    public static Identifier CONVERT_NEGATIVE_TO_POSITIVE = createEffectId("convert_negative_to_positive");
+    public static Identifier CONVERT_POSITIVE_TO_NEGATIVE = createEffectId("convert_positive_to_negative");
+    public static Identifier CLEAR_NEGATIVE = createEffectId("clear_negative");
+    public static Identifier CLEAR_POSITIVE = createEffectId("clear_positive");
+    public static Identifier LOWER_SNIFFER_COOLDOWN = createEffectId("lower_sniffer_cooldown");
 
     public static void applyHerb(LivingEntity livingEntity, Identifier herbalEffect) {
         RegistryEntry<StatusEffect> effectType;
         if (herbalEffect.equals(EXTINGUISH)) livingEntity.extinguishWithSound();
         if (herbalEffect.equals(HEAL)) livingEntity.heal(2);
-        if (herbalEffect.equals(CURE_POISON_AND_WITHER)) {
-            livingEntity.removeStatusEffect(StatusEffects.POISON);
-            livingEntity.removeStatusEffect(StatusEffects.WITHER);
-        }
-        if (herbalEffect.equals(CURE_WEAKNESS_AND_RENDING)) {
-            livingEntity.removeStatusEffect(StatusEffects.WEAKNESS);
-            livingEntity.removeStatusEffect(ModStatusEffects.RENDING);
+        if (herbalEffect.equals(FEED) && livingEntity instanceof PlayerEntity) {
+            ((PlayerEntity) livingEntity).getHungerManager().add(2, 0.2f);
         }
         if (herbalEffect.equals(CONVERT_POSITIVE_TO_NEGATIVE)) {
             for (StatusEffectInstance positiveEffect : livingEntity.getActiveStatusEffects().values()) {
@@ -76,9 +74,6 @@ public class HerbalEffectType {
             effectRemoval.clear();
             effectAddition.clear();
         }
-        if (herbalEffect.equals(CLEAR_EFFECTS)) {
-            livingEntity.clearStatusEffects();
-        }
         if (herbalEffect.equals(CLEAR_NEGATIVE)) {
             for (StatusEffectInstance negativeEffect : livingEntity.getActiveStatusEffects().values()) {
                 if (negativeEffect.getEffectType().value().getCategory().equals(StatusEffectCategory.HARMFUL)) {
@@ -101,9 +96,18 @@ public class HerbalEffectType {
             }
             effectRemoval.clear();
         }
+        if (herbalEffect.equals(LOWER_SNIFFER_COOLDOWN) && livingEntity instanceof SnifferEntity) {
+            long cooldown = ((SnifferEntity) livingEntity).getBrain().getMemoryExpiry(MemoryModuleType.SNIFF_COOLDOWN);
+            if (cooldown > 0) {
+                livingEntity.getBrain().remember(MemoryModuleType.SNIFF_COOLDOWN, Unit.INSTANCE, cooldown / 2);
+                if (!livingEntity.getWorld().isClient) {
+                    ((ServerWorld) livingEntity.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, livingEntity.getX(), livingEntity.getRandomBodyY() + 0.25, livingEntity.getZ(), 16, 1, 0.25, 1, 0);
+                }
+            }
+        }
     }
 
-    public static Identifier createHerbId(String name) {
+    public static Identifier createEffectId(String name) {
         return Identifier.of(MintyBlends.MOD_ID, name);
     }
 }

@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/cross_emissive",
   "textures": {
-    "cross": "mintyblends:block/silent_flower"
+    "cross": "mintyblends:block/silent_flower",
+    "cross_emissive": "mintyblends:block/silent_flower_emissive"
   }
 }

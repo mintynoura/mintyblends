@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "mintyblends:block/pink_hortensia_bottom"
+    },
+    "half=upper": {
+      "model": "mintyblends:block/pink_hortensia_top"
+    }
+  }
+}

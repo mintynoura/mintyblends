@@ -1,6 +1,29 @@
 {
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "mintyblends:block/culinary_herb"
-  }
+	"ambientocclusion": false,
+	"textures": {
+		"herb": "mintyblends:block/culinary_herb",
+		"particle": "#herb"
+	},
+	"elements": [
+		{
+			"from": [0.8, 0, 8],
+			"to": [15.2, 16, 8],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [16, 0, 0, 16], "texture": "#herb"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#herb"}
+			}
+		},
+		{
+			"from": [8, 0, 0.8],
+			"to": [8, 16, 15.2],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#herb"},
+				"west": {"uv": [16, 0, 0, 16], "texture": "#herb"}
+			}
+		}
+	]
 }

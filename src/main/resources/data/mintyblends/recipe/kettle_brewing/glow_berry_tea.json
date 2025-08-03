@@ -1,0 +1,11 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "minecraft:glow_berries",
+    "minecraft:glow_berries",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "mintyblends:glow_berry_tea"
+  }
+}

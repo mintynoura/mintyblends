@@ -2,9 +2,18 @@
   "type": "mintyblends:kettle_brewing",
   "ingredients": [
     "mintyblends:mint_leaves",
-    "mintyblends:mint_leaves"
+    "minecraft:honey_bottle",
+    "minecraft:honey_bottle"
   ],
   "result": {
-    "id": "mintyblends:mint"
+    "id": "mintyblends:mint_tea",
+    "components": {
+      "minecraft:item_name": "sus",
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.convert_negative_to_positive"
+        ]
+      }
+    }
   }
 }

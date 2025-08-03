@@ -4,26 +4,30 @@ import io.github.mintynoura.mintyblends.block.KettleBlock;
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
-import io.github.mintynoura.mintyblends.registry.ModBlockEntities;
-import io.github.mintynoura.mintyblends.registry.ModComponents;
-import io.github.mintynoura.mintyblends.registry.ModItems;
-import io.github.mintynoura.mintyblends.registry.ModRecipes;
+import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.screen.KettleScreenHandler;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.SuspiciousStewIngredient;
+import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.consume.ConsumeEffect;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -34,6 +38,9 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
@@ -42,13 +49,12 @@ import net.minecraft.util.Nameable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedScreenHandlerFactory<BlockPos> {
 
@@ -56,7 +62,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
     private int progress = 0;
     private int brewTime;
     private int litUses = 0;
-    public static final int maxLitUses = 3;
+    public static final int maxLitUses = 4;
     private static final int[] INGREDIENT_SLOTS = new int[]{0, 1, 2, 3};
     public static final int OUTPUT_SLOT = 4;
 
@@ -202,16 +208,14 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 ItemStack container = inventory.get(OUTPUT_SLOT);
                 return ItemStack.areItemsAndComponentsEqual(container, recipe.value().getContainer());
             }
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
     private boolean canBlend(KettleBrewingRecipeInput recipeInput, DefaultedList<ItemStack> inventory) {
         ItemStack container = inventory.get(OUTPUT_SLOT);
         ItemStack itemStack;
         boolean hasContainer = false;
-        boolean hasHerbs = false;
+        boolean hasIngredients = false;
         if (ItemStack.areItemsAndComponentsEqual(container, KettleBrewingRecipe.defaultContainer)) {
             hasContainer = true;
         }
@@ -224,11 +228,11 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                     if (!itemStack.isIn(ModTags.Items.BLENDING_INGREDIENTS)) {
                         return false;
                     } else {
-                        hasHerbs = true;
+                        hasIngredients = true;
                     }
                 }
             }
-            return hasContainer && hasHerbs;
+            return hasContainer && hasIngredients;
         }
     }
 
@@ -239,30 +243,24 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             world.setBlockState(pos, state, Block.NOTIFY_ALL);
         }
         if (this.isLit()) {
-            if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
-                this.progress++;
-                this.brewTime = KettleBrewingRecipe.defaultBrewingTime;
-                markDirty(world, pos, state);
-                if (this.progress == this.brewTime) {
-                    blend(new KettleBrewingRecipeInput(getIngredients()));
-                    this.litUses -= 1;
-                    this.progress = 0;
-                }
-            }
             if (hasRecipe() && canCraftRecipe(world.getRegistryManager(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
                 this.progress++;
                 this.brewTime = this.getBrewingTime(getRecipe().get());
                 markDirty(world, pos, state);
                 if (this.progress == this.brewTime) {
                     craftRecipe(world.getRegistryManager(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
-                    this.litUses -= 1;
-                    this.progress = 0;
+                    postCraft(world, state);
                 }
-            }
+            } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
+                this.progress++;
+                this.brewTime = KettleBrewingRecipe.defaultBrewingTime;
+                markDirty(world, pos, state);
+                if (this.progress == this.brewTime) {
+                    blend(new KettleBrewingRecipeInput(getIngredients()));
+                   postCraft(world, state);
+                }
+            } else this.progress = 0;
         } else this.progress = 0;
-        if (!hasRecipe() && !canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
-            this.progress = 0;
-        }
     }
 
     private void craftRecipe(
@@ -270,41 +268,93 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             RecipeEntry<KettleBrewingRecipe> recipe,
             KettleBrewingRecipeInput recipeInput
     ) {
-            for (int i = 0; i <= OUTPUT_SLOT; i++) {
-                KettleBlockEntity.this.removeStack(i, 1);
-            }
-            ItemStack result = recipe.value().craft(recipeInput, dynamicRegistryManager);
-            this.setStack(OUTPUT_SLOT, new ItemStack(result.getItem(), result.getCount()));
+        List<ItemStack> recipeRemainders = new ArrayList<>();
+        for (int i = 0; i < recipeInput.size(); i++) {
+            Item item = recipeInput.getStackInSlot(i).getItem();
+            recipeRemainders.add(item.getRecipeRemainder());
+        }
+        for (int i = 0; i <= OUTPUT_SLOT; i++) {
+            KettleBlockEntity.this.removeStack(i, 1);
+        }
+        ItemStack result = recipe.value().craft(recipeInput, dynamicRegistryManager);
+        this.setStack(OUTPUT_SLOT, result);
+        for (ItemStack remainder : recipeRemainders) {
+            ItemDispenserBehavior.spawnItem(world, remainder, 6, Direction.UP, Vec3d.ofCenter(pos));
+        }
     }
 
     private void blend(KettleBrewingRecipeInput recipeInput) {
         ItemStack itemStack;
         Set<StatusEffectInstance> statusEffectSet = new HashSet<>();
         Set<Identifier> herbalEffectSet = new HashSet<>();
+        Set<String> ingredientSet = new HashSet<>();
+        List<ItemStack> recipeRemainders = new ArrayList<>();
+        List<ConsumeEffect> consumeEffects = new ArrayList<>();
+        for (int i = 0; i < recipeInput.size(); i++) {
+            Item item = recipeInput.getStackInSlot(i).getItem();
+            recipeRemainders.add(item.getRecipeRemainder());
+        }
         for (int i = 0; i < recipeInput.size(); i++) {
             itemStack = recipeInput.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
                 if (itemStack.isIn(ModTags.Items.BLENDING_INGREDIENTS)) {
+                    if (itemStack.getItem() != Items.AIR) {
+                        ingredientSet.add(itemStack.getItem().getTranslationKey());
+                    }
                     if (itemStack.isIn(ItemTags.SMALL_FLOWERS) || itemStack.isIn(ModTags.Items.HERBS)) {
                         SuspiciousStewIngredient suspiciousStewIngredient = SuspiciousStewIngredient.of(itemStack.getItem());
                         if (suspiciousStewIngredient != null) {
                             StatusEffectInstance statusEffect = new StatusEffectInstance(suspiciousStewIngredient.getStewEffects().effects().getFirst().createStatusEffectInstance());
                             statusEffectSet.add(statusEffect);
                         }
-                    } else if (itemStack.get(ModComponents.HERB_COMPONENT) != null) {
+                    }
+                    if (itemStack.get(ModComponents.HERB_COMPONENT) != null) {
                         Identifier herbalEffect = itemStack.get(ModComponents.HERB_COMPONENT).herbalEffect();
                         herbalEffectSet.add(herbalEffect);
+                    }
+                    if (itemStack.get(DataComponentTypes.CONSUMABLE) != null) {
+                        consumeEffects.addAll(itemStack.get(DataComponentTypes.CONSUMABLE).onConsumeEffects());
                     }
                 }
             }
         }
-        HerbalBrewComponent herbalBrewComponent = new HerbalBrewComponent(List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet));
+        HerbalBrewComponent herbalBrewComponent = new HerbalBrewComponent(List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet));
+        ConsumableComponent consumableComponent = new ConsumableComponent(1.6f, UseAction.DRINK, SoundEvents.ENTITY_GENERIC_DRINK, false, consumeEffects);
         ItemStack herbalBrew = new ItemStack(ModItems.HERBAL_BREW);
         herbalBrew.set(ModComponents.HERBAL_BREW_COMPONENT, herbalBrewComponent);
-        for (int i = 0; i <= OUTPUT_SLOT; i++) {
+        herbalBrew.set(DataComponentTypes.CONSUMABLE, consumableComponent);
+        for (int i = 0; i < OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeStack(i, 1);
         }
         this.setStack(OUTPUT_SLOT, herbalBrew);
+        for (ItemStack remainder : recipeRemainders) {
+            ItemDispenserBehavior.spawnItem(world, remainder, 6, Direction.UP, Vec3d.ofCenter(pos));
+        }
+    }
+
+    private void postCraft(World world, BlockState state) {
+        Random random = world.getRandom();
+        Direction direction = state.get(HorizontalFacingBlock.FACING).rotateYClockwise();
+        double h = random.nextDouble() * 0.6 - 0.3;
+        double i = direction.getAxis() == Direction.Axis.X ? direction.getOffsetX() * 0.52 : h;
+        double k = direction.getAxis() == Direction.Axis.Z ? direction.getOffsetZ() * 0.52 : h;
+        for (int count = 0; count < 3; count++) {
+            ((ServerWorld) world).spawnParticles(ModParticleTypes.KETTLE_STEAM, pos.getX() + 0.5 + i, pos.getY() + 1, pos.getZ() + 0.5 + k, 1, 0, 0.1, 0, 0);
+        }
+        if (this.litUses == 1) {
+            world.playSound(
+                    null,
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    ModSoundEvents.BLOCK_KETTLE_EXTINGUISH,
+                    SoundCategory.BLOCKS,
+                    0.7F + random.nextFloat(),
+                    random.nextFloat() * 0.7F + 0.5f
+            );
+        }
+        this.litUses -= 1;
+        this.progress = 0;
     }
 
     @Override

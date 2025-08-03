@@ -89,8 +89,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         private static final MapCodec<KettleBrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
-                                ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                                ItemStack.VALIDATED_CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
+                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStack.CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
                                 Codec.INT.fieldOf("brewing_time").orElse(defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
                         )
                         .apply(instance, KettleBrewingRecipe::new)

@@ -30,5 +30,8 @@ public class MintyBlends implements ModInitializer {
 		ModStatusEffects.registerStatusEffects();
 		ModComponents.registerComponents();
 		StatusEffectMap.addEffectsToMap();
+		ModSoundEvents.registerSoundEffects();
+		ModParticleTypes.registerParticleTypes();
+		ModWorldgenFeatures.registerWorldgenFeatures();
 	}
 }

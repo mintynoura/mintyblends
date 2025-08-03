@@ -1,0 +1,31 @@
+{
+  "block.kettle.ambient": {
+    "subtitle": "subtitles.mintyblends.block.kettle.ambient",
+    "sounds": [
+      {
+        "name": "block.blastfurnace.fire_crackle",
+        "type": "event"
+      }
+    ]
+  },
+  "block.kettle.extinguish": {
+    "subtitle": "subtitles.mintyblends.block.kettle.extinguish",
+    "sounds": [
+      {
+        "name": "block.candle.extinguish",
+        "type": "event"
+      }
+    ]
+  },
+  "item.censer.burn": {
+    "subtitle": "subtitles.mintyblends.item.censer.burn",
+    "sounds": [
+      {
+        "name": "block.fire.extinguish",
+        "type": "event",
+        "volume": 0.25,
+        "pitch": 1.5
+      }
+    ]
+  }
+}

@@ -1,10 +1,7 @@
 package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.block.CureflowerBlock;
-import io.github.mintynoura.mintyblends.block.HerbBlock;
-import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
-import io.github.mintynoura.mintyblends.block.KettleBlock;
+import io.github.mintynoura.mintyblends.block.*;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.effect.StatusEffects;
@@ -58,7 +55,7 @@ public class ModBlocks {
                     .burnable()
                     .pistonBehavior(PistonBehavior.DESTROY),
             true);
-    public static final Block SAGEBRUSH = registerBlock("sagebrush", settings -> new HerbBlock(StatusEffects.STRENGTH, 5f, settings), AbstractBlock.Settings.create()
+    public static final Block SAGEBRUSH = registerBlock("sagebrush", settings -> new DesertHerbBlock(StatusEffects.STRENGTH, 5f, settings), AbstractBlock.Settings.create()
                     .mapColor(MapColor.DARK_GREEN)
                     .noCollision()
                     .breakInstantly()
@@ -68,22 +65,22 @@ public class ModBlocks {
                     .pistonBehavior(PistonBehavior.DESTROY),
             true);
 
-    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new CureflowerBlock(StatusEffects.REGENERATION, 7f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new NetherFlowerBlock(StatusEffects.REGENERATION, 7f, settings), AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_RED)
                     .noCollision()
                     .breakInstantly()
                     .sounds(BlockSoundGroup.NETHER_SPROUTS)
                     .offset(AbstractBlock.OffsetType.XZ)
                     .pistonBehavior(PistonBehavior.DESTROY),
-            true);
-    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new CureflowerBlock(ModStatusEffects.RENDING, 3f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+            false);
+    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(ModStatusEffects.RENDING, 9f, settings), AbstractBlock.Settings.create()
+                    .mapColor(MapColor.CYAN)
                     .noCollision()
                     .breakInstantly()
                     .sounds(BlockSoundGroup.NETHER_SPROUTS)
                     .offset(AbstractBlock.OffsetType.XZ)
                     .pistonBehavior(PistonBehavior.DESTROY),
-            true);
+            false);
     public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(ModStatusEffects.STEALTH, 7f, settings), AbstractBlock.Settings.create()
                     .mapColor(MapColor.DARK_GREEN)
                     .noCollision()
@@ -92,6 +89,10 @@ public class ModBlocks {
                     .offset(AbstractBlock.OffsetType.XZ)
                     .pistonBehavior(PistonBehavior.DESTROY),
             true);
+
+    public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", settings -> new FlowerPotBlock(CUREFLOWER, settings), Blocks.createFlowerPotSettings(), false);
+    public static final Block POTTED_RENDFLOWER = registerBlock("potted_rendflower", settings -> new FlowerPotBlock(RENDFLOWER, settings), Blocks.createFlowerPotSettings(), false);
+    public static final Block POTTED_SILENT_FLOWER = registerBlock("potted_silent_flower", settings -> new FlowerPotBlock(SILENT_FLOWER, settings), Blocks.createFlowerPotSettings(), false);
 
     public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, AbstractBlock.Settings.create()
                     .mapColor(MapColor.DARK_GREEN)
@@ -102,13 +103,13 @@ public class ModBlocks {
                     .pistonBehavior(PistonBehavior.DESTROY),
             false);
     public static final Block PURPLE_HORTENSIA = registerBlock("purple_hortensia", TallPlantBlock::new, AbstractBlock.Settings.create()
-            .mapColor(MapColor.DARK_GREEN)
-            .noCollision()
-            .breakInstantly()
-            .sounds(BlockSoundGroup.CROP)
-            .offset(AbstractBlock.OffsetType.XZ)
-            .burnable()
-            .pistonBehavior(PistonBehavior.DESTROY),
+                    .mapColor(MapColor.DARK_GREEN)
+                    .noCollision()
+                    .breakInstantly()
+                    .sounds(BlockSoundGroup.CROP)
+                    .offset(AbstractBlock.OffsetType.XZ)
+                    .burnable()
+                    .pistonBehavior(PistonBehavior.DESTROY),
             true);
     public static final Block PINK_HORTENSIA = registerBlock("pink_hortensia", TallPlantBlock::new, AbstractBlock.Settings.create()
                     .mapColor(MapColor.DARK_GREEN)
@@ -147,7 +148,7 @@ public class ModBlocks {
 
     public static void registerBlockItem(String name, Block block) {
         RegistryKey<Item> itemRegistryKey = keyOfItem(name);
-        Registry.register(Registries.ITEM, itemRegistryKey, new BlockItem(block, new Item.Settings().registryKey(itemRegistryKey)));
+        Registry.register(Registries.ITEM, itemRegistryKey, new BlockItem(block, new Item.Settings().registryKey(itemRegistryKey).useBlockPrefixedTranslationKey()));
     }
 
     private static RegistryKey<Block> keyOfBlock(String name) {

@@ -17,6 +17,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -49,7 +50,6 @@ public abstract class OcelotEntityMixin extends AnimalEntity {
     private void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
        if (player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
            if (!this.isTrusting()) {
-               this.playSound(SoundEvents.ENTITY_CAT_PURR);
                if (!this.getWorld().isClient) {
                    this.setTrusting(true);
                    this.showEmoteParticle(true);
@@ -67,7 +67,8 @@ public abstract class OcelotEntityMixin extends AnimalEntity {
                                    new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
                            ));
                    this.eat(player, hand, player.getStackInHand(hand));
-                   ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER,this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
+                   player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
+                   ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
                    this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
                }
                cir.setReturnValue(ActionResult.SUCCESS);

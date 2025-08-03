@@ -15,7 +15,7 @@ public class HerbalBrewItem extends Item {
     @Override
     public ItemStack getDefaultStack() {
         ItemStack itemStack = super.getDefaultStack();
-        itemStack.set(ModComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of()));
+        itemStack.set(ModComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()));
         return itemStack;
     }
 }

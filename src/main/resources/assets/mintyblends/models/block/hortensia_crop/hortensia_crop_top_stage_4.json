@@ -1,0 +1,54 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"crop": "mintyblends:block/hortensia_crop_top_stage_4",
+		"flowers": "mintyblends:block/hortensia_crop_flowers_top_stage_4",
+		"particle": "#crop"
+	},
+	"elements": [
+		{
+			"name": "hortensia_top",
+			"from": [8, 0, 0],
+			"to": [8, 16, 16],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#crop", "tintindex": -1},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#crop", "tintindex": -1}
+			}
+		},
+		{
+			"name": "hortensia_flowers",
+			"from": [8, 0, 0],
+			"to": [8, 16, 16],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 16, 16], "texture": "#flowers", "tintindex": 1},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#flowers", "tintindex": 1}
+			}
+		},
+		{
+			"name": "hortensia_top",
+			"from": [0, 0, 8],
+			"to": [16, 16, 8],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#crop", "tintindex": -1},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#crop", "tintindex": -1}
+			}
+		},
+		{
+			"name": "hortensia_flowers",
+			"from": [0, 0, 8],
+			"to": [16, 16, 8],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#flowers", "tintindex": 1},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#flowers", "tintindex": 1}
+			}
+		}
+	]
+}

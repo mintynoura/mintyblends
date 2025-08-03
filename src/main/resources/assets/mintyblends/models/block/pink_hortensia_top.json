@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "mintyblends:block/pink_hortensia_top"
+  }
+}

@@ -2,6 +2,10 @@
   "values": [
     "#minecraft:small_flowers",
     "#mintyblends:herbs",
-    "#mintyblends:herbal_leaves"
+    "#mintyblends:herbal_leaves",
+    "minecraft:honey_bottle",
+    "minecraft:chorus_fruit",
+    "minecraft:golden_apple",
+    "minecraft:enchanted_golden_apple"
   ]
 }

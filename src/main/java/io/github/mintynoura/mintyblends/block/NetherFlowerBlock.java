@@ -1,10 +1,10 @@
 package io.github.mintynoura.mintyblends.block;
 
 import io.github.mintynoura.mintyblends.registry.ModBlocks;
+import io.github.mintynoura.mintyblends.util.ModTags;
 import net.minecraft.block.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -12,14 +12,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class CureflowerBlock extends FlowerBlock implements Fertilizable {
-    public CureflowerBlock(RegistryEntry<StatusEffect> stewEffect, float effectLengthInSeconds, Settings settings) {
+public class NetherFlowerBlock extends FlowerBlock implements Fertilizable {
+    public NetherFlowerBlock(RegistryEntry<StatusEffect> stewEffect, float effectLengthInSeconds, Settings settings) {
         super(stewEffect, effectLengthInSeconds, settings);
     }
 
     @Override
     protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-        return floor.isIn(BlockTags.NYLIUM) || floor.isOf(Blocks.SOUL_SOIL) || super.canPlantOnTop(floor, world, pos);
+        return floor.isIn(ModTags.Blocks.CUREFLOWER_GROWN_ON) || floor.isIn(ModTags.Blocks.RENDFLOWER_GROWN_ON) || super.canPlantOnTop(floor, world, pos);
     }
 
     @Override
@@ -37,9 +37,9 @@ public class CureflowerBlock extends FlowerBlock implements Fertilizable {
         BlockPos newPos;
         for (int i = 0; i < 16; i++) {
             newPos = pos.add(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
-            if (world.getBlockState(newPos).isOf(Blocks.AIR) && world.getBlockState(newPos.down()).isOf(Blocks.WARPED_NYLIUM) && random.nextInt(6) == 0) {
+            if (world.getBlockState(newPos).isOf(Blocks.AIR) && world.getBlockState(newPos.down()).isIn(ModTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
                 world.setBlockState(newPos, ModBlocks.RENDFLOWER.getDefaultState(), Block.NOTIFY_ALL);
-            } else if (world.getBlockState(newPos).isOf(Blocks.AIR) && world.getBlockState(newPos.down()).isOf(Blocks.CRIMSON_NYLIUM) && random.nextInt(6) == 0) {
+            } else if (world.getBlockState(newPos).isOf(Blocks.AIR) && world.getBlockState(newPos.down()).isIn(ModTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
                 world.setBlockState(newPos, ModBlocks.CUREFLOWER.getDefaultState(), Block.NOTIFY_ALL);
             }
         }

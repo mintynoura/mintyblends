@@ -17,8 +17,10 @@ import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.consume.ConsumeEffect;
 import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.world.ServerWorld;
@@ -31,12 +33,14 @@ import net.minecraft.util.dynamic.Codecs;
 import java.util.List;
 import java.util.function.Consumer;
 
-public record CenserComponent(float range, List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects) implements TooltipAppender {
+public record CenserComponent(float range, List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipAppender {
     public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
             Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(CenserComponent::herbalEffects),
-            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects)
-    ).apply(builder, CenserComponent::new));
+            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects),
+            Codec.STRING.listOf().optionalFieldOf("ingredients", List.of()).forGetter(CenserComponent::ingredients),
+            ConsumeEffect.CODEC.listOf().optionalFieldOf("consume_effects", List.of()).forGetter(CenserComponent::consumeEffects)
+            ).apply(builder, CenserComponent::new));
 
     @Override
     public float range() {
@@ -96,7 +100,7 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
         }
 
         if (bl) {
-            textConsumer.accept(Text.translatable("effect.none").formatted(Formatting.GRAY));
+            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").formatted(Formatting.GRAY));
         }
 
         if (!list.isEmpty()) {
@@ -141,13 +145,13 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
 
     @Override
     public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-        if (!this.herbalEffects.isEmpty()) {
-            textConsumer.accept(Text.literal("Herbs:").formatted(Formatting.GRAY));
-            for (Identifier herbalEffectId : herbalEffects) {
+        if (!this.ingredients.isEmpty()) {
+            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").formatted(Formatting.GRAY));
+            for (String ingredient : ingredients) {
                 textConsumer.accept(
                         ScreenTexts.space().append(
                                 Text.translatable(
-                                        herbalEffectId.toTranslationKey("brew")
+                                        ingredient
                                 ).formatted(Formatting.DARK_AQUA)
                         )
                 );
@@ -161,7 +165,15 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
         for (Identifier herbalEffect : this.herbalEffects) {
             HerbalEffectType.applyHerb(entity, herbalEffect);
         }
+        if (!entity.getWorld().isClient) {
+            this.consumeEffects.forEach(effect -> effect.onConsume(entity.getWorld(), stack, entity));
+        }
         this.apply(entity, stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F));
+        if (entity.getWorld().isClient) {
+            for (int i = 0; i < 4; i++) {
+                entity.getWorld().addParticleClient(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getParticleX(1.25), entity.getRandomBodyY(), entity.getParticleZ(1.25), 0, 0, 0);
+            }
+        }
     }
 }
 

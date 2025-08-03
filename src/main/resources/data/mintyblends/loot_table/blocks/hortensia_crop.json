@@ -1,0 +1,92 @@
+{
+  "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:explosion_decay"
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:alternatives",
+              "children": [
+                {
+                  "type": "minecraft:item",
+                  "name": "mintyblends:purple_hortensia",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biomes": "#mintyblends:produces_purple_hortensias"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:item",
+                  "name": "mintyblends:pink_hortensia",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biomes": "#mintyblends:produces_pink_hortensias"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "minecraft:item",
+                  "name": "mintyblends:blue_hortensia",
+                  "conditions": [
+                    {
+                      "condition": "minecraft:location_check",
+                      "predicate": {
+                        "biomes": "#mintyblends:produces_blue_hortensias"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "conditions": [
+                {
+                  "block": "mintyblends:hortensia_crop",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "age": "4"
+                  }
+                },
+                {
+                  "block": "mintyblends:hortensia_crop",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "half": "lower"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "mintyblends:hortensia_crop",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "half": "lower"
+                  }
+                }
+              ],
+              "name": "mintyblends:hortensia_seeds"
+            }
+          ]
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "mintyblends:block/hortensia_crop"
+}

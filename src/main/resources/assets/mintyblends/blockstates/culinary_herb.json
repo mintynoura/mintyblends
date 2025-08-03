@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "mintyblends:block/culinary_herb"
-    }
+    "": [
+      {
+        "model": "mintyblends:block/culinary_herb"
+      },
+      {
+        "model": "mintyblends:block/culinary_herb",
+        "y": 90
+      },
+      {
+        "model": "mintyblends:block/culinary_herb",
+        "y": 180
+      },
+      {
+        "model": "mintyblends:block/culinary_herb",
+        "y": 270
+      }
+    ]
   }
 }

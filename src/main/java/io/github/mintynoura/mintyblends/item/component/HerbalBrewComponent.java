@@ -33,10 +33,11 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.function.Consumer;
 
-public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects) implements Consumable, TooltipAppender {
+public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects, List<String> ingredients) implements Consumable, TooltipAppender {
     public static final Codec<HerbalBrewComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(HerbalBrewComponent::herbalEffects),
-            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(HerbalBrewComponent::potionEffects)
+            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(HerbalBrewComponent::potionEffects),
+            Codec.STRING.listOf().optionalFieldOf("ingredients",List.of()).forGetter(HerbalBrewComponent::ingredients)
             ).apply(builder, HerbalBrewComponent::new));
 
     public List<StatusEffectInstance> potionEffects() {
@@ -92,7 +93,7 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
         }
 
         if (bl) {
-            textConsumer.accept(Text.translatable("effect.none").formatted(Formatting.GRAY));
+            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").formatted(Formatting.GRAY));
         }
 
         if (!list.isEmpty()) {
@@ -137,13 +138,13 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
 
     @Override
     public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-        if (!this.herbalEffects.isEmpty()) {
-            textConsumer.accept(Text.literal("Herbs:").formatted(Formatting.GRAY));
-            for (Identifier herbalEffectId : herbalEffects) {
+        if (!this.ingredients.isEmpty()) {
+            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").formatted(Formatting.GRAY));
+            for (String ingredient : ingredients) {
                 textConsumer.accept(
                     ScreenTexts.space().append(
                             Text.translatable(
-                                    herbalEffectId.toTranslationKey("brew")
+                                    ingredient
                             ).formatted(Formatting.DARK_AQUA)
                     )
                 );

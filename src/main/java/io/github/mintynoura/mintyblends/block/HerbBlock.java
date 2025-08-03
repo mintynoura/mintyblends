@@ -19,7 +19,7 @@ import java.util.List;
 public class HerbBlock extends PlantBlock implements SuspiciousStewIngredient, Fertilizable {
 
     private final SuspiciousStewEffectsComponent stewEffects;
-    private static final VoxelShape SHAPE = Block.createColumnShape(6.0, 0.0, 10.0);
+    private static final VoxelShape SHAPE = Block.createColumnShape(10.0, 0.0, 16.0);
 
     public HerbBlock(RegistryEntry<StatusEffect> stewEffect, float effectLengthInSeconds, AbstractBlock.Settings settings) {
         this(createStewEffectList(stewEffect, effectLengthInSeconds), settings);

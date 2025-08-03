@@ -8,6 +8,7 @@
     "DispenserLightingMixin",
     "LivingEntityMixin",
     "OcelotEntityMixin",
+    "SnifferEntityMixin",
     "TrackTargetGoalMixin",
     "VibrationsMixin"
   ],

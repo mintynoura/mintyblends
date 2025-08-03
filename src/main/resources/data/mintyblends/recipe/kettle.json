@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_block",
+    "i": "minecraft:iron_ingot",
+    "X": "#minecraft:candles"
+  },
+  "pattern": [
+    "iIi",
+    "i i",
+    "iXi"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mintyblends:kettle"
+  }
+}
