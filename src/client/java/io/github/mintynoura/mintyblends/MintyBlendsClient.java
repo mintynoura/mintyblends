@@ -16,8 +16,15 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 
 public class MintyBlendsClient implements ClientModInitializer {
+
+	// suggestion: turn color hexes into non-magics
+	private static final int TEMPERATE_CLIMATE_COLOR = 0x9951df;
+	private static final int COLD_CLIMATE_COLOR = 0xf0429c;
+	private static final int WARM_CLIMATE_COLOR = 0x4294dd;
+
 	@Override
 	public void onInitializeClient() {
+
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MINT, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CATNIP, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MEDICINAL_HERB, RenderLayer.getCutout());
@@ -43,14 +50,13 @@ public class MintyBlendsClient implements ClientModInitializer {
 					boolean coldTag = view.getBiomeFabric(pos).isIn(ModTags.Biomes.PRODUCES_PINK_HORTENSIAS);
 					boolean temperateTag = view.getBiomeFabric(pos).isIn(ModTags.Biomes.PRODUCES_PURPLE_HORTENSIAS);
 					boolean warmTag = view.getBiomeFabric(pos).isIn(ModTags.Biomes.PRODUCES_BLUE_HORTENSIAS);
-					if (temperateTag || (coldTag && warmTag) || (!coldTag && !warmTag)) {
-						return 0x9951df;
-					} else if (coldTag) {
-						return 0xf0429c;
-					} else {
-						return 0x4294dd;
-					}
-				} else return 0x9951df;
+
+					// suggestion: simplified check chain
+					if (!temperateTag && coldTag && !warmTag) return COLD_CLIMATE_COLOR;
+					if (!temperateTag && !coldTag && warmTag) return WARM_CLIMATE_COLOR;
+				}
+				return TEMPERATE_CLIMATE_COLOR;
+
         }, ModBlocks.HORTENSIA_CROP);
 
 		HandledScreens.register(ModScreenHandlers.KETTLE_SCREEN_HANDLER, KettleScreen::new);
