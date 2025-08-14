@@ -1,0 +1,28 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:mint_leaves",
+    "minecraft:blue_orchid",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.clear_effects"
+        ]
+      },
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink",
+        "on_consume_effects": [
+          {
+            "type": "minecraft:clear_all_effects"
+          }
+        ]
+      }
+    }
+  }
+}

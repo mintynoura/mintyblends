@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:beef",
+    "#minecraft:eggs",
+    "mintyblends:culinary_leaves"
+  ],
+  "result": {
+    "id": "mintyblends:steak_tartare"
+  }
+}

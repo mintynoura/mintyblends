@@ -1,0 +1,22 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:sagebrush_leaves",
+    "mintyblends:cureflower",
+    "minecraft:honey_bottle",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.clear_negative"
+        ],
+        "herbal_effects": [
+          "mintyblends:clear_negative"
+        ]
+      }
+    }
+  }
+}

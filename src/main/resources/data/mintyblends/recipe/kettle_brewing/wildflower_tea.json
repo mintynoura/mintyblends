@@ -1,0 +1,37 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "minecraft:wildflowers",
+    "minecraft:wildflowers",
+    "minecraft:honey_bottle"
+  ],
+  "result": {
+    "id": "mintyblends:wildflower_tea",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "block.minecraft.wildflowers",
+          "item.minecraft.honey_bottle"
+        ],
+        "potion_effects": [
+          {
+            "duration": 300,
+            "id": "minecraft:mining_fatigue",
+            "show_icon": true
+          }
+        ]
+      },
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink",
+        "on_consume_effects": [
+          {
+            "type": "minecraft:remove_effects",
+            "effects": "minecraft:poison"
+          }
+        ]
+      }
+    }
+  }
+}

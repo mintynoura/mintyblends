@@ -67,16 +67,24 @@ public class ModItems {
             .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
             .useRemainder(Items.BOWL));
     public static final Item MINT_TEA = registerItem("mint_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(4, 0.3f, true),
+            .food(new FoodComponent(3, 0.3f, true),
                     ConsumableComponents.drink().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1800, 0))).build())
             .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item GLOW_BERRY_TEA = registerItem("glow_berry_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(5, 0.4f, true),
+            .food(new FoodComponent(4, 0.3f, true),
                     ConsumableComponents.drink().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0))).build())
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item SWEET_BERRY_TEA = registerItem("sweet_berry_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(5, 0.4f, false),
+            .food(new FoodComponent(5, 0.4f, true),
+                    ConsumableComponents.DRINK)
+            .useRemainder(Items.GLASS_BOTTLE));
+    public static final Item WILDFLOWER_TEA = registerItem("wildflower_tea", Item::new, new Item.Settings()
+            .food(new FoodComponent(3, 0.3f, true),
+                    ConsumableComponents.DRINK)
+            .useRemainder(Items.GLASS_BOTTLE));
+    public static final Item TORCHFLOWER_TEA = registerItem("torchflower_tea", Item::new, new Item.Settings()
+            .food(new FoodComponent(3, 0.3f, true),
                     ConsumableComponents.DRINK)
             .useRemainder(Items.GLASS_BOTTLE));
 
@@ -86,6 +94,9 @@ public class ModItems {
     public static final Item STEAK_TARTARE = registerItem("steak_tartare", Item::new, new Item.Settings()
             .food(new FoodComponent(6, 0.6f, false),
                     ConsumableComponent.builder().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 300, 0), 0.2f)).build()));
+    public static final Item PUMPKIN_STEW = registerItem("pumpkin_stew", Item::new, new Item.Settings()
+            .food(new FoodComponent(8, 0.8f, false))
+            .useRemainder(Items.BOWL));
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Settings()
@@ -127,16 +138,19 @@ public class ModItems {
                 entries.add(ModBlocks.PINK_HORTENSIA);
                 entries.add(ModBlocks.BLUE_HORTENSIA);
                 entries.add(ModBlocks.KETTLE);
+                entries.add(COPPER_CENSER);
+                entries.add(IRON_CENSER);
+                entries.add(GOLDEN_CENSER);
                 entries.add(HERBAL_BREW);
                 entries.add(MINT_TEA);
                 entries.add(GLOW_BERRY_TEA);
                 entries.add(SWEET_BERRY_TEA);
+                entries.add(WILDFLOWER_TEA);
+                entries.add(TORCHFLOWER_TEA);
                 entries.add(MINT_JELLY);
                 entries.add(BEETROOT_SALAD);
                 entries.add(STEAK_TARTARE);
-                entries.add(COPPER_CENSER);
-                entries.add(IRON_CENSER);
-                entries.add(GOLDEN_CENSER);
+                entries.add(PUMPKIN_STEW);
             })
             .build()
     );

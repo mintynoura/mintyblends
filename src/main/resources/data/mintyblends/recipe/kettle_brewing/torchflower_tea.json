@@ -1,0 +1,37 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "minecraft:torchflower",
+    "minecraft:torchflower",
+    "minecraft:honey_bottle"
+  ],
+  "result": {
+    "id": "mintyblends:torchflower_tea",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "block.minecraft.torchflower",
+          "item.minecraft.honey_bottle"
+        ],
+        "potion_effects": [
+          {
+            "duration": 1800,
+            "id": "minecraft:night_vision",
+            "show_icon": true
+          }
+        ]
+      },
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink",
+        "on_consume_effects": [
+          {
+            "type": "minecraft:remove_effects",
+            "effects": "minecraft:poison"
+          }
+        ]
+      }
+    }
+  }
+}

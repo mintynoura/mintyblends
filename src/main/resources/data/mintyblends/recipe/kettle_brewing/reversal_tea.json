@@ -1,0 +1,22 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:cureflower",
+    "minecraft:glow_berries",
+    "minecraft:slime_ball",
+    "minecraft:red_mushroom"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.convert_negative_to_positive"
+        ],
+        "herbal_effects": [
+          "mintyblends:convert_negative_to_positive"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_culinary_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:culinary_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:steak_tartare"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_culinary_leaves"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:steak_tartare"
+    ]
+  }
+}

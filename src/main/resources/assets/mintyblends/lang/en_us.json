@@ -24,14 +24,20 @@
   "item.mintyblends.herbal_brew": "Herbal Brew",
   "item.mintyblends.mint_jelly": "Mint Jelly",
   "item.mintyblends.mint_tea": "Mint Tea",
+  "item.mintyblends.sweet_berry_tea": "Sweet Berry Tea",
+  "item.mintyblends.glow_berry_tea": "Glow Berry Tea",
+  "item.mintyblends.wildflower_tea": "Wildflower Tea",
+  "item.mintyblends.torchflower_tea": "Torchflower Tea",
   "item.mintyblends.steak_tartare": "Steak Tartare",
   "item.mintyblends.beetroot_salad": "Beetroot Salad",
+  "item.mintyblends.pumpkin_stew": "Pumpkin Stew",
   "item.mintyblends.copper_censer": "Copper Censer",
   "item.mintyblends.iron_censer": "Iron Censer",
   "item.mintyblends.golden_censer": "Golden Censer",
 
   "tooltip.mintyblends.ingredients": "Ingredients:",
   "tooltip.mintyblends.no_effects": "No Status Effects",
+  "tooltip.mintyblends.range": "Range:",
 
   "effect.mintyblends.reaching": "Reaching",
   "effect.mintyblends.rending": "Rending",
@@ -41,12 +47,17 @@
   "subtitles.mintyblends.block.kettle.extinguish": "Burner extinguishes",
   "subtitles.mintyblends.item.censer.burn": "Censer burns",
 
-  "blend.mintyblends.convert_positive_to_negative": "Inversion Blend",
+  "blend.mintyblends.clear_effects": "Clearing Blend",
+  "blend.mintyblends.clear_negative": "Curing Blend",
+  "blend.mintyblends.clear_positive": "Fatiguing Blend",
   "blend.mintyblends.convert_negative_to_positive": "Reversal Blend",
+  "blend.mintyblends.convert_positive_to_negative": "Inversion Blend",
+  "blend.mintyblends.reaching": "Reaching Blend",
+  "blend.mintyblends.strong_reaching": "Strong Reaching Blend",
 
-  "tag.item.mintyblends.herbs": "Herbs",
-  "tag.item.mintyblends.herbal_leaves": "Herbal Leaves",
   "tag.item.mintyblends.blending_ingredients": "Blending Ingredients",
   "tag.item.mintyblends.cat_loved": "Loved by Cats",
-  "tag.item.mintyblends.censers": "Censers"
+  "tag.item.mintyblends.censers": "Censers",
+  "tag.item.mintyblends.herbs": "Herbs",
+  "tag.item.mintyblends.herbal_leaves": "Herbal Leaves"
 }

@@ -30,7 +30,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     private IngredientPlacement ingredientPlacement;
 
     public static final ItemStack defaultContainer = PotionContentsComponent.createStack(Items.POTION, Potions.WATER);
-    public static final int defaultBrewingTime = 100;
+    public static final int defaultBrewingTime = 200;
 
     public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, ItemStack container, int brewingTime) {
         this.ingredients = ingredients;

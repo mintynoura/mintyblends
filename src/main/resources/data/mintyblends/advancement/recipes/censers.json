@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_herbal_brew": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:herbal_brew"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_copper_censer_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:copper_censer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_iron_censer_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:iron_censer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_golden_censer_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:golden_censer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_copper_censer_recipe",
+      "has_iron_censer_recipe",
+      "has_golden_censer_recipe",
+      "has_herbal_brew"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:copper_censer",
+      "mintyblends:iron_censer",
+      "mintyblends:golden_censer"
+    ]
+  }
+}

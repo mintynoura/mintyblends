@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_hortensia": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:purple_hortensia"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:purple_dye_from_hortensia"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_hortensia"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:purple_dye_from_hortensia"
+    ]
+  }
+}

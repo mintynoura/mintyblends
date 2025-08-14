@@ -1,0 +1,22 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:rendflower",
+    "minecraft:lily_of_the_valley",
+    "minecraft:spider_eye",
+    "minecraft:brown_mushroom"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.convert_positive_to_negative"
+        ],
+        "herbal_effects": [
+          "mintyblends:convert_positive_to_negative"
+        ]
+      }
+    }
+  }
+}

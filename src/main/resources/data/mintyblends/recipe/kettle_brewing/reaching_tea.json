@@ -1,0 +1,24 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:catnip_leaves",
+    "minecraft:oxeye_daisy",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.reaching"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:reaching",
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  }
+}

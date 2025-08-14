@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:beetroot",
+    "minecraft:beetroot",
+    "minecraft:carrot",
+    "mintyblends:culinary_leaves",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "mintyblends:beetroot_salad"
+  }
+}

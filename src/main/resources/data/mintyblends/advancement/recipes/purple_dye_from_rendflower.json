@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rendflower": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:rendflower"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:purple_dye_from_rendflower"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rendflower"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:purple_dye_from_rendflower"
+    ]
+  }
+}

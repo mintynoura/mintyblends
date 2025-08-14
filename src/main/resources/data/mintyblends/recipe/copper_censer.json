@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "minecraft:copper_ingot",
+    "X": "#minecraft:coals"
+  },
+  "pattern": [
+    "IXI",
+    " I ",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mintyblends:copper_censer"
+  }
+}

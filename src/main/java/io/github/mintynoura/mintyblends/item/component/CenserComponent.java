@@ -145,6 +145,10 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
 
     @Override
     public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
+        if (type.isAdvanced()) {
+            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.range", "Range:").append(ScreenTexts.space().append(String.valueOf(range))));
+            textConsumer.accept(ScreenTexts.EMPTY);
+        }
         if (!this.ingredients.isEmpty()) {
             textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").formatted(Formatting.GRAY));
             for (String ingredient : ingredients) {

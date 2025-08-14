@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.*;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.effect.StatusEffects;
@@ -87,7 +88,8 @@ public class ModBlocks {
                     .breakInstantly()
                     .sounds(BlockSoundGroup.GRASS)
                     .offset(AbstractBlock.OffsetType.XZ)
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .pistonBehavior(PistonBehavior.DESTROY)
+                    .luminance(state -> 3),
             true);
 
     public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", settings -> new FlowerPotBlock(CUREFLOWER, settings), Blocks.createFlowerPotSettings(), false);
@@ -159,5 +161,15 @@ public class ModBlocks {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
     }
 
-    public static void registerBlocks() {}
+    public static void registerBlocks() {
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.MINT, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.CATNIP, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.MEDICINAL_HERB, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.CULINARY_HERB, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.SAGEBRUSH, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.SILENT_FLOWER, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.PURPLE_HORTENSIA, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.PINK_HORTENSIA, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.BLUE_HORTENSIA, 100, 60);
+    }
 }

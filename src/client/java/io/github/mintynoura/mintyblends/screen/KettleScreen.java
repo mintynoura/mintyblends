@@ -18,6 +18,12 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
     }
 
     @Override
+    public void init() {
+        super.init();
+        this.titleX = (this.backgroundWidth - this.textRenderer.getWidth(this.title)) / 2;
+    }
+
+    @Override
     protected void drawBackground(DrawContext context, float deltaTicks, int mouseX, int mouseY) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;

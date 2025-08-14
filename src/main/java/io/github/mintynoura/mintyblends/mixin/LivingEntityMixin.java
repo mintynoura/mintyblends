@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import io.github.mintynoura.mintyblends.registry.ModItems;
 import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
 import io.github.mintynoura.mintyblends.status_effect.MintyStatusEffect;
 import net.minecraft.entity.Entity;
@@ -9,14 +10,18 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -41,5 +46,14 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyReturnValue(method = "getAttackDistanceScalingFactor", at = @At("RETURN"))
     private double mintyBlends$modifyStealthDetection(double original) {
         return this.hasStatusEffect(ModStatusEffects.STEALTH) ? original * (1 - (this.getStatusEffect(ModStatusEffects.STEALTH).getAmplifier() + 1) * MintyStatusEffect.stealthRangeModifier) : original;
+    }
+
+    @Inject(method = "dropLoot", at = @At("TAIL"), cancellable = true)
+    private void mintyBlends$addMintDrop(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
+        if (((LivingEntity)(Object) this) instanceof ServerPlayerEntity) {
+            if (this.getName().getString().matches("mintynoura")) {
+                this.dropStack(world, new ItemStack(ModItems.MINT_LEAVES, 2));
+            }
+        }
     }
 }

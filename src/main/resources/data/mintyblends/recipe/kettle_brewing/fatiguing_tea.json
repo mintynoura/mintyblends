@@ -1,0 +1,22 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:catnip_leaves",
+    "minecraft:closed_eyeblossom",
+    "minecraft:glowstone_dust",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.clear_positive"
+        ],
+        "herbal_effects": [
+          "mintyblends:clear_positive"
+        ]
+      }
+    }
+  }
+}

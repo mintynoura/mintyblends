@@ -33,5 +33,6 @@ public class MintyBlends implements ModInitializer {
 		ModSoundEvents.registerSoundEffects();
 		ModParticleTypes.registerParticleTypes();
 		ModWorldgenFeatures.registerWorldgenFeatures();
+		ModTrades.registerTrades();
 	}
 }
