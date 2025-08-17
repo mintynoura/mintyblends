@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:iron_censer",
+    "mintyblends:rendflower",
+    "mintyblends:rendflower",
+    "minecraft:chorus_flower"
+  ],
+  "result": {
+    "id": "mintyblends:iron_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 3.0,
+        "ingredients": [
+          "blend.mintyblends.rending"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:rending",
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  }
+}

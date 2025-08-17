@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:copper_censer",
+    "mintyblends:mint_leaves",
+    "minecraft:blue_orchid",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:copper_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "ingredients": [
+          "blend.mintyblends.clear_effects"
+        ],
+        "consume_effects": [
+          {
+            "type": "minecraft:clear_all_effects"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:silent_flower",
+    "mintyblends:silent_flower",
+    "minecraft:azure_bluet"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.stealth"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:stealth",
+            "duration": 6000
+          }
+        ]
+      }
+    }
+  }
+}

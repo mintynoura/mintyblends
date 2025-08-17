@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:copper_censer",
+    "mintyblends:silent_flower",
+    "mintyblends:silent_flower",
+    "minecraft:azure_bluet"
+  ],
+  "result": {
+    "id": "mintyblends:copper_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "ingredients": [
+          "blend.mintyblends.stealth"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:stealth",
+            "duration": 6000
+          }
+        ]
+      }
+    }
+  }
+}

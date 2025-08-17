@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "mintyblends:copper_censer",
+      "components": {
+        "mintyblends:censer_contents": {
+          "ingredients": [
+            "blend.mintyblends.stealth"
+          ],
+          "potion_effects": [
+            {
+              "id": "mintyblends:stealth",
+              "duration": 6000
+            }
+          ]
+        }
+      }
+    },
+    "mintyblends:silent_flower",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "id": "mintyblends:copper_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "ingredients": [
+          "blend.mintyblends.strong_stealth"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:stealth",
+            "amplifier": 1,
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  }
+}

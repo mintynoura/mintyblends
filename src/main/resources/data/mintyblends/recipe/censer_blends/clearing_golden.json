@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:golden_censer",
+    "mintyblends:mint_leaves",
+    "minecraft:blue_orchid",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.clear_effects"
+        ],
+        "consume_effects": [
+          {
+            "type": "minecraft:clear_all_effects"
+          }
+        ]
+      }
+    }
+  }
+}

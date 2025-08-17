@@ -25,7 +25,7 @@ public abstract class BeeEntityMixin extends Goal {
 
     @Inject(method = "tick()V", at = @At("TAIL"))
     private void mintyBlends$tickHerb(CallbackInfo info) {
-        if (field_20373.getRandom().nextInt(this.getTickCount(20)) == 0) {
+        if (field_20373.getRandom().nextInt(this.getTickCount(15)) == 0) {
             for (int i = 0; i <= 2; i++) {
                 BlockPos herbPos = field_20373.getBlockPos().down(i);
                 BlockState herbBlock = field_20373.getWorld().getBlockState(herbPos);

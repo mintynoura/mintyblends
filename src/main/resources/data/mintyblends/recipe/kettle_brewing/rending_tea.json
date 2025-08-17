@@ -1,0 +1,24 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:rendflower",
+    "mintyblends:rendflower",
+    "minecraft:chorus_flower"
+  ],
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.rending"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:rending",
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  }
+}

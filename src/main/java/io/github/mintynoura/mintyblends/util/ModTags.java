@@ -12,7 +12,7 @@ import net.minecraft.world.biome.Biome;
 public class ModTags {
     public static class Items {
 
-        public static final TagKey<Item> HERBS = createTag("ingredients");
+        public static final TagKey<Item> HERBS = createTag("herbs");
         public static final TagKey<Item> HERBAL_LEAVES = createTag("herbal_leaves");
         public static final TagKey<Item> BLENDING_INGREDIENTS = createTag("blending_ingredients");
         public static final TagKey<Item> CENSERS = createTag("censers");

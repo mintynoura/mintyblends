@@ -53,7 +53,11 @@
   "blend.mintyblends.convert_negative_to_positive": "Reversal Blend",
   "blend.mintyblends.convert_positive_to_negative": "Inversion Blend",
   "blend.mintyblends.reaching": "Reaching Blend",
+  "blend.mintyblends.rending": "Rending Blend",
+  "blend.mintyblends.stealth": "Stealth Blend",
   "blend.mintyblends.strong_reaching": "Strong Reaching Blend",
+  "blend.mintyblends.strong_rending": "Strong Rending Blend",
+  "blend.mintyblends.strong_stealth": "Strong Stealth Blend",
 
   "tag.item.mintyblends.blending_ingredients": "Blending Ingredients",
   "tag.item.mintyblends.cat_loved": "Loved by Cats",

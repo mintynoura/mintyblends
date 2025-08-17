@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:golden_censer",
+    "mintyblends:rendflower",
+    "minecraft:lily_of_the_valley",
+    "minecraft:spider_eye",
+    "minecraft:brown_mushroom"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.convert_positive_to_negative"
+        ],
+        "herbal_effects": [
+          "mintyblends:convert_positive_to_negative"
+        ]
+      }
+    }
+  }
+}

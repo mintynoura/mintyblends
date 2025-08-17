@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:copper_censer",
+    "mintyblends:catnip_leaves",
+    "minecraft:oxeye_daisy",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "mintyblends:copper_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "ingredients": [
+          "blend.mintyblends.reaching"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:reaching",
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  }
+}

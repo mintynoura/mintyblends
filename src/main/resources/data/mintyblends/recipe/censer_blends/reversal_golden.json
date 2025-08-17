@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:golden_censer",
+    "mintyblends:cureflower",
+    "minecraft:glow_berries",
+    "minecraft:slime_ball",
+    "minecraft:red_mushroom"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.convert_negative_to_positive"
+        ],
+        "herbal_effects": [
+          "mintyblends:convert_negative_to_positive"
+        ]
+      }
+    }
+  }
+}

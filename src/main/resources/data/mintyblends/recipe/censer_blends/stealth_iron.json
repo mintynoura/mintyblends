@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:iron_censer",
+    "mintyblends:silent_flower",
+    "mintyblends:silent_flower",
+    "minecraft:azure_bluet"
+  ],
+  "result": {
+    "id": "mintyblends:iron_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 3.0,
+        "ingredients": [
+          "blend.mintyblends.stealth"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:stealth",
+            "duration": 6000
+          }
+        ]
+      }
+    }
+  }
+}

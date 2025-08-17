@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:golden_censer",
+    "mintyblends:sagebrush_leaves",
+    "mintyblends:cureflower",
+    "minecraft:honey_bottle",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.clear_negative"
+        ],
+        "herbal_effects": [
+          "mintyblends:clear_negative"
+        ]
+      }
+    }
+  }
+}

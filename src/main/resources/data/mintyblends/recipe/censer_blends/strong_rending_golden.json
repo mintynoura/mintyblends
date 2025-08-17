@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "mintyblends:golden_censer",
+      "components": {
+        "mintyblends:censer_contents": {
+          "range": 7.0,
+          "ingredients": [
+            "blend.mintyblends.rending"
+          ],
+          "potion_effects": [
+            {
+              "id": "mintyblends:rending",
+              "duration": 3600
+            }
+          ]
+        }
+      }
+    },
+    "mintyblends:rendflower",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.strong_rending"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:rending",
+            "amplifier": 1,
+            "duration": 1800
+          }
+        ]
+      }
+    }
+  }
+}

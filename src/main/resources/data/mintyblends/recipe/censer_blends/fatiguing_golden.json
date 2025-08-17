@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "mintyblends:golden_censer",
+    "mintyblends:catnip_leaves",
+    "minecraft:closed_eyeblossom",
+    "minecraft:glowstone_dust",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "mintyblends:golden_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 7.0,
+        "ingredients": [
+          "blend.mintyblends.clear_positive"
+        ],
+        "herbal_effects": [
+          "mintyblends:clear_positive"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "mintyblends:rendflower",
+    "minecraft:blaze_powder"
+  ],
+  "container": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.rending"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:rending",
+            "duration": 3600
+          }
+        ]
+      }
+    }
+  },
+  "result": {
+    "id": "mintyblends:herbal_brew",
+    "components": {
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.strong_rending"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:rending",
+            "amplifier": 1,
+            "duration": 1800
+          }
+        ]
+      }
+    }
+  }
+}

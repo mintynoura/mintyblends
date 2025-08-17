@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "mintyblends:iron_censer",
+      "components": {
+        "mintyblends:censer_contents": {
+          "range": 3.0,
+          "ingredients": [
+            "blend.mintyblends.reaching"
+          ],
+          "potion_effects": [
+            {
+              "id": "mintyblends:reaching",
+              "duration": 3600
+            }
+          ]
+        }
+      }
+    },
+    "mintyblends:catnip_leaves",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "id": "mintyblends:iron_censer",
+    "components": {
+      "mintyblends:censer_contents": {
+        "range": 3.0,
+        "ingredients": [
+          "blend.mintyblends.strong_reaching"
+        ],
+        "potion_effects": [
+          {
+            "id": "mintyblends:reaching",
+            "amplifier": 1,
+            "duration": 1800
+          }
+        ]
+      }
+    }
+  }
+}
