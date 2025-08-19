@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "suspicious_stew",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "mintyblends:cureflower"
+  ],
+  "result": {
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "duration": 140,
+          "id": "minecraft:regeneration"
+        }
+      ],
+      "minecraft:consumable": {
+      "on_consume_effects": [
+        {
+          "type": "minecraft:remove_effects",
+          "effects": "minecraft:wither"
+        }
+      ]
+    }
+    },
+    "count": 1,
+    "id": "minecraft:suspicious_stew"
+  }
+}

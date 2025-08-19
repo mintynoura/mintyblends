@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "suspicious_stew",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "mintyblends:mint_leaves"
+  ],
+  "result": {
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "duration": 60,
+          "id": "minecraft:fire_resistance"
+        }
+      ],
+      "mintyblends:herb": {
+        "herbal_effect": "mintyblends:extinguish"
+      }
+    },
+    "count": 1,
+    "id": "minecraft:suspicious_stew"
+  }
+}

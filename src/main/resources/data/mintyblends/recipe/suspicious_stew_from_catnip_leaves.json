@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "suspicious_stew",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "mintyblends:catnip_leaves"
+  ],
+  "result": {
+    "components": {
+      "minecraft:suspicious_stew_effects": [
+        {
+          "duration": 100,
+          "id": "minecraft:speed"
+        }
+      ],
+      "mintyblends:herb": {
+        "herbal_effect": "mintyblends:lower_sniffer_cooldown"
+      },
+      "minecraft:consumable": {
+        "on_consume_effects": [
+          {
+            "type": "minecraft:remove_effects",
+            "effects": "minecraft:slowness"
+          }
+        ]
+      }
+    },
+    "count": 1,
+    "id": "minecraft:suspicious_stew"
+  }
+}
