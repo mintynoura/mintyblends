@@ -24,7 +24,7 @@
           },
           {
             "type": "minecraft:remove_effects",
-            "effects": "minecraft:rending"
+            "effects": "mintyblends:rending"
           }
         ]
       }

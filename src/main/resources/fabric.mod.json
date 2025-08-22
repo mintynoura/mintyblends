@@ -22,6 +22,10 @@
 		],
 		"fabric-datagen": [
 			"io.github.mintynoura.mintyblends.MintyBlendsDataGenerator"
+		],
+		"eiv": [
+			"io.github.mintynoura.mintyblends.compat.eiv.EivIntegration",
+			"io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration"
 		]
 	},
 	"mixins": [
