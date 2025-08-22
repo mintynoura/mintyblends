@@ -37,12 +37,12 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
 
     @Override
     public void bindSlots(RecipeViewMenu.SlotFillContext slotFillContext) {
-        for (int i = 0; i < this.ingredients.size() && i < this.getViewType().getSlotCount() - 1; i++) {
-            slotFillContext.bindSlot(i, this.ingredients.get(i));
+        for (int i = 0; i < ingredients.size() && i < this.getViewType().getSlotCount() - 1; i++) {
+            slotFillContext.bindSlot(i, ingredients.get(i));
         }
 
-        slotFillContext.bindSlot(4, this.container);
-        slotFillContext.bindSlot(5, this.result);
+        slotFillContext.bindSlot(4, container);
+        slotFillContext.bindSlot(5, result);
     }
 
     @Override

@@ -4,6 +4,7 @@ import de.crafty.eiv.common.api.recipe.IEivRecipeViewType;
 import de.crafty.eiv.common.recipe.inventory.RecipeViewMenu;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.ModBlocks;
+import io.github.mintynoura.mintyblends.registry.ModItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -48,7 +49,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
         // container here
         slotDefinition.addItemSlot(4, 116, 35);
         // result here
-        slotDefinition.addItemSlot(5, 131, 35);
+        slotDefinition.addItemSlot(5, 106, 44);
     }
 
     @Override
@@ -63,6 +64,6 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public List<ItemStack> getCraftReferences() {
-        return List.of(new ItemStack(ModBlocks.KETTLE));
+        return List.of(new ItemStack(ModBlocks.KETTLE), new ItemStack(ModItems.HERBAL_BREW));
     }
 }

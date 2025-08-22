@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends.compat.eiv;
 
 import de.crafty.eiv.common.api.recipe.EivRecipeType;
 import de.crafty.eiv.common.api.recipe.IEivServerRecipe;
+import de.crafty.eiv.common.recipe.util.EivTagUtil;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -11,7 +12,6 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class KettleBrewingServerRecipe implements IEivServerRecipe {
-
 
     private List<Ingredient> ingredients;
     private ItemStack container;
@@ -46,13 +46,19 @@ public class KettleBrewingServerRecipe implements IEivServerRecipe {
     }
 
     @Override
-    public void writeToTag(NbtCompound nbtCompound) {
-
+    public void writeToTag(NbtCompound nbt) {
+        nbt.put("ingredients", EivTagUtil.writeList(this.ingredients, ((ingredient, nbtCompound) -> EivTagUtil.writeIngredient(ingredient))));
+        nbt.put("container", EivTagUtil.encodeItemStack(this.container));
+        nbt.put("result", EivTagUtil.encodeItemStack(this.result));
+        nbt.putInt("brewing_time", this.brewingTime);
     }
 
     @Override
-    public void loadFromTag(NbtCompound nbtCompound) {
-
+    public void loadFromTag(NbtCompound nbt) {
+        this.ingredients = EivTagUtil.readList(nbt, "ingredients", EivTagUtil::readIngredient);
+        this.container = EivTagUtil.decodeItemStack(nbt.getCompound("container").orElseGet(NbtCompound::new));
+        this.result = EivTagUtil.decodeItemStack(nbt.getCompound("result").orElseGet(NbtCompound::new));
+        this.brewingTime = nbt.getInt("brewing_time", 0);
     }
 
     @Override
