@@ -37,7 +37,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public int getSlotCount() {
-        return 5;
+        return 6;
     }
 
     @Override
