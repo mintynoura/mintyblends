@@ -1,7 +1,7 @@
 {
   "type": "mintyblends:kettle_brewing",
   "ingredients": [
-    "mintyblends:catnip_leaves",
+    "minecraft:fermented_spider_eye",
     "minecraft:closed_eyeblossom",
     "minecraft:glowstone_dust",
     "minecraft:kelp"
