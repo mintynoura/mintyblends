@@ -39,6 +39,14 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         this.brewingTime = brewingTime;
     }
 
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public ItemStack getResult() {
+        return result;
+    }
+
     public ItemStack getContainer() {
         return container;
     }

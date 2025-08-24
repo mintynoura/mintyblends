@@ -102,5 +102,7 @@
   "effect.mintyblends.rending.description": "An effect that makes you more susceptible to damage.",
   "effect.mintyblends.stealth.description": "An effect that makes it harder for mobs and Sculk Sensors to detect you.",
 
-  "tag.mintyblends.herbs.description": "A plant that can be spread by a Bee."
+  "tag.mintyblends.herbs.description": "A plant that can be spread by a Bee.",
+
+  "recipe.mintyblends.kettle_brewing": "Kettle Brewing"
 }
