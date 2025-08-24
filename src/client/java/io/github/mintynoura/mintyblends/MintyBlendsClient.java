@@ -17,7 +17,6 @@ import net.minecraft.client.render.RenderLayer;
 
 public class MintyBlendsClient implements ClientModInitializer {
 
-	// suggestion: turn color hexes into non-magics
 	private static final int TEMPERATE_CLIMATE_COLOR = 0x9951df;
 	private static final int COLD_CLIMATE_COLOR = 0xf0429c;
 	private static final int WARM_CLIMATE_COLOR = 0x4294dd;
@@ -51,7 +50,6 @@ public class MintyBlendsClient implements ClientModInitializer {
 					boolean temperateTag = view.getBiomeFabric(pos).isIn(ModTags.Biomes.PRODUCES_PURPLE_HORTENSIAS);
 					boolean warmTag = view.getBiomeFabric(pos).isIn(ModTags.Biomes.PRODUCES_BLUE_HORTENSIAS);
 
-					// suggestion: simplified check chain
 					if (!temperateTag && coldTag && !warmTag) return COLD_CLIMATE_COLOR;
 					if (!temperateTag && !coldTag && warmTag) return WARM_CLIMATE_COLOR;
 				}
