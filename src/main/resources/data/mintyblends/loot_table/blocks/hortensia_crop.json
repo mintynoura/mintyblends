@@ -20,10 +20,35 @@
                   "name": "mintyblends:purple_hortensia",
                   "conditions": [
                     {
-                      "condition": "minecraft:location_check",
-                      "predicate": {
-                        "biomes": "#mintyblends:produces_purple_hortensias"
-                      }
+                      "condition": "minecraft:any_of",
+                      "terms": [
+                        {
+                          "condition": "minecraft:location_check",
+                          "predicate": {
+                            "biomes": "#mintyblends:produces_purple_hortensias"
+                          }
+                        },
+                        {
+                          "condition": "minecraft:inverted",
+                          "term": {
+                            "condition": "minecraft:any_of",
+                            "terms": [
+                              {
+                                "condition": "minecraft:location_check",
+                                "predicate": {
+                                  "biomes": "#mintyblends:produces_pink_hortensias"
+                                }
+                              },
+                              {
+                                "condition": "minecraft:location_check",
+                                "predicate": {
+                                  "biomes": "#mintyblends:produces_blue_hortensias"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     }
                   ]
                 },
