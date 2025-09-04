@@ -1,5 +1,6 @@
 {
   "mintyblends.container.kettle": "Kettle",
+  "itemGroup.mintyblends": "Minty Blends",
 
   "block.mintyblends.mint": "Mint",
   "block.mintyblends.catnip": "Catnip",
@@ -34,6 +35,12 @@
   "item.mintyblends.copper_censer": "Copper Censer",
   "item.mintyblends.iron_censer": "Iron Censer",
   "item.mintyblends.golden_censer": "Golden Censer",
+
+  "item.mintyblends.fried_greens": "Fried Greens",
+  "item.mintyblends.fried_mushrooms": "Fried Mushrooms",
+  "item.mintyblends.onion_soup": "Onion Soup",
+  "item.mintyblends.tomato_soup": "Tomato Soup",
+  "item.mintyblends.vegetable_porridge": "Vegetable Porridge",
 
   "tooltip.mintyblends.ingredients": "Ingredients:",
   "tooltip.mintyblends.no_effects": "No Status Effects",
@@ -97,6 +104,13 @@
   "lore.mintyblends.copper_censer": "A standard Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
   "lore.mintyblends.iron_censer": "A durable Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
   "lore.mintyblends.golden_censer": "A long-reaching Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
+
+  "lore.mintyblends.fried_greens": "A nourishing dish made from leafy greens and herbs.",
+  "lore.mintyblends.fried_mushrooms": "A nourishing dish made from Mushrooms.",
+  "lore.mintyblends.onion_soup": "A comforting dish made from Onions.",
+  "lore.mintyblends.tomato_soup": "A comforting dish made from Tomatoes.",
+  "lore.mintyblends.vegetable_porridge": "A nourishing dish made from grains and milk, along with vegetables.",
+
 
   "effect.mintyblends.reaching.description": "An effect that grants increased reach.",
   "effect.mintyblends.rending.description": "An effect that makes you more susceptible to damage.",

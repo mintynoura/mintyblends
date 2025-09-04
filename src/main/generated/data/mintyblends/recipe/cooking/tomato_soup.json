@@ -1,0 +1,28 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:any_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    }
+  ],
+  "type": "farmersdelight:cooking",
+  "category": "meals",
+  "container": {
+    "count": 1,
+    "id": "minecraft:bowl"
+  },
+  "experience": 1.0,
+  "ingredients": [
+    "#c:crops/tomato",
+    "#c:crops/tomato",
+    "#c:crops/onion",
+    "mintyblends:culinary_leaves",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mintyblends:tomato_soup"
+  }
+}

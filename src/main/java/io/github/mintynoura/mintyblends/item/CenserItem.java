@@ -40,11 +40,13 @@ public class CenserItem extends Item {
         ItemStack censer = user.getStackInHand(hand);
         ItemStack flintAndSteel = user.getOffHandStack();
 
-        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || censer.getComponents().get(ModComponents.CENSER_COMPONENT) == null) {
+        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.contains(ModComponents.CENSER_COMPONENT)) {
             return ActionResult.FAIL;
         }
 
-        float diameter = 2 * censer.getComponents().get(ModComponents.CENSER_COMPONENT).range();
+        CenserComponent component = censer.get(ModComponents.CENSER_COMPONENT);
+
+        float diameter = 2 * component.range();
         List<LivingEntity> entitiesList = world.getEntitiesByClass(LivingEntity.class, Box.of(user.getPos(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.getType().isIn(ModTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
@@ -63,6 +65,6 @@ public class CenserItem extends Item {
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {
-        stack.getComponents().get(ModComponents.CENSER_COMPONENT).applyIncense(entity, stack);
+        stack.get(ModComponents.CENSER_COMPONENT).applyIncense(entity, stack);
     }
 }

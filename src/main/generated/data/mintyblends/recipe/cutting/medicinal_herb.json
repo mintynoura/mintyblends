@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:any_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    }
+  ],
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    "mintyblends:medicinal_herb"
+  ],
+  "result": [
+    {
+      "item": {
+        "count": 4,
+        "id": "mintyblends:medicinal_leaves"
+      }
+    }
+  ],
+  "tool": "#c:tools/knife"
+}

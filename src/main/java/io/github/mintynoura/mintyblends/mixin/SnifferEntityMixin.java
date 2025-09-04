@@ -31,7 +31,7 @@ public abstract class SnifferEntityMixin extends AnimalEntity {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (player.getStackInHand(hand).get(ModComponents.HERB_COMPONENT) != null && (this.getState() == SnifferEntity.State.IDLING || this.getState() == SnifferEntity.State.SCENTING || this.getState() == SnifferEntity.State.SNIFFING)) {
+        if (player.getStackInHand(hand).contains(ModComponents.HERB_COMPONENT) && (this.getState() == SnifferEntity.State.IDLING || this.getState() == SnifferEntity.State.SCENTING || this.getState() == SnifferEntity.State.SNIFFING)) {
             if (player.getStackInHand(hand).get(ModComponents.HERB_COMPONENT).herbalEffect().equals(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)) {
                 long cooldown = this.getBrain().getMemoryExpiry(MemoryModuleType.SNIFF_COOLDOWN);
                 if (cooldown > 0) {

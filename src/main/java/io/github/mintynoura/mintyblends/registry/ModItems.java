@@ -48,55 +48,59 @@ public class ModItems {
 
     public static final Item CUREFLOWER = registerItem("cureflower", settings -> new BlockItem(ModBlocks.CUREFLOWER, settings), new Item.Settings()
             .useBlockPrefixedTranslationKey()
-            .food(new FoodComponent(1, 0.1f, true),
+            .food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.1f).alwaysEdible().build(),
                     ConsumableComponent.builder().consumeEffect(new RemoveEffectsConsumeEffect(StatusEffects.WITHER)).build()));
     public static final Item RENDFLOWER = registerItem("rendflower", settings -> new BlockItem(ModBlocks.RENDFLOWER, settings), new Item.Settings()
             .useBlockPrefixedTranslationKey()
-            .food(new FoodComponent(1, 0.1f, true),
+            .food(new FoodComponent.Builder().nutrition(1).saturationModifier(0.1f).alwaysEdible().build(),
                     ConsumableComponent.builder().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(ModStatusEffects.RENDING, 400, 0), 0.9f)).build()));
     public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(ModBlocks.HORTENSIA_CROP, settings), new Item.Settings().useItemPrefixedTranslationKey());
 
     public static final Item HERBAL_BREW = registerItem("herbal_brew", HerbalBrewItem::new, new Item.Settings()
             .component(ModComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()))
             .component(DataComponentTypes.CONSUMABLE, ConsumableComponents.DRINK)
-            .useRemainder(Items.GLASS_BOTTLE)
-            .maxCount(16));
+            .useRemainder(Items.GLASS_BOTTLE));
 
-    public static final Item MINT_JELLY = registerItem("mint_jelly", Item::new, new Item.Settings()
-            .food(new FoodComponent(5, 0.4f, true))
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
-            .useRemainder(Items.BOWL));
+
     public static final Item MINT_TEA = registerItem("mint_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(3, 0.3f, true),
+            .food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.3f).build(),
                     ConsumableComponents.drink().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 1800, 0))).build())
             .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item GLOW_BERRY_TEA = registerItem("glow_berry_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(4, 0.3f, true),
+            .food(new FoodComponent.Builder().nutrition(4).saturationModifier(0.3f).build(),
                     ConsumableComponents.drink().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.GLOWING, 600, 0))).build())
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item SWEET_BERRY_TEA = registerItem("sweet_berry_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(5, 0.4f, true),
+            .food(new FoodComponent.Builder().nutrition(5).saturationModifier(0.4f).build(),
                     ConsumableComponents.DRINK)
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item WILDFLOWER_TEA = registerItem("wildflower_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(3, 0.3f, true),
+            .food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.3f).build(),
                     ConsumableComponents.DRINK)
             .useRemainder(Items.GLASS_BOTTLE));
     public static final Item TORCHFLOWER_TEA = registerItem("torchflower_tea", Item::new, new Item.Settings()
-            .food(new FoodComponent(3, 0.3f, true),
+            .food(new FoodComponent.Builder().nutrition(3).saturationModifier(0.3f).build(),
                     ConsumableComponents.DRINK)
             .useRemainder(Items.GLASS_BOTTLE));
 
+    public static final Item MINT_JELLY = registerItem("mint_jelly", Item::new, new Item.Settings()
+            .food(new FoodComponent.Builder().nutrition(5).saturationModifier(0.4f).build())
+            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
+            .maxCount(16)
+            .useRemainder(Items.BOWL));
     public static final Item BEETROOT_SALAD = registerItem("beetroot_salad", Item::new, new Item.Settings()
-            .food(new FoodComponent(7, 0.7f, false))
+            .food(new FoodComponent.Builder().nutrition(7).saturationModifier(0.7f).build())
+            .maxCount(16)
+            .useRemainder(Items.BOWL));
+    public static final Item PUMPKIN_STEW = registerItem("pumpkin_stew", Item::new, new Item.Settings()
+            .food(new FoodComponent.Builder().nutrition(8).saturationModifier(0.8f).build())
+            .maxCount(16)
             .useRemainder(Items.BOWL));
     public static final Item STEAK_TARTARE = registerItem("steak_tartare", Item::new, new Item.Settings()
-            .food(new FoodComponent(6, 0.6f, false),
+            .food(new FoodComponent.Builder().nutrition(6).saturationModifier(0.6f).build(),
                     ConsumableComponent.builder().consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 300, 0), 0.2f)).build()));
-    public static final Item PUMPKIN_STEW = registerItem("pumpkin_stew", Item::new, new Item.Settings()
-            .food(new FoodComponent(8, 0.8f, false))
-            .useRemainder(Items.BOWL));
+
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Settings()
@@ -116,7 +120,9 @@ public class ModItems {
         return item;
     }
 
-    public static final ItemGroup MINTYBLENDS_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(MintyBlends.MOD_ID, "item_group"), FabricItemGroup.builder()
+    public static final RegistryKey<ItemGroup> MINTYBLENDS_ITEM_GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MintyBlends.MOD_ID, "item_group"));
+
+    public static final ItemGroup MINTYBLENDS_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP, MINTYBLENDS_ITEM_GROUP_KEY, FabricItemGroup.builder()
             .icon(() -> new ItemStack(MINT_LEAVES))
             .displayName(Text.translatableWithFallback("itemGroup.mintyblends", "Minty Blends"))
             .entries((displayContext, entries) -> {
