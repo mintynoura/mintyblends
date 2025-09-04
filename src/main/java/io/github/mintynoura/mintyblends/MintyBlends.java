@@ -1,12 +1,14 @@
 package io.github.mintynoura.mintyblends;
 
 import com.mojang.serialization.Codec;
+import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.util.StatusEffectMap;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,5 +36,9 @@ public class MintyBlends implements ModInitializer {
 		ModParticleTypes.registerParticleTypes();
 		ModWorldgenFeatures.registerWorldgenFeatures();
 		ModTrades.registerTrades();
+
+		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
+			FarmersDelightCompat.registerItems();
+		}
 	}
 }

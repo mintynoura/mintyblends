@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:any_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    }
+  ],
+  "type": "farmersdelight:cooking",
+  "category": "meals",
+  "container": {
+    "count": 1,
+    "id": "minecraft:bowl"
+  },
+  "experience": 1.0,
+  "ingredients": [
+    "#c:crops/grain",
+    "#c:foods/milk",
+    "#c:foods/vegetable",
+    "mintyblends:culinary_leaves"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mintyblends:vegetable_porridge"
+  }
+}

@@ -44,10 +44,6 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
         return Lists.transform(this.potionEffects, StatusEffectInstance::new);
     }
 
-    public List<Identifier> herbalEffects() {
-        return this.herbalEffects;
-    }
-
     public static MutableText getEffectText(RegistryEntry<StatusEffect> effect, int amplifier) {
         MutableText mutableText = Text.translatable(effect.value().getTranslationKey());
         return amplifier > 0 ? Text.translatable("potion.withAmplifier", mutableText, Text.translatable("potion.potency." + amplifier)) : mutableText;

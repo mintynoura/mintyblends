@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:any_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    }
+  ],
+  "type": "mintyblends:kettle_brewing",
+  "ingredients": [
+    "minecraft:sugar",
+    "minecraft:cocoa_beans",
+    "minecraft:cocoa_beans"
+  ],
+  "container": {
+    "id": "farmersdelight:milk_bottle"
+  },
+  "result": {
+    "id": "farmersdelight:hot_cocoa"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:any_mods_loaded",
+      "values": [
+        "farmersdelight"
+      ]
+    }
+  ],
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    "mintyblends:cureflower"
+  ],
+  "result": [
+    {
+      "item": {
+        "count": 2,
+        "id": "minecraft:black_dye"
+      }
+    }
+  ],
+  "tool": "#c:tools/knife"
+}

@@ -308,11 +308,11 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                             statusEffectSet.add(statusEffect);
                         }
                     }
-                    if (itemStack.get(ModComponents.HERB_COMPONENT) != null) {
+                    if (itemStack.contains(ModComponents.HERB_COMPONENT)) {
                         Identifier herbalEffect = itemStack.get(ModComponents.HERB_COMPONENT).herbalEffect();
                         herbalEffectSet.add(herbalEffect);
                     }
-                    if (itemStack.get(DataComponentTypes.CONSUMABLE) != null) {
+                    if (itemStack.contains(DataComponentTypes.CONSUMABLE)) {
                         consumeEffects.addAll(itemStack.get(DataComponentTypes.CONSUMABLE).onConsumeEffects());
                     }
                 }
