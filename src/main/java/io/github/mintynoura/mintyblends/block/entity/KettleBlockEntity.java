@@ -29,7 +29,6 @@ import net.minecraft.item.Items;
 import net.minecraft.item.consume.ConsumeEffect;
 import net.minecraft.item.consume.UseAction;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -41,6 +40,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
@@ -120,25 +121,23 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
     }
 
     @Override
-    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.readNbt(nbt, registries);
-        Inventories.readNbt(nbt, inventory, registries);
-        progress = nbt.getInt("kettle.progress", 0);
-        brewTime = nbt.getInt("kettle.brew_time", 0);
-        litUses = nbt.getInt("kettle.lit_uses", 0);
-        customName = tryParseCustomName(nbt.get("CustomName"), registries);
+    protected void readData(ReadView view) {
+        super.readData(view);
+        Inventories.readData(view, inventory);
+        progress = view.getInt("kettle.progress", 0);
+        brewTime = view.getInt("kettle.brew_time", 0);
+        litUses = view.getInt("kettle.lit_uses", 0);
+        customName = tryParseCustomName(view, "CustomName");
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.writeNbt(nbt, registries);
-        Inventories.writeNbt(nbt, inventory, registries);
-        nbt.putInt("kettle.progress", progress);
-        nbt.putInt("kettle.brew_time", brewTime);
-        nbt.putInt("kettle.lit_uses", litUses);
-        if (customName != null) {
-            nbt.put("CustomName", TextCodecs.CODEC.encodeStart(registries.getOps(NbtOps.INSTANCE), customName).getOrThrow());
-        }
+    protected void writeData(WriteView view) {
+        super.writeData(view);
+        Inventories.writeData(view, inventory);
+        view.putInt("kettle.progress", progress);
+        view.putInt("kettle.brew_time", brewTime);
+        view.putInt("kettle.lit_uses", litUses);
+        view.putNullable("CustomName", TextCodecs.CODEC, this.customName);
     }
 
     @Override
