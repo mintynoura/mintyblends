@@ -1,9 +1,9 @@
 package io.github.mintynoura.mintyblends.screen;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -27,13 +27,13 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
     protected void drawBackground(DrawContext context, float deltaTicks, int mouseX, int mouseY) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 256, 256);
         if (handler.isBrewing()) {
-            context.drawTexture(RenderLayer::getGuiTextured, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, handler.getArrowProgress(), 16, 24, 16);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, handler.getArrowProgress(), 16, 24, 16);
         }
         if (handler.getLitUses() > 0) {
             int currentHeight = handler.getLitProgress() - 1;
-            context.drawTexture(RenderLayer::getGuiTextured, LIT, x + 83, y + 50 + 16 - currentHeight, 0, 16 - currentHeight, 16, currentHeight, 16, 16);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 50 + 16 - currentHeight, 0, 16 - currentHeight, 16, currentHeight, 16, 16);
         }
     }
 

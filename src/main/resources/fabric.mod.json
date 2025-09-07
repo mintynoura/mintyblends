@@ -23,9 +23,11 @@
 		"fabric-datagen": [
 			"io.github.mintynoura.mintyblends.MintyBlendsDataGenerator"
 		],
-		"eiv": [
-			"io.github.mintynoura.mintyblends.compat.eiv.EivIntegration",
-			"io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration"
+		"rei_common": [
+			"io.github.mintynoura.mintyblends.compat.rei.CommonPlugin"
+		],
+		"rei_client": [
+			"io.github.mintynoura.mintyblends.compat.rei.ClientPlugin"
 		]
 	},
 	"mixins": [
