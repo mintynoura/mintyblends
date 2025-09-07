@@ -69,9 +69,8 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.0-beta.10")))
-	modImplementation("vectorwing:FarmersDelight:${fdrf_version}+refabricated") {
-		exclude(group: "net.fabricmc")
-	}
+	modImplementation "maven.modrinth:eiv:${eiv_version}+${minecraft_version}"
+	modImplementation "maven.modrinth:farmers-delight-refabricated:${fdrf_version}"
 }
 
 processResources {

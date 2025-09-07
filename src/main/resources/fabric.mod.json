@@ -23,11 +23,9 @@
 		"fabric-datagen": [
 			"io.github.mintynoura.mintyblends.MintyBlendsDataGenerator"
 		],
-		"rei_common": [
-			"io.github.mintynoura.mintyblends.compat.rei.CommonPlugin"
-		],
-		"rei_client": [
-			"io.github.mintynoura.mintyblends.compat.rei.ClientPlugin"
+		"eiv": [
+			"io.github.mintynoura.mintyblends.compat.eiv.EivIntegration",
+			"io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration"
 		]
 	},
 	"mixins": [
@@ -38,8 +36,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.5",
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
 		"java": ">=21",
 		"fabric-api": "*"
 	}
