@@ -1,7 +1,7 @@
 package io.github.mintynoura.mintyblends;
 
 import com.mojang.serialization.Codec;
-// import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
+import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.util.StatusEffectMap;
 import net.fabricmc.api.ModInitializer;
@@ -38,7 +38,7 @@ public class MintyBlends implements ModInitializer {
 		ModTrades.registerTrades();
 
 		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
-	//		FarmersDelightCompat.registerItems();
+			FarmersDelightCompat.registerItems();
 		}
 	}
 }
