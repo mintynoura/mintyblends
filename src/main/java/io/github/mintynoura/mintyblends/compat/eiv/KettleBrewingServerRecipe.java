@@ -56,8 +56,8 @@ public class KettleBrewingServerRecipe implements IEivServerRecipe {
     @Override
     public void loadFromTag(NbtCompound nbt) {
         this.ingredients = EivTagUtil.readList(nbt, "ingredients", EivTagUtil::readIngredient);
-        this.container = EivTagUtil.decodeItemStackOnServer(nbt.getCompound("container").orElseGet(NbtCompound::new));
-        this.result = EivTagUtil.decodeItemStackOnServer(nbt.getCompound("result").orElseGet(NbtCompound::new));
+        this.container = EivTagUtil.decodeItemStackOnClient(nbt.getCompound("container").orElseGet(NbtCompound::new));
+        this.result = EivTagUtil.decodeItemStackOnClient(nbt.getCompound("result").orElseGet(NbtCompound::new));
         this.brewingTime = nbt.getInt("brewing_time", 0);
     }
 
