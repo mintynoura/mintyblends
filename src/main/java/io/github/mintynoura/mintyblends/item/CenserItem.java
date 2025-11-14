@@ -47,7 +47,7 @@ public class CenserItem extends Item {
         CenserComponent component = censer.get(ModComponents.CENSER_COMPONENT);
 
         float diameter = 2 * component.range();
-        List<LivingEntity> entitiesList = world.getEntitiesByClass(LivingEntity.class, Box.of(user.getPos(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.getType().isIn(ModTags.EntityTypes.IGNORES_CENSER));
+        List<LivingEntity> entitiesList = world.getEntitiesByClass(LivingEntity.class, Box.of(user.getEntityPos(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.getType().isIn(ModTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
         }
@@ -57,7 +57,7 @@ public class CenserItem extends Item {
         world.playSound(user, user.getBlockPos(), ModSoundEvents.ITEM_CENSER_BURN, SoundCategory.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 
         world.emitGameEvent(user, GameEvent.ITEM_INTERACT_FINISH, user.getBlockPos());
-        if (!world.isClient) {
+        if (!world.isClient()) {
             ((ServerWorld) world).spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, user.getX(), user.getY() + 1, user.getZ(), 8, 0.625, 0.25, 0.625, 0);
             user.incrementStat(Stats.USED.getOrCreateStat(user.getStackInHand(hand).getItem()));
         }

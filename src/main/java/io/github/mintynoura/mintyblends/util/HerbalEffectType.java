@@ -100,8 +100,8 @@ public class HerbalEffectType {
             long cooldown = ((SnifferEntity) livingEntity).getBrain().getMemoryExpiry(MemoryModuleType.SNIFF_COOLDOWN);
             if (cooldown > 0) {
                 livingEntity.getBrain().remember(MemoryModuleType.SNIFF_COOLDOWN, Unit.INSTANCE, cooldown / 2);
-                if (!livingEntity.getWorld().isClient) {
-                    ((ServerWorld) livingEntity.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, livingEntity.getX(), livingEntity.getRandomBodyY() + 0.25, livingEntity.getZ(), 16, 1, 0.25, 1, 0);
+                if (!livingEntity.getEntityWorld().isClient()) {
+                    ((ServerWorld) livingEntity.getEntityWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, livingEntity.getX(), livingEntity.getRandomBodyY() + 0.25, livingEntity.getZ(), 16, 1, 0.25, 1, 0);
                 }
             }
         }

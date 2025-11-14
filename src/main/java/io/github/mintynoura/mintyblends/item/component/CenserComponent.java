@@ -67,7 +67,7 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
     }
 
     public void apply(LivingEntity user, float durationMultiplier) {
-        if (user.getWorld() instanceof ServerWorld serverWorld) {
+        if (user.getEntityWorld() instanceof ServerWorld serverWorld) {
             PlayerEntity playerEntity2 = user instanceof PlayerEntity playerEntity ? playerEntity : null;
             this.forEachEffect(effect -> {
                 if (effect.getEffectType().value().isInstant()) {
@@ -165,13 +165,13 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
         for (Identifier herbalEffect : this.herbalEffects) {
             HerbalEffectType.applyHerb(entity, herbalEffect);
         }
-        if (!entity.getWorld().isClient) {
-            this.consumeEffects.forEach(effect -> effect.onConsume(entity.getWorld(), stack, entity));
+        if (!entity.getEntityWorld().isClient()) {
+            this.consumeEffects.forEach(effect -> effect.onConsume(entity.getEntityWorld(), stack, entity));
         }
         this.apply(entity, stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F));
-        if (entity.getWorld().isClient) {
+        if (entity.getEntityWorld().isClient()) {
             for (int i = 0; i < 4; i++) {
-                entity.getWorld().addParticleClient(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getParticleX(1.25), entity.getRandomBodyY(), entity.getParticleZ(1.25), 0, 0, 0);
+                entity.getEntityWorld().addParticleClient(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getParticleX(1.25), entity.getRandomBodyY(), entity.getParticleZ(1.25), 0, 0, 0);
             }
         }
     }

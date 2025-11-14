@@ -28,11 +28,11 @@ public abstract class BeeEntityMixin extends Goal {
         if (field_20373.getRandom().nextInt(this.getTickCount(15)) == 0) {
             for (int i = 0; i <= 2; i++) {
                 BlockPos herbPos = field_20373.getBlockPos().down(i);
-                BlockState herbBlock = field_20373.getWorld().getBlockState(herbPos);
+                BlockState herbBlock = field_20373.getEntityWorld().getBlockState(herbPos);
                 Block herb = herbBlock.getBlock();
                 if (herbBlock.isIn(BlockTags.BEE_GROWABLES) && herb instanceof HerbBlock) {
-                    ((HerbBlock) herb).grow((ServerWorld) field_20373.getWorld(), field_20373.getRandom(), herbPos, herbBlock);
-                    field_20373.getWorld().syncWorldEvent(WorldEvents.BEE_FERTILIZES_PLANT, herbPos, 15);
+                    ((HerbBlock) herb).grow((ServerWorld) field_20373.getEntityWorld(), field_20373.getRandom(), herbPos, herbBlock);
+                    field_20373.getEntityWorld().syncWorldEvent(WorldEvents.BEE_FERTILIZES_PLANT, herbPos, 15);
                 }
             }
         }

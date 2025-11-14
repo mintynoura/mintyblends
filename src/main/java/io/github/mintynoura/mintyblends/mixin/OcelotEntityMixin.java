@@ -50,25 +50,25 @@ public abstract class OcelotEntityMixin extends AnimalEntity {
     private void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
        if (player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
            if (!this.isTrusting()) {
-               if (!this.getWorld().isClient) {
+               if (!this.getEntityWorld().isClient()) {
                    this.setTrusting(true);
                    this.showEmoteParticle(true);
-                   this.getWorld().sendEntityStatus(this, EntityStatuses.TAME_OCELOT_SUCCESS);
+                   this.getEntityWorld().sendEntityStatus(this, EntityStatuses.TAME_OCELOT_SUCCESS);
                }
                cir.setReturnValue(ActionResult.SUCCESS);
            }
 
            if (this.isTrusting() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 ) {
                this.playSound(SoundEvents.ENTITY_CAT_PURR);
-               if (!this.getWorld().isClient) {
-                   this.forEachGiftedItem((ServerWorld) this.getWorld(),
+               if (!this.getEntityWorld().isClient()) {
+                   this.forEachGiftedItem((ServerWorld) this.getEntityWorld(),
                            ModLootTables.OCELOT_GIFT,
                            (world, stack) -> world.spawnEntity(
                                    new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
                            ));
                    this.eat(player, hand, player.getStackInHand(hand));
                    player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
-                   ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
+                   ((ServerWorld) this.getEntityWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
                    this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
                }
                cir.setReturnValue(ActionResult.SUCCESS);

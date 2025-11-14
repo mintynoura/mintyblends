@@ -43,10 +43,10 @@ public abstract class CatEntityMixin extends TameableEntity {
     private void mintyBlends$catnipInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         if (player.getStackInHand(hand).isIn(ModTags.Items.CAT_LOVED)) {
             if (!this.isTamed()) {
-                if (!this.getWorld().isClient) {
+                if (!this.getEntityWorld().isClient()) {
                     this.setTamedBy(player);
                     this.setSitting(true);
-                    this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
+                    this.getEntityWorld().sendEntityStatus(this, EntityStatuses.ADD_POSITIVE_PLAYER_REACTION_PARTICLES);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
 
@@ -54,15 +54,15 @@ public abstract class CatEntityMixin extends TameableEntity {
 
             if (this.isTamed() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 && this.isOwner(player)) {
                 this.playSound(SoundEvents.ENTITY_CAT_PURR);
-                if (!this.getWorld().isClient) {
-                    this.forEachGiftedItem((ServerWorld) this.getWorld(),
+                if (!this.getEntityWorld().isClient()) {
+                    this.forEachGiftedItem((ServerWorld) this.getEntityWorld(),
                             LootTables.CAT_MORNING_GIFT_GAMEPLAY,
                             (world, stack) -> world.spawnEntity(
                                     new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
                             ));
                     this.eat(player, hand, player.getStackInHand(hand));
                     player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
-                    ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
+                    ((ServerWorld) this.getEntityWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
                     this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);

@@ -124,7 +124,7 @@ public class KettleBlock extends BlockWithEntity {
             world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             return ActionResult.SUCCESS;
         }
-        if (!world.isClient) {
+        if (!world.isClient()) {
             NamedScreenHandlerFactory screenHandlerFactory = blockEntity;
             if (screenHandlerFactory != null) {
                 player.openHandledScreen(screenHandlerFactory);
@@ -178,14 +178,15 @@ public class KettleBlock extends BlockWithEntity {
         return true;
     }
 
+
     @Override
-    protected int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+    protected int getComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction) {
         return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        if (world.isClient) {
+        if (world.isClient()) {
             return null;
         }
         return validateTicker(type, ModBlockEntities.KETTLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));

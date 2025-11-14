@@ -24,7 +24,7 @@ public class KettleScreenHandler extends ScreenHandler {
 
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos), new ArrayPropertyDelegate(3));
+        this(syncId, playerInventory, playerInventory.player.getEntityWorld().getBlockEntity(pos), new ArrayPropertyDelegate(3));
     }
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity kettleBlockEntity, PropertyDelegate propertyDelegate) {

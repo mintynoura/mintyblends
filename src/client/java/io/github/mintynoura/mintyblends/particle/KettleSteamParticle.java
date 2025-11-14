@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.random.Random;
 
 @Environment(EnvType.CLIENT)
 public class KettleSteamParticle extends AscendingParticle {
@@ -28,10 +29,9 @@ public class KettleSteamParticle extends AscendingParticle {
         }
     }
 
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    public BillboardParticle.RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
     }
-
 
     @Environment(EnvType.CLIENT)
     public static class Factory implements ParticleFactory<SimpleParticleType> {
@@ -41,7 +41,7 @@ public class KettleSteamParticle extends AscendingParticle {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, Random random) {
             KettleSteamParticle kettleSteamParticle = new KettleSteamParticle(clientWorld, d, e, f, g, h, i, 2.0f, this.spriteProvider);
             kettleSteamParticle.setAlpha(0.9f);
             return kettleSteamParticle;

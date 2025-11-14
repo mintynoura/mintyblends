@@ -60,7 +60,7 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<StatusEff
     }
 
     public void apply(LivingEntity user, float durationMultiplier) {
-        if (user.getWorld() instanceof ServerWorld serverWorld) {
+        if (user.getEntityWorld() instanceof ServerWorld serverWorld) {
             PlayerEntity playerEntity2 = user instanceof PlayerEntity playerEntity ? playerEntity : null;
             this.forEachEffect(effect -> {
                 if (effect.getEffectType().value().isInstant()) {

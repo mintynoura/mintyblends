@@ -35,9 +35,9 @@ public abstract class SnifferEntityMixin extends AnimalEntity {
             if (player.getStackInHand(hand).get(ModComponents.HERB_COMPONENT).herbalEffect().equals(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)) {
                 long cooldown = this.getBrain().getMemoryExpiry(MemoryModuleType.SNIFF_COOLDOWN);
                 if (cooldown > 0) {
-                    if (!this.getWorld().isClient) {
+                    if (!this.getEntityWorld().isClient()) {
                         this.getBrain().remember(MemoryModuleType.SNIFF_COOLDOWN, Unit.INSTANCE, cooldown / 2);
-                        ((ServerWorld) this.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 16, 1, 0.25, 1, 0);
+                        ((ServerWorld) this.getEntityWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 16, 1, 0.25, 1, 0);
                         this.playEatSound();
                         this.eat(player, hand, player.getStackInHand(hand));
                         player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
