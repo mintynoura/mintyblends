@@ -24,7 +24,11 @@ repositories {
 	}
 	maven {
 		name = "Greenhouse Maven"
-		url = 'https://maven.greenhouse.lgbt/releases'
+		url = 'https://maven.greenhouse.lgbt/releases/'
+	}
+	maven {
+		name = "Greenhouse Maven"
+		url = 'https://maven.greenhouse.lgbt/snapshots/' // Porting Lib Hotfixes
 	}
 	maven { url "https://mvn.devos.one/releases/" }
 	maven {
@@ -39,8 +43,6 @@ repositories {
 			excludeGroup "io.github.fabricators_of_create"
 		}
 	}
-	maven { url "https://maven.architectury.dev/" }
-	maven { url "https://maven.shedaniel.me/" }
 }
 
 loom {
@@ -70,8 +72,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.0-beta.10")))
 	modImplementation "maven.modrinth:eiv:${eiv_version}+${minecraft_version}"
-	modImplementation "maven.modrinth:farmers-delight-refabricated:${fdrf_version}"
-}
+	modImplementation "maven.modrinth:farmers-delight-refabricated:${fdrf_version}"}
 
 processResources {
 	inputs.property "version", project.version

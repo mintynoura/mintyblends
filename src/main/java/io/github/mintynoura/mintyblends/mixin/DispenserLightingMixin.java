@@ -3,6 +3,7 @@ package io.github.mintynoura.mintyblends.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.mintynoura.mintyblends.block.KettleBlock;
+import io.github.mintynoura.mintyblends.registry.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.server.world.ServerWorld;
@@ -15,6 +16,6 @@ public abstract class DispenserLightingMixin extends FallibleItemDispenserBehavi
 
     @ModifyExpressionValue(method = "dispenseSilently", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/CampfireBlock;canBeLit(Lnet/minecraft/block/BlockState;)Z"))
     private boolean mintyblends$addKettleLighting(boolean original, @Local BlockState blockState, @Local ServerWorld serverWorld, @Local BlockPos blockPos) {
-        return original || KettleBlock.canBeLit(blockState, serverWorld, blockPos);
+        return blockState.isOf(ModBlocks.KETTLE) ? KettleBlock.canBeLit(blockState, serverWorld, blockPos) : original;
     }
 }
