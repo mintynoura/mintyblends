@@ -43,6 +43,17 @@ repositories {
 			excludeGroup "io.github.fabricators_of_create"
 		}
 	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Cassian's Maven"
+				url = uri("https://maven.cassian.cc")
+			}
+		}
+		filter {
+			includeGroupAndSubgroups("cc.cassian")
+		}
+	}
 }
 
 loom {
@@ -71,7 +82,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.0-beta.10")))
-	modImplementation "maven.modrinth:eiv:${eiv_version}+${minecraft_version}"
+	modImplementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${project.rrv_version}+${minecraft_version}") {
+		transitive = false
+	}
+	modCompileOnly "maven.modrinth:eiv:${eiv_version}+${minecraft_version}"
 	modImplementation "vectorwing:FarmersDelight:${fdrf_version}+refabricated"
 }
 

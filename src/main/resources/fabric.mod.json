@@ -25,6 +25,9 @@
 		],
 		"eiv": [
 			"io.github.mintynoura.mintyblends.compat.eiv.EivIntegration"
+		],
+		"rrv": [
+			"io.github.mintynoura.mintyblends.compat.rrv.RrvIntegration"
 		]
 	},
 	"mixins": [
