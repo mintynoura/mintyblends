@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.util;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.MintyBlendsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.effect.StatusEffect;
@@ -9,15 +10,16 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.SnifferEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static io.github.mintynoura.mintyblends.util.StatusEffectMap.statusEffectMap;
+import java.util.Map;
 
 public class HerbalEffectType {
 
@@ -35,17 +37,33 @@ public class HerbalEffectType {
 
     public static void applyHerb(LivingEntity livingEntity, Identifier herbalEffect) {
         RegistryEntry<StatusEffect> effectType;
+        Map<RegistryEntry<StatusEffect>, RegistryEntry<StatusEffect>> configMap = new HashMap<>();
+        MintyBlendsConfig config = MintyBlends.CONFIG;
+        for (Map.Entry<String, String> pair : config.statusEffectSection.statusEffectMap.value()) {
+            RegistryEntry<StatusEffect> key = null;
+            RegistryEntry<StatusEffect> value = null;
+            if (Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(pair.getKey())).isPresent()) {
+                key = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(pair.getKey())).get();
+            }
+            if (Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(pair.getValue())).isPresent()) {
+                value = Registries.STATUS_EFFECT.getEntry(Identifier.tryParse(pair.getValue())).get();
+            }
+            if (key != null && value != null) {
+                configMap.put(key, value);
+            }
+        }
+
         if (herbalEffect.equals(EXTINGUISH)) livingEntity.extinguishWithSound();
-        if (herbalEffect.equals(HEAL)) livingEntity.heal(2);
+        if (herbalEffect.equals(HEAL)) livingEntity.heal(config.healAmount.value());
         if (herbalEffect.equals(FEED) && livingEntity instanceof PlayerEntity) {
-            ((PlayerEntity) livingEntity).getHungerManager().add(2, 0.2f);
+            ((PlayerEntity) livingEntity).getHungerManager().add(config.nutritionAmount.value(), config.saturationModifier.value());
         }
         if (herbalEffect.equals(CONVERT_POSITIVE_TO_NEGATIVE)) {
             for (StatusEffectInstance positiveEffect : livingEntity.getActiveStatusEffects().values()) {
                 effectType = positiveEffect.getEffectType();
-                if (!positiveEffect.isAmbient() && !livingEntity.hasStatusEffect(statusEffectMap.get(effectType)) && statusEffectMap.containsKey(effectType)) {
+                if (!positiveEffect.isAmbient() && !livingEntity.hasStatusEffect(configMap.get(effectType)) && configMap.containsKey(effectType)) {
                     effectRemoval.add(positiveEffect);
-                    effectAddition.add(new StatusEffectInstance(statusEffectMap.get(effectType), positiveEffect.getDuration(), positiveEffect.getAmplifier()));
+                    effectAddition.add(new StatusEffectInstance(configMap.get(effectType), positiveEffect.getDuration(), positiveEffect.getAmplifier()));
                 }
             }
             for (StatusEffectInstance removal : effectRemoval) {
@@ -60,9 +78,9 @@ public class HerbalEffectType {
         if (herbalEffect.equals(CONVERT_NEGATIVE_TO_POSITIVE)) {
             for (StatusEffectInstance negativeEffect : livingEntity.getActiveStatusEffects().values()) {
                 effectType = negativeEffect.getEffectType();
-                if (!negativeEffect.isAmbient() && !livingEntity.hasStatusEffect(StatusEffectMap.getKeyEffect(effectType)) && statusEffectMap.containsValue(effectType)) {
+                if (!negativeEffect.isAmbient() && !livingEntity.hasStatusEffect(getKeyEffect(effectType, configMap)) && configMap.containsValue(effectType)) {
                     effectRemoval.add(negativeEffect);
-                    effectAddition.add(new StatusEffectInstance(StatusEffectMap.getKeyEffect(effectType), negativeEffect.getDuration(), negativeEffect.getAmplifier()));
+                    effectAddition.add(new StatusEffectInstance(getKeyEffect(effectType, configMap), negativeEffect.getDuration(), negativeEffect.getAmplifier()));
                 }
             }
             for (StatusEffectInstance removal : effectRemoval) {
@@ -105,6 +123,15 @@ public class HerbalEffectType {
                 }
             }
         }
+    }
+
+    public static RegistryEntry<StatusEffect> getKeyEffect(RegistryEntry<StatusEffect> value, Map<RegistryEntry<StatusEffect>, RegistryEntry<StatusEffect>> map) {
+        for (Map.Entry<RegistryEntry<StatusEffect>, RegistryEntry<StatusEffect>> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public static Identifier createEffectId(String name) {

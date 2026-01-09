@@ -7,8 +7,4 @@ public class MintyStatusEffect extends StatusEffect {
     public MintyStatusEffect(StatusEffectCategory category, int color) {
         super(category, color);
     }
-
-    public static float reachingRangeIncrease = 2f;
-    public static float rendingDamageModifier = 0.2f;
-    public static float stealthRangeModifier = 0.2f;
 }

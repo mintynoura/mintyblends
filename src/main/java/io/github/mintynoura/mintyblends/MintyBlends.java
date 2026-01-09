@@ -3,7 +3,6 @@ package io.github.mintynoura.mintyblends;
 import com.mojang.serialization.Codec;
 import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
-import io.github.mintynoura.mintyblends.util.StatusEffectMap;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
@@ -13,12 +12,15 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Paths;
+
 public class MintyBlends implements ModInitializer {
 	public static final String MOD_ID = "mintyblends";
 
 	public static final AttachmentType<Integer> CATNIP_COOLDOWN = AttachmentRegistry.createPersistent(Identifier.of(MOD_ID, "catnip_cooldown"), Codec.INT);
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final MintyBlendsConfig CONFIG = MintyBlendsConfig.createToml(Paths.get("config"), "", "mintyblends", MintyBlendsConfig.class);
 
 	@Override
 	public void onInitialize() {
@@ -31,7 +33,6 @@ public class MintyBlends implements ModInitializer {
 		ModLootTables.registerLootTables();
 		ModStatusEffects.registerStatusEffects();
 		ModComponents.registerComponents();
-		StatusEffectMap.addEffectsToMap();
 		ModSoundEvents.registerSoundEffects();
 		ModParticleTypes.registerParticleTypes();
 		ModWorldgenFeatures.registerWorldgenFeatures();

@@ -1,8 +1,8 @@
 package io.github.mintynoura.mintyblends.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
-import io.github.mintynoura.mintyblends.status_effect.MintyStatusEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
 import net.minecraft.entity.mob.MobEntity;
@@ -22,7 +22,7 @@ public abstract class TrackTargetGoalMixin {
     @ModifyReturnValue(method = "getFollowRange", at = @At("RETURN"))
     private double mintyBlends$modifyStealthRange(double original) {
         if (this.mob != null && this.target != null) {
-            return this.target.hasStatusEffect(ModStatusEffects.STEALTH) ? original * (1 - (this.target.getStatusEffect(ModStatusEffects.STEALTH).getAmplifier() + 1) * MintyStatusEffect.stealthRangeModifier) : original;
+            return this.target.hasStatusEffect(ModStatusEffects.STEALTH) ? original * (1 - (this.target.getStatusEffect(ModStatusEffects.STEALTH).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthRangeModifier.value()) : original;
         } else return original;
     }
 }

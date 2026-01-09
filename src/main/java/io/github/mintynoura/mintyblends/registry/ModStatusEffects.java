@@ -11,12 +11,10 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
-import static io.github.mintynoura.mintyblends.status_effect.MintyStatusEffect.reachingRangeIncrease;
-
 public class ModStatusEffects {
     public static final RegistryEntry<StatusEffect> REACHING = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "reaching"), new MintyStatusEffect(StatusEffectCategory.BENEFICIAL, 0xe5d4c0)
-            .addAttributeModifier(EntityAttributes.BLOCK_INTERACTION_RANGE, Identifier.of(MintyBlends.MOD_ID, "effect.reaching"), reachingRangeIncrease, EntityAttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(EntityAttributes.ENTITY_INTERACTION_RANGE, Identifier.of(MintyBlends.MOD_ID, "effect.reaching"), reachingRangeIncrease, EntityAttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(EntityAttributes.BLOCK_INTERACTION_RANGE, Identifier.of(MintyBlends.MOD_ID, "effect.reaching"), MintyBlends.CONFIG.statusEffectSection.reachingBlockRangeModifier.value(), EntityAttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(EntityAttributes.ENTITY_INTERACTION_RANGE, Identifier.of(MintyBlends.MOD_ID, "effect.reaching"), MintyBlends.CONFIG.statusEffectSection.reachingEntityRangeModifier.value(), EntityAttributeModifier.Operation.ADD_VALUE));
     public static final RegistryEntry<StatusEffect> RENDING = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "rending"), new MintyStatusEffect(StatusEffectCategory.HARMFUL, 0xd5a3dc));
     public static final RegistryEntry<StatusEffect> STEALTH = Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(MintyBlends.MOD_ID, "stealth"), new MintyStatusEffect(StatusEffectCategory.BENEFICIAL, 0x6167cf));
 

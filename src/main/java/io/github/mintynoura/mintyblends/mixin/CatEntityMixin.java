@@ -63,7 +63,7 @@ public abstract class CatEntityMixin extends TameableEntity {
                     this.eat(player, hand, player.getStackInHand(hand));
                     player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
                     ((ServerWorld) this.getEntityWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getRandomBodyY() + 0.25, this.getZ(), 5, 0.25, 0, 0.25, 0);
-                    this.setAttached(MintyBlends.CATNIP_COOLDOWN, 6000);
+                    this.setAttached(MintyBlends.CATNIP_COOLDOWN, MintyBlends.CONFIG.catCatnipCooldown.value());
                 }
                 cir.setReturnValue(ActionResult.SUCCESS);
             }
