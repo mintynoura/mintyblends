@@ -1,21 +1,20 @@
 package io.github.mintynoura.mintyblends.recipe;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeFinder;
-import net.minecraft.recipe.input.RecipeInput;
-import net.minecraft.util.collection.DefaultedList;
-
 import java.util.List;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.player.StackedItemContents;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 
 public class KettleBrewingRecipeInput implements RecipeInput {
 
-    private final DefaultedList<ItemStack> stacks;
-    private final RecipeFinder matcher = new RecipeFinder();
+    private final NonNullList<ItemStack> stacks;
+    private final StackedItemContents matcher = new StackedItemContents();
     private final int stackCount;
 
 
 
-    public KettleBrewingRecipeInput(DefaultedList<ItemStack> stacks) {
+    public KettleBrewingRecipeInput(NonNullList<ItemStack> stacks) {
         this.stacks = stacks;
 
         int i = 0;
@@ -23,7 +22,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
         for (ItemStack itemStack : stacks) {
             if (!itemStack.isEmpty()) {
                 i++;
-                this.matcher.addInput(itemStack, 1);
+                this.matcher.accountStack(itemStack, 1);
             }
         }
 
@@ -31,7 +30,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) {
+    public ItemStack getItem(int slot) {
         return this.stacks.get(slot);
     }
 
@@ -43,7 +42,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
         return this.stackCount;
     }
 
-    public RecipeFinder getRecipeMatcher() {
+    public StackedItemContents getRecipeMatcher() {
         return this.matcher;
     }
 

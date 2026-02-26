@@ -5,45 +5,44 @@ import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.registry.ModComponents;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
 import io.github.mintynoura.mintyblends.util.ModTags;
-import net.minecraft.block.SuspiciousStewIngredient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.consume.ConsumeEffect;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-
 import java.util.*;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.consume_effects.ConsumeEffect;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 
-public class CenserBlendRecipe extends SpecialCraftingRecipe {
-    public CenserBlendRecipe(CraftingRecipeCategory category) {
+public class CenserBlendRecipe extends CustomRecipe {
+    public CenserBlendRecipe(CraftingBookCategory category) {
         super(category);
     }
 
     @Override
-    public boolean matches(CraftingRecipeInput input, World world) {
+    public boolean matches(CraftingInput input, Level world) {
         ItemStack itemStack;
         boolean hasCenser = false;
         boolean hasIngredients = false;
-        if (input.getStackCount() < 2 || input.getStackCount() > 5) {
+        if (input.ingredientCount() < 2 || input.ingredientCount() > 5) {
             return false;
         } else {
             for (int i = 0; i < input.size(); i++) {
-                itemStack = input.getStackInSlot(i);
+                itemStack = input.getItem(i);
                 if (!itemStack.isEmpty()) {
-                    if (itemStack.isIn(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
+                    if (itemStack.is(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
                         if (hasCenser) {
                             return false;
                         }
                         hasCenser = true;
-                    } else if (!itemStack.isIn(ModTags.Items.BLENDING_INGREDIENTS)) {
+                    } else if (!itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
                         return false;
                     } else {
                         hasIngredients = true;
@@ -55,35 +54,35 @@ public class CenserBlendRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
+    public ItemStack craft(CraftingInput input, HolderLookup.Provider registries) {
         ItemStack itemStack;
         ItemStack censer = ItemStack.EMPTY;
-        Set<StatusEffectInstance> statusEffectSet = new HashSet<>();
+        Set<MobEffectInstance> statusEffectSet = new HashSet<>();
         Set<Identifier> herbalEffectSet = new HashSet<>();
         Set<String> ingredientSet = new HashSet<>();
         List<ConsumeEffect> consumeEffects = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
-            itemStack = input.getStackInSlot(i);
+            itemStack = input.getItem(i);
             if (!itemStack.isEmpty()) {
-                if (itemStack.isIn(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
+                if (itemStack.is(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
                     censer = new ItemStack(itemStack.getItem());
-                } else if (itemStack.isIn(ModTags.Items.BLENDING_INGREDIENTS)) {
+                } else if (itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
                     if (itemStack.getItem() != Items.AIR) {
-                        ingredientSet.add(itemStack.getItem().getTranslationKey());
+                        ingredientSet.add(itemStack.getItem().getDescriptionId());
                     }
-                    if (itemStack.isIn(ItemTags.SMALL_FLOWERS) || itemStack.isIn(ModTags.Items.HERBS)) {
-                        SuspiciousStewIngredient suspiciousStewIngredient = SuspiciousStewIngredient.of(itemStack.getItem());
+                    if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(ModTags.Items.HERBS)) {
+                        SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
                         if (suspiciousStewIngredient != null) {
-                            StatusEffectInstance statusEffect = new StatusEffectInstance(suspiciousStewIngredient.getStewEffects().effects().getFirst().createStatusEffectInstance());
+                            MobEffectInstance statusEffect = new MobEffectInstance(suspiciousStewIngredient.getSuspiciousEffects().effects().getFirst().createEffectInstance());
                             statusEffectSet.add(statusEffect);
                         }
                     }
-                    if (itemStack.contains(ModComponents.HERB_COMPONENT)) {
+                    if (itemStack.has(ModComponents.HERB_COMPONENT)) {
                         Identifier herbalEffect = itemStack.get(ModComponents.HERB_COMPONENT).herbalEffect();
                         herbalEffectSet.add(herbalEffect);
                     }
-                    if (itemStack.contains(DataComponentTypes.CONSUMABLE)) {
-                        consumeEffects.addAll(itemStack.get(DataComponentTypes.CONSUMABLE).onConsumeEffects());
+                    if (itemStack.has(DataComponents.CONSUMABLE)) {
+                        consumeEffects.addAll(itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects());
                     }
                 }
             }

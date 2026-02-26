@@ -1,101 +1,106 @@
 package io.github.mintynoura.mintyblends.block;
 
 import io.github.mintynoura.mintyblends.registry.ModBlocks;
-import net.minecraft.block.*;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.PitcherCropBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.function.Function;
-
+@NullMarked
 public class HortensiaCropBlock extends PitcherCropBlock {
     public static final int MAX_AGE = 4;
-    public static final IntProperty AGE = Properties.AGE_4;
-    public static final EnumProperty<DoubleBlockHalf> HALF = TallPlantBlock.HALF;
-    private final Function<BlockState, VoxelShape> shapeFunction = this.createShapeFunction();
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
+    public static final EnumProperty<DoubleBlockHalf> HALF = DoublePlantBlock.HALF;
+    private final Function<BlockState, VoxelShape> shapeFunction = this.makeShapes();
 
 
-    public HortensiaCropBlock(Settings settings) {
+    public HortensiaCropBlock(Properties settings) {
         super(settings);
     }
 
-    private Function<BlockState, VoxelShape> createShapeFunction() {
+    private Function<BlockState, VoxelShape> makeShapes() {
         int[] is = new int[]{5, 10, 17, 22, 22};
-        return this.createShapeFunction(state -> {
-            int i = 6 + is[state.get(AGE)];
-            return switch (state.get(HALF)) {
-                case LOWER -> Block.createColumnShape(10, -1.0, Math.min(16, -1 + i));
-                case UPPER -> Block.createColumnShape(10, 0.0, Math.max(0, -1 + i - 16));
+        return this.getShapeForEachState(state -> {
+            int i = 6 + is[state.getValue(AGE)];
+            return switch (state.getValue(HALF)) {
+                case LOWER -> Block.column(10, -1.0, Math.min(16, -1 + i));
+                case UPPER -> Block.column(10, 0.0, Math.max(0, -1 + i - 16));
             };
         });
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return this.shapeFunction.apply(state);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.empty();
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
     }
 
-    private static boolean canGrowAt(WorldView world, BlockPos pos) {
+    private static boolean canGrowInto(LevelReader world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
-        return blockState.isAir() || blockState.isOf(ModBlocks.HORTENSIA_CROP);
+        return blockState.isAir() || blockState.is(ModBlocks.HORTENSIA_CROP);
     }
 
 
-    private void tryGrow(ServerWorld world, BlockState state, BlockPos pos, int amount) {
-        int i = Math.min(state.get(AGE) + amount, 4);
+    private void grow(ServerLevel world, BlockState state, BlockPos pos, int amount) {
+        int i = Math.min(state.getValue(AGE) + amount, 4);
         if (this.canGrow(world, pos, state, i)) {
-            BlockState blockState = state.with(AGE, i);
-            world.setBlockState(pos, blockState, Block.NOTIFY_LISTENERS);
-            if (isDoubleTallAtAge(i)) {
-                world.setBlockState(pos.up(), blockState.with(HALF, DoubleBlockHalf.UPPER), Block.NOTIFY_ALL);
+            BlockState blockState = state.setValue(AGE, i);
+            world.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
+            if (isDouble(i)) {
+                world.setBlock(pos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
             }
         }
     }
 
-    private boolean canGrow(WorldView world, BlockPos pos, BlockState state, int age) {
-        return !this.isFullyGrown(state) && canPlaceAt(world, pos) && (!isDoubleTallAtAge(age) || canGrowAt(world, pos.up()));
+    private boolean canGrow(LevelReader world, BlockPos pos, BlockState state, int age) {
+        return !this.isMaxAge(state) && sufficientLight(world, pos) && (!isDouble(age) || canGrowInto(world, pos.above()));
     }
 
-    private static boolean canPlaceAt(WorldView world, BlockPos pos) {
-        return world.getBaseLightLevel(pos, 0) >= 8;
+    private static boolean sufficientLight(LevelReader world, BlockPos pos) {
+        return world.getRawBrightness(pos, 0) >= 8;
     }
 
-    private boolean isFullyGrown(BlockState state) {
-        return state.get(AGE) >= 4;
+    private boolean isMaxAge(BlockState state) {
+        return state.getValue(AGE) >= 4;
     }
 
 
-    private static boolean isDoubleTallAtAge(int age) {
+    private static boolean isDouble(int age) {
         return age >= 2;
     }
 
 
-    private static boolean isLowerHalf(BlockState state) {
-        return state.isOf(ModBlocks.HORTENSIA_CROP) && state.get(HALF) == DoubleBlockHalf.LOWER;
+    private static boolean isLower(BlockState state) {
+        return state.is(ModBlocks.HORTENSIA_CROP) && state.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     @Nullable
-    private HortensiaCropBlock.LowerHalfContext getLowerHalfContext(WorldView world, BlockPos pos, BlockState state) {
-        if (isLowerHalf(state)) {
+    private HortensiaCropBlock.LowerHalfContext getLowerHalfContext(LevelReader world, BlockPos pos, BlockState state) {
+        if (isLower(state)) {
             return new HortensiaCropBlock.LowerHalfContext(pos, state);
         } else {
-            BlockPos blockPos = pos.down();
+            BlockPos blockPos = pos.below();
             BlockState blockState = world.getBlockState(blockPos);
-            return isLowerHalf(blockState) ? new HortensiaCropBlock.LowerHalfContext(blockPos, blockState) : null;
+            return isLower(blockState) ? new HortensiaCropBlock.LowerHalfContext(blockPos, blockState) : null;
         }
     }
 
@@ -103,16 +108,16 @@ public class HortensiaCropBlock extends PitcherCropBlock {
     }
 
     @Override
-    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
         LowerHalfContext lowerHalfContext = this.getLowerHalfContext(world, pos, state);
-        return lowerHalfContext != null && this.canGrow(world, lowerHalfContext.pos, lowerHalfContext.state, lowerHalfContext.state.get(AGE) + 1);
+        return lowerHalfContext != null && this.canGrow(world, lowerHalfContext.pos, lowerHalfContext.state, lowerHalfContext.state.getValue(AGE) + 1);
     }
 
     @Override
-    public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         HortensiaCropBlock.LowerHalfContext lowerHalfContext = this.getLowerHalfContext(world, pos, state);
         if (lowerHalfContext != null) {
-            this.tryGrow(world, lowerHalfContext.state, lowerHalfContext.pos, 1);
+            this.grow(world, lowerHalfContext.state, lowerHalfContext.pos, 1);
         }
     }
 }

@@ -5,9 +5,10 @@ import cc.cassian.rrv.common.recipe.inventory.RecipeViewMenu;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.ModBlocks;
 import io.github.mintynoura.mintyblends.registry.ModItems;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class KettleBrewingClientRecipeType implements ReliableClientRecipeType {
     public static final ReliableClientRecipeType INSTANCE = new KettleBrewingClientRecipeType();
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatableWithFallback("recipe.mintyblends.kettle_brewing", "Kettle Brewing");
+    public Component getDisplayName() {
+        return Component.translatableWithFallback("recipe.mintyblends.kettle_brewing", "Kettle Brewing");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class KettleBrewingClientRecipeType implements ReliableClientRecipeType {
 
     @Override
     public Identifier getGuiTexture() {
-        return Identifier.of(MintyBlends.MOD_ID, "textures/gui/eiv/kettle.png");
+        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/eiv/kettle.png");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class KettleBrewingClientRecipeType implements ReliableClientRecipeType {
 
     @Override
     public Identifier getId() {
-        return Identifier.of(MintyBlends.MOD_ID, "kettle_brewing");
+        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing");
     }
 
     @Override

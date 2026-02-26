@@ -8,7 +8,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 public class MintyBlends implements ModInitializer {
 	public static final String MOD_ID = "mintyblends";
 
-	public static final AttachmentType<Integer> CATNIP_COOLDOWN = AttachmentRegistry.createPersistent(Identifier.of(MOD_ID, "catnip_cooldown"), Codec.INT);
+	public static final AttachmentType<Integer> CATNIP_COOLDOWN = AttachmentRegistry.createPersistent(Identifier.fromNamespaceAndPath(MOD_ID, "catnip_cooldown"), Codec.INT);
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final MintyBlendsConfig CONFIG = MintyBlendsConfig.createToml(Paths.get("config"), "", "mintyblends", MintyBlendsConfig.class);

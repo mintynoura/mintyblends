@@ -3,33 +3,33 @@ package io.github.mintynoura.mintyblends.screen;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
 import io.github.mintynoura.mintyblends.registry.ModScreenHandlers;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ArrayPropertyDelegate;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class KettleScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
+public class KettleScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
     public final KettleBlockEntity kettleBlockEntity;
-    private final PropertyDelegate propertyDelegate;
-    private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.of(MintyBlends.MOD_ID, "container/kettle/empty_container");
+    private final ContainerData propertyDelegate;
+    private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "container/kettle/empty_container");
 
 
-    public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
-        this(syncId, playerInventory, playerInventory.player.getEntityWorld().getBlockEntity(pos), new ArrayPropertyDelegate(3));
+    public KettleScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
+        this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(3));
     }
 
-    public KettleScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity kettleBlockEntity, PropertyDelegate propertyDelegate) {
+    public KettleScreenHandler(int syncId, Inventory playerInventory, BlockEntity kettleBlockEntity, ContainerData propertyDelegate) {
         super(ModScreenHandlers.KETTLE_SCREEN_HANDLER, syncId);
-        this.inventory = (Inventory) kettleBlockEntity;
+        this.inventory = (Container) kettleBlockEntity;
         this.kettleBlockEntity = (KettleBlockEntity) kettleBlockEntity;
         this.propertyDelegate = propertyDelegate;
 
@@ -50,7 +50,7 @@ public class KettleScreenHandler extends ScreenHandler {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
         }
 
-        addProperties(propertyDelegate);
+        addDataSlots(propertyDelegate);
     }
 
     public boolean isBrewing(){
@@ -77,24 +77,24 @@ public class KettleScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int invSlot) {
+    public ItemStack quickMoveStack(Player player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
-            ItemStack originalStack = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
             newStack = originalStack.copy();
-            if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+            if (invSlot < this.inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(originalStack, this.inventory.getContainerSize(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+            } else if (!this.moveItemStackTo(originalStack, 0, this.inventory.getContainerSize(), false)) {
                 return ItemStack.EMPTY;
             }
 
             if (originalStack.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.setByPlayer(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
         }
 
@@ -102,17 +102,17 @@ public class KettleScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+    public boolean stillValid(Player player) {
+        return this.inventory.stillValid(player);
     }
 
     static class ContainerSlot extends Slot {
-        public ContainerSlot(Inventory inventory, int index, int x, int y) {
+        public ContainerSlot(Container inventory, int index, int x, int y) {
             super(inventory, index, x, y);
         }
 
         @Override
-        public @Nullable Identifier getBackgroundSprite() {
+        public @Nullable Identifier getNoItemIcon() {
             return EMPTY_CONTAINER_SLOT_TEXTURE;
         }
     }

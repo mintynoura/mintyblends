@@ -2,32 +2,32 @@ package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class ModLootTables {
-    private static final RegistryKey<LootTable> SNIFFER_DIGGING_LOOT_TABLE_KEY = LootTables.SNIFFER_DIGGING_GAMEPLAY;
-    private static final RegistryKey<LootTable> PIGLIN_BARTERING_LOOT_TABLE_KEY = LootTables.PIGLIN_BARTERING_GAMEPLAY;
+    private static final ResourceKey<LootTable> SNIFFER_DIGGING_LOOT_TABLE_KEY = BuiltInLootTables.SNIFFER_DIGGING;
+    private static final ResourceKey<LootTable> PIGLIN_BARTERING_LOOT_TABLE_KEY = BuiltInLootTables.PIGLIN_BARTERING;
 
     public static void modify() {
         LootTableEvents.MODIFY.register((id, tableBuilder, source, registries) -> {
             if (source.isBuiltin() && SNIFFER_DIGGING_LOOT_TABLE_KEY.equals(id)) {
-                tableBuilder.modifyPools(poolBuilder -> poolBuilder.with(ItemEntry.builder(ModItems.HORTENSIA_SEEDS)));
+                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(ModItems.HORTENSIA_SEEDS)));
             }
             if (source.isBuiltin() && PIGLIN_BARTERING_LOOT_TABLE_KEY.equals(id)) {
-                tableBuilder.modifyPools(poolBuilder -> poolBuilder.with(ItemEntry.builder(ModBlocks.CUREFLOWER).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(3, 5)))));
+                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(ModBlocks.CUREFLOWER).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
             }
         }
         );
     }
 
-    public static final RegistryKey<LootTable> OCELOT_GIFT = RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.of(MintyBlends.MOD_ID, "gameplay/ocelot_gift"));
+    public static final ResourceKey<LootTable> OCELOT_GIFT = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "gameplay/ocelot_gift"));
 
     public static void registerLootTables() {
         modify();

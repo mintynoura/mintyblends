@@ -3,44 +3,39 @@ package io.github.mintynoura.mintyblends.mixin;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.Vibrations;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
+import net.minecraft.world.phys.Vec3;
 
-@Mixin(Vibrations.VibrationListener.class)
+@Mixin(VibrationSystem.Listener.class)
 public abstract class VibrationsMixin {
     @Shadow
     @Final
-    private Vibrations receiver;
+    private VibrationSystem system;
 
     @WrapMethod(
-            method = "listen(" +
-                    "Lnet/minecraft/server/world/ServerWorld;" +
-                    "Lnet/minecraft/registry/entry/RegistryEntry;" +
-                    "Lnet/minecraft/world/event/GameEvent$Emitter;" +
-                    "Lnet/minecraft/util/math/Vec3d;" +
-                    ")Z"
+            method = "handleGameEvent(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/gameevent/GameEvent$Context;Lnet/minecraft/world/phys/Vec3;)Z"
     )
-    private boolean mintyBlends$distanceShenanigans(ServerWorld world, RegistryEntry<GameEvent> event, GameEvent.Emitter emitter, Vec3d emitterPos, Operation<Boolean> original) {
+    private boolean mintyBlends$distanceShenanigans(ServerLevel world, Holder<GameEvent> event, GameEvent.Context emitter, Vec3 emitterPos, Operation<Boolean> original) {
         Entity source = emitter.sourceEntity();
         if (!(source instanceof LivingEntity entity)) return original.call(world, event, emitter, emitterPos);
 
-        Vibrations.Callback callback = receiver.getVibrationCallback();
-        Optional<Vec3d> listenerPos = callback.getPositionSource().getPos(world);
+        VibrationSystem.User callback = system.getVibrationUser();
+        Optional<Vec3> listenerPos = callback.getPositionSource().getPosition(world);
         if (listenerPos.isEmpty()) return original.call(world, event, emitter, emitterPos);
 
-        int listenerRange = callback.getRange();
+        int listenerRange = callback.getListenerRadius();
         double offset = mintyBlends$getOffset(entity);
         double distance = emitterPos.distanceTo(listenerPos.get()) + offset;
 
@@ -53,7 +48,7 @@ public abstract class VibrationsMixin {
 
     @Unique
     private double mintyBlends$getOffset(LivingEntity entity) {
-        StatusEffectInstance effectInstance = entity.getStatusEffect(ModStatusEffects.STEALTH);
+        MobEffectInstance effectInstance = entity.getEffect(ModStatusEffects.STEALTH);
         if (effectInstance == null) return 0;
 
         return (effectInstance.getAmplifier() + 1) * 2;

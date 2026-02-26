@@ -4,161 +4,167 @@ import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.*;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import java.util.function.Function;
 
-import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
+import static net.minecraft.world.level.block.Blocks.litBlockEmission;
 
 public class ModBlocks {
-    public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(StatusEffects.FIRE_RESISTANCE, 3f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(MobEffects.FIRE_RESISTANCE, 3f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(StatusEffects.SPEED, 5f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(MobEffects.SPEED, 5f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(StatusEffects.INSTANT_HEALTH, 1f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(MobEffects.INSTANT_HEALTH, 1f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(StatusEffects.SATURATION, 0.35f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(MobEffects.SATURATION, 0.35f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block SAGEBRUSH = registerBlock("sagebrush", settings -> new DesertHerbBlock(StatusEffects.STRENGTH, 5f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block SAGEBRUSH = registerBlock("sagebrush", settings -> new DesertHerbBlock(MobEffects.STRENGTH, 5f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CHERRY_SAPLING)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CHERRY_SAPLING)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
 
-    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new NetherFlowerBlock(StatusEffects.REGENERATION, 7f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_RED)
+    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new NetherFlowerBlock(MobEffects.REGENERATION, 7f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.NETHER)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.NETHER_SPROUTS)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.NETHER_SPROUTS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(ModStatusEffects.RENDING, 9f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.CYAN)
+    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(ModStatusEffects.RENDING, 9f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.NETHER_SPROUTS)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.NETHER_SPROUTS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(ModStatusEffects.STEALTH, 7f, settings), AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(ModStatusEffects.STEALTH, 7f, settings), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.GRASS)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .pistonBehavior(PistonBehavior.DESTROY)
-                    .luminance(state -> 3),
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .pushReaction(PushReaction.DESTROY)
+                    .lightLevel(state -> 3),
             true);
 
-    public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", settings -> new FlowerPotBlock(CUREFLOWER, settings), Blocks.createFlowerPotSettings(), false);
-    public static final Block POTTED_RENDFLOWER = registerBlock("potted_rendflower", settings -> new FlowerPotBlock(RENDFLOWER, settings), Blocks.createFlowerPotSettings(), false);
-    public static final Block POTTED_SILENT_FLOWER = registerBlock("potted_silent_flower", settings -> new FlowerPotBlock(SILENT_FLOWER, settings), Blocks.createFlowerPotSettings(), false);
+    public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", settings -> new FlowerPotBlock(CUREFLOWER, settings), Blocks.flowerPotProperties(), false);
+    public static final Block POTTED_RENDFLOWER = registerBlock("potted_rendflower", settings -> new FlowerPotBlock(RENDFLOWER, settings), Blocks.flowerPotProperties(), false);
+    public static final Block POTTED_SILENT_FLOWER = registerBlock("potted_silent_flower", settings -> new FlowerPotBlock(SILENT_FLOWER, settings), Blocks.flowerPotProperties(), false);
 
-    public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .ticksRandomly()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CROP)
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block PURPLE_HORTENSIA = registerBlock("purple_hortensia", TallPlantBlock::new, AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block PURPLE_HORTENSIA = registerBlock("purple_hortensia", DoublePlantBlock::new, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CROP)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block PINK_HORTENSIA = registerBlock("pink_hortensia", TallPlantBlock::new, AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block PINK_HORTENSIA = registerBlock("pink_hortensia", DoublePlantBlock::new, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CROP)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block BLUE_HORTENSIA = registerBlock("blue_hortensia", TallPlantBlock::new, AbstractBlock.Settings.create()
-                    .mapColor(MapColor.DARK_GREEN)
+    public static final Block BLUE_HORTENSIA = registerBlock("blue_hortensia", DoublePlantBlock::new, BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
                     .noCollision()
-                    .breakInstantly()
-                    .sounds(BlockSoundGroup.CROP)
-                    .offset(AbstractBlock.OffsetType.XZ)
-                    .burnable()
-                    .pistonBehavior(PistonBehavior.DESTROY),
+                    .instabreak()
+                    .sound(SoundType.CROP)
+                    .offsetType(BlockBehaviour.OffsetType.XZ)
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY),
             true);
 
-    public static final Block KETTLE = registerBlock("kettle", KettleBlock::new, AbstractBlock.Settings.create()
+    public static final Block KETTLE = registerBlock("kettle", KettleBlock::new, BlockBehaviour.Properties.of()
                     .strength(4f)
-                    .sounds(BlockSoundGroup.LANTERN)
-                    .luminance(createLightLevelFromLitBlockState(7))
-                    .nonOpaque(),
+                    .sound(SoundType.LANTERN)
+                    .lightLevel(litBlockEmission(7))
+                    .noOcclusion(),
             true);
 
-    public static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
-        RegistryKey<Block> blockRegistryKey = keyOfBlock(name);
-        Block block = factory.apply(settings.registryKey(blockRegistryKey));
+    public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings, boolean shouldRegisterItem) {
+        ResourceKey<Block> blockRegistryKey = keyOfBlock(name);
+        Block block = factory.apply(settings.setId(blockRegistryKey));
         if (shouldRegisterItem) {
             registerBlockItem(name, block);
         }
-        return Registry.register(Registries.BLOCK, blockRegistryKey, block);
+        return Registry.register(BuiltInRegistries.BLOCK, blockRegistryKey, block);
     }
 
     public static void registerBlockItem(String name, Block block) {
-        RegistryKey<Item> itemRegistryKey = keyOfItem(name);
-        Registry.register(Registries.ITEM, itemRegistryKey, new BlockItem(block, new Item.Settings().registryKey(itemRegistryKey).useBlockPrefixedTranslationKey()));
+        ResourceKey<Item> itemRegistryKey = keyOfItem(name);
+        Registry.register(BuiltInRegistries.ITEM, itemRegistryKey, new BlockItem(block, new Item.Properties().setId(itemRegistryKey).useBlockDescriptionPrefix()));
     }
 
-    private static RegistryKey<Block> keyOfBlock(String name) {
-        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MintyBlends.MOD_ID, name));
+    private static ResourceKey<Block> keyOfBlock(String name) {
+        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
     }
 
-    private static RegistryKey<Item> keyOfItem(String name) {
-        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
+    private static ResourceKey<Item> keyOfItem(String name) {
+        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
     }
 
     public static void registerBlocks() {

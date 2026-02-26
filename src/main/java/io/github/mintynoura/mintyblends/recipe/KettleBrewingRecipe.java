@@ -4,17 +4,22 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.potion.Potions;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.RecipeBookCategory;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,9 +32,9 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     private final ItemStack container;
     private final int brewingTime;
     @Nullable
-    private IngredientPlacement ingredientPlacement;
+    private PlacementInfo ingredientPlacement;
 
-    public static final ItemStack defaultContainer = PotionContentsComponent.createStack(Items.POTION, Potions.WATER);
+    public static final ItemStack defaultContainer = PotionContents.createItemStack(Items.POTION, Potions.WATER);
     public static final int defaultBrewingTime = 200;
 
     public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, ItemStack container, int brewingTime) {
@@ -56,17 +61,17 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public boolean matches(KettleBrewingRecipeInput recipeInput, World world) {
+    public boolean matches(KettleBrewingRecipeInput recipeInput, Level world) {
         if (recipeInput.getStackCount() != this.ingredients.size()) {
             return false;
         } else {
             return recipeInput.size() == 1 && this.ingredients.size() == 1
-                    ? this.ingredients.getFirst().test(recipeInput.getStackInSlot(0))
-                    : recipeInput.getRecipeMatcher().isCraftable(this, null);
+                    ? this.ingredients.getFirst().test(recipeInput.getItem(0))
+                    : recipeInput.getRecipeMatcher().canCraft(this, null);
         }
     }
     @Override
-    public ItemStack craft(KettleBrewingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
+    public ItemStack craft(KettleBrewingRecipeInput input, HolderLookup.Provider registries) {
         return this.result.copy();
     }
 
@@ -81,15 +86,15 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public IngredientPlacement getIngredientPlacement() {
+    public PlacementInfo placementInfo() {
         if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = IngredientPlacement.forShapeless(this.ingredients);
+            this.ingredientPlacement = PlacementInfo.create(this.ingredients);
         }
         return this.ingredientPlacement;
     }
 
     @Override
-    public RecipeBookCategory getRecipeBookCategory() {
+    public RecipeBookCategory recipeBookCategory() {
         return null;
     }
 
@@ -103,14 +108,14 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                         )
                         .apply(instance, KettleBrewingRecipe::new)
         );
-        public static final PacketCodec<RegistryByteBuf, KettleBrewingRecipe> PACKET_CODEC = PacketCodec.tuple(
-                Ingredient.PACKET_CODEC.collect(PacketCodecs.toList()),
+        public static final StreamCodec<RegistryFriendlyByteBuf, KettleBrewingRecipe> PACKET_CODEC = StreamCodec.composite(
+                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()),
                 recipe -> recipe.ingredients,
-                ItemStack.PACKET_CODEC,
+                ItemStack.STREAM_CODEC,
                 recipe -> recipe.result,
-                ItemStack.PACKET_CODEC,
+                ItemStack.STREAM_CODEC,
                 recipe -> recipe.container,
-                PacketCodecs.INTEGER,
+                ByteBufCodecs.INT,
                 recipe -> recipe.brewingTime,
                 KettleBrewingRecipe::new
         );
@@ -122,7 +127,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         }
 
         @Override
-        public PacketCodec<RegistryByteBuf, KettleBrewingRecipe> packetCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, KettleBrewingRecipe> streamCodec() {
             return PACKET_CODEC;
         }
     }

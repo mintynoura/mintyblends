@@ -2,8 +2,8 @@ package io.github.mintynoura.mintyblends.registry;
 
 
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.block.Block;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
+import net.minecraft.world.level.block.Block;
 
 public class ModTrades {
 
@@ -15,11 +15,11 @@ public class ModTrades {
         registerHerbTrade(ModBlocks.SAGEBRUSH);
 
         TradeOfferHelper.registerWanderingTraderOffers(factories ->
-                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new TradeOffers.SellItemFactory(ModBlocks.SILENT_FLOWER.asItem(), 1, 1, 7, 1)));
+                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new VillagerTrades.ItemsForEmeralds(ModBlocks.SILENT_FLOWER.asItem(), 1, 1, 7, 1)));
     }
 
     private static void registerHerbTrade(Block block) {
         TradeOfferHelper.registerWanderingTraderOffers(factories ->
-                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new TradeOffers.SellItemFactory(block.asItem(), 3, 2, 6, 1)));
+                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new VillagerTrades.ItemsForEmeralds(block.asItem(), 3, 2, 6, 1)));
     }
 }

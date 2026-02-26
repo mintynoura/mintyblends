@@ -5,39 +5,40 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.util.HerbalEffectType;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.consume.ConsumeEffect;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
-
 import java.util.List;
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.item.consume_effects.ConsumeEffect;
+import org.jspecify.annotations.NullMarked;
 
-public record CenserComponent(float range, List<Identifier> herbalEffects, List<StatusEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipAppender {
+@NullMarked
+public record CenserComponent(float range, List<Identifier> herbalEffects, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
     public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Codecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
+            ExtraCodecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
             Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(CenserComponent::herbalEffects),
-            StatusEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects),
+            MobEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects),
             Codec.STRING.listOf().optionalFieldOf("ingredients", List.of()).forGetter(CenserComponent::ingredients),
             ConsumeEffect.CODEC.listOf().optionalFieldOf("consume_effects", List.of()).forGetter(CenserComponent::consumeEffects)
             ).apply(builder, CenserComponent::new));
@@ -47,91 +48,91 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
         return range;
     }
 
-    public List<StatusEffectInstance> potionEffects() {
-        return Lists.transform(this.potionEffects, StatusEffectInstance::new);
+    public List<MobEffectInstance> potionEffects() {
+        return Lists.transform(this.potionEffects, MobEffectInstance::new);
     }
 
-    public static MutableText getEffectText(RegistryEntry<StatusEffect> effect, int amplifier) {
-        MutableText mutableText = Text.translatable(effect.value().getTranslationKey());
-        return amplifier > 0 ? Text.translatable("potion.withAmplifier", mutableText, Text.translatable("potion.potency." + amplifier)) : mutableText;
+    public static MutableComponent getEffectText(Holder<MobEffect> effect, int amplifier) {
+        MutableComponent mutableText = Component.translatable(effect.value().getDescriptionId());
+        return amplifier > 0 ? Component.translatable("potion.withAmplifier", mutableText, Component.translatable("potion.potency." + amplifier)) : mutableText;
     }
 
-    public Iterable<StatusEffectInstance> getEffects() {
+    public Iterable<MobEffectInstance> getEffects() {
         return this.potionEffects;
     }
 
-    public void forEachEffect(Consumer<StatusEffectInstance> effectConsumer, float durationMultiplier) {
-        for (StatusEffectInstance statusEffectInstance : this.potionEffects) {
+    public void forEachEffect(Consumer<MobEffectInstance> effectConsumer, float durationMultiplier) {
+        for (MobEffectInstance statusEffectInstance : this.potionEffects) {
             effectConsumer.accept(statusEffectInstance.withScaledDuration(durationMultiplier));
         }
     }
 
     public void apply(LivingEntity user, float durationMultiplier) {
-        if (user.getEntityWorld() instanceof ServerWorld serverWorld) {
-            PlayerEntity playerEntity2 = user instanceof PlayerEntity playerEntity ? playerEntity : null;
+        if (user.level() instanceof ServerLevel serverWorld) {
+            Player playerEntity2 = user instanceof Player playerEntity ? playerEntity : null;
             this.forEachEffect(effect -> {
-                if (effect.getEffectType().value().isInstant()) {
-                    effect.getEffectType().value().applyInstantEffect(serverWorld, playerEntity2, playerEntity2, user, effect.getAmplifier(), 1.0);
+                if (effect.getEffect().value().isInstantenous()) {
+                    effect.getEffect().value().applyInstantenousEffect(serverWorld, playerEntity2, playerEntity2, user, effect.getAmplifier(), 1.0);
                 } else {
-                    user.addStatusEffect(effect);
+                    user.addEffect(effect);
                 }
             }, durationMultiplier);
         }
     }
 
-    public static void buildTooltip(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate) {
-        List<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> list = Lists.newArrayList();
+    public static void buildTooltip(Iterable<MobEffectInstance> effects, Consumer<Component> textConsumer, float durationMultiplier, float tickRate) {
+        List<Pair<Holder<Attribute>, AttributeModifier>> list = Lists.newArrayList();
         boolean bl = true;
-        for (StatusEffectInstance statusEffectInstance : effects) {
+        for (MobEffectInstance statusEffectInstance : effects) {
             bl = false;
-            RegistryEntry<StatusEffect> registryEntry = statusEffectInstance.getEffectType();
+            Holder<MobEffect> registryEntry = statusEffectInstance.getEffect();
             int i = statusEffectInstance.getAmplifier();
-            registryEntry.value().forEachAttributeModifier(i, (attribute, modifier) -> list.add(new Pair<>(attribute, modifier)));
-            MutableText mutableText = getEffectText(registryEntry, i);
-            if (!statusEffectInstance.isDurationBelow(20)) {
-                mutableText = Text.translatable("potion.withDuration", mutableText, StatusEffectUtil.getDurationText(statusEffectInstance, durationMultiplier, tickRate));
+            registryEntry.value().createModifiers(i, (attribute, modifier) -> list.add(new Pair<>(attribute, modifier)));
+            MutableComponent mutableText = getEffectText(registryEntry, i);
+            if (!statusEffectInstance.endsWithin(20)) {
+                mutableText = Component.translatable("potion.withDuration", mutableText, MobEffectUtil.formatDuration(statusEffectInstance, durationMultiplier, tickRate));
             }
 
-            textConsumer.accept(mutableText.formatted(registryEntry.value().getCategory().getFormatting()));
+            textConsumer.accept(mutableText.withStyle(registryEntry.value().getCategory().getTooltipFormatting()));
         }
 
         if (bl) {
-            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").formatted(Formatting.GRAY));
+            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").withStyle(ChatFormatting.GRAY));
         }
 
         if (!list.isEmpty()) {
-            textConsumer.accept(ScreenTexts.EMPTY);
-            textConsumer.accept(Text.translatable("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
+            textConsumer.accept(CommonComponents.EMPTY);
+            textConsumer.accept(Component.translatable("potion.whenDrank").withStyle(ChatFormatting.DARK_PURPLE));
 
-            for (Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier> pair : list) {
-                EntityAttributeModifier entityAttributeModifier = pair.getSecond();
-                double d = entityAttributeModifier.value();
+            for (Pair<Holder<Attribute>, AttributeModifier> pair : list) {
+                AttributeModifier entityAttributeModifier = pair.getSecond();
+                double d = entityAttributeModifier.amount();
                 double e;
-                if (entityAttributeModifier.operation() != EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE
-                        && entityAttributeModifier.operation() != EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                    e = entityAttributeModifier.value();
+                if (entityAttributeModifier.operation() != AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                        && entityAttributeModifier.operation() != AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                    e = entityAttributeModifier.amount();
                 } else {
-                    e = entityAttributeModifier.value() * 100.0;
+                    e = entityAttributeModifier.amount() * 100.0;
                 }
 
                 if (d > 0.0) {
                     textConsumer.accept(
-                            Text.translatable(
-                                            "attribute.modifier.plus." + entityAttributeModifier.operation().getId(),
-                                            AttributeModifiersComponent.DECIMAL_FORMAT.format(e),
-                                            Text.translatable(pair.getFirst().value().getTranslationKey())
+                            Component.translatable(
+                                            "attribute.modifier.plus." + entityAttributeModifier.operation().id(),
+                                            ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format(e),
+                                            Component.translatable(pair.getFirst().value().getDescriptionId())
                                     )
-                                    .formatted(Formatting.BLUE)
+                                    .withStyle(ChatFormatting.BLUE)
                     );
                 } else if (d < 0.0) {
                     e *= -1.0;
                     textConsumer.accept(
-                            Text.translatable(
-                                            "attribute.modifier.take." + entityAttributeModifier.operation().getId(),
-                                            AttributeModifiersComponent.DECIMAL_FORMAT.format(e),
-                                            Text.translatable(pair.getFirst().value().getTranslationKey())
+                            Component.translatable(
+                                            "attribute.modifier.take." + entityAttributeModifier.operation().id(),
+                                            ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format(e),
+                                            Component.translatable(pair.getFirst().value().getDescriptionId())
                                     )
-                                    .formatted(Formatting.RED)
+                                    .withStyle(ChatFormatting.RED)
                     );
                 }
             }
@@ -140,38 +141,38 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
 
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
         if (type.isAdvanced()) {
-            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.range", "Range:").append(ScreenTexts.space().append(String.valueOf(range))));
-            textConsumer.accept(ScreenTexts.EMPTY);
+            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.range", "Range:").append(CommonComponents.space().append(String.valueOf(range))));
+            textConsumer.accept(CommonComponents.EMPTY);
         }
         if (!this.ingredients.isEmpty()) {
-            textConsumer.accept(Text.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").formatted(Formatting.GRAY));
+            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").withStyle(ChatFormatting.GRAY));
             for (String ingredient : ingredients) {
                 textConsumer.accept(
-                        ScreenTexts.space().append(
-                                Text.translatable(
+                        CommonComponents.space().append(
+                                Component.translatable(
                                         ingredient
-                                ).formatted(Formatting.DARK_AQUA)
+                                ).withStyle(ChatFormatting.DARK_AQUA)
                         )
                 );
             }
-            textConsumer.accept(ScreenTexts.EMPTY);
+            textConsumer.accept(CommonComponents.EMPTY);
         }
-        buildTooltip(this.getEffects(), textConsumer, components.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F), context.getUpdateTickRate());
+        buildTooltip(this.getEffects(), textConsumer, components.getOrDefault(DataComponents.POTION_DURATION_SCALE, 1.0F), context.tickRate());
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {
         for (Identifier herbalEffect : this.herbalEffects) {
             HerbalEffectType.applyHerb(entity, herbalEffect);
         }
-        if (!entity.getEntityWorld().isClient()) {
-            this.consumeEffects.forEach(effect -> effect.onConsume(entity.getEntityWorld(), stack, entity));
+        if (!entity.level().isClientSide()) {
+            this.consumeEffects.forEach(effect -> effect.apply(entity.level(), stack, entity));
         }
-        this.apply(entity, stack.getOrDefault(DataComponentTypes.POTION_DURATION_SCALE, 1.0F));
-        if (entity.getEntityWorld().isClient()) {
+        this.apply(entity, stack.getOrDefault(DataComponents.POTION_DURATION_SCALE, 1.0F));
+        if (entity.level().isClientSide()) {
             for (int i = 0; i < 4; i++) {
-                entity.getEntityWorld().addParticleClient(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getParticleX(1.25), entity.getRandomBodyY(), entity.getParticleZ(1.25), 0, 0, 0);
+                entity.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getRandomX(1.25), entity.getRandomY(), entity.getRandomZ(1.25), 0, 0, 0);
             }
         }
     }

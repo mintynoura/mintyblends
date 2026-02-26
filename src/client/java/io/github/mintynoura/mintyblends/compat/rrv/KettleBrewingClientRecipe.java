@@ -8,10 +8,10 @@ import cc.cassian.rrv.common.recipe.inventory.SlotContent;
 import cc.cassian.rrv.common.recipe.rendering.AnimationTicker;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class KettleBrewingClientRecipe implements ReliableClientRecipe {
 
-    private static final Identifier PROGRESS_TEXTURE = Identifier.of(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/progress.png");
+    private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/progress.png");
 
     private final List<SlotContent> ingredients;
     private final SlotContent container;
@@ -38,7 +38,7 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
         this.result = SlotContent.of(serverRecipe.getResult());
         this.brewingTime = serverRecipe.getBrewingTime();
 
-        this.brewingTicker = AnimationTicker.create(Identifier.of(MintyBlends.MOD_ID, "brewing_ticker"), this.brewingTime);
+        this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "brewing_ticker"), this.brewingTime);
     }
 
     @Override
@@ -72,9 +72,9 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
     }
 
     @Override
-    public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, DrawContext guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         int brewProgress = Math.round(this.brewingTicker.getProgress() * 24.0F);
-        guiGraphics.drawTexture(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 77, 20, 0, 0, brewProgress, 16, 24, 16);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 77, 20, 0, 0, brewProgress, 16, 24, 16);
     }
 
     @Override
@@ -83,12 +83,12 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
     }
 
     @Override
-    public List<Class<? extends HandledScreen<?>>> getTransferClasses() {
+    public List<Class<? extends AbstractContainerScreen<?>>> getTransferClasses() {
         return Collections.singletonList(KettleScreen.class);
     }
 
     @Override
-    public void mapRecipeItems(RecipeTransferMap transferMap, HandledScreen<?> screen) {
+    public void mapRecipeItems(RecipeTransferMap transferMap, AbstractContainerScreen<?> screen) {
         for (int i = 0; i < this.ingredients.size() && i < this.getViewType().getSlotCount() - 1; i++) {
             transferMap.linkSlots(i, i);
         }

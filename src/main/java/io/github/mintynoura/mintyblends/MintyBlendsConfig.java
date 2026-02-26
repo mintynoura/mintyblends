@@ -28,7 +28,7 @@ public class MintyBlendsConfig extends ReflectiveConfig {
 
     @SerializedName("StatusEffects")
     public final StatusEffectSection statusEffectSection = new StatusEffectSection();
-    public static final class StatusEffectSection extends Section {
+    public static final class StatusEffectSection extends folk.sisby.kaleido.lib.quiltconfig.api.ReflectiveConfig.Section {
         @Comment("The block reach attribute increase for the Reaching effect, per level")
         @SerializedName("reaching_block_range_increase")
         public final TrackedValue<Float> reachingBlockRangeModifier = this.value(2f);

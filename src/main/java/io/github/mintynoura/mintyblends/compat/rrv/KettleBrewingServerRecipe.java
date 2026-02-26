@@ -4,12 +4,11 @@ import cc.cassian.rrv.api.TagUtil;
 import cc.cassian.rrv.api.recipe.ReliableServerRecipe;
 import cc.cassian.rrv.api.recipe.ReliableServerRecipeType;
 import io.github.mintynoura.mintyblends.MintyBlends;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.util.Identifier;
-
 import java.util.List;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class KettleBrewingServerRecipe implements ReliableServerRecipe {
 
@@ -19,7 +18,7 @@ public class KettleBrewingServerRecipe implements ReliableServerRecipe {
     private int brewingTime;
 
 
-    public static final ReliableServerRecipeType<KettleBrewingServerRecipe> TYPE = ReliableServerRecipeType.register(Identifier.of(MintyBlends.MOD_ID, "kettle_brewing"),
+    public static final ReliableServerRecipeType<KettleBrewingServerRecipe> TYPE = ReliableServerRecipeType.register(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing"),
             () -> new KettleBrewingServerRecipe(List.of(), ItemStack.EMPTY, ItemStack.EMPTY, 0));
 
     public KettleBrewingServerRecipe(List<Ingredient> ingredients, ItemStack container, ItemStack result, int brewingTime) {
@@ -46,7 +45,7 @@ public class KettleBrewingServerRecipe implements ReliableServerRecipe {
     }
 
     @Override
-    public void writeToTag(NbtCompound nbt) {
+    public void writeToTag(CompoundTag nbt) {
         nbt.put("ingredients", TagUtil.writeList(this.ingredients, ((ingredient, nbtCompound) -> TagUtil.writeIngredient(ingredient))));
         nbt.put("container", TagUtil.encodeItemStackOnServer(this.container));
         nbt.put("result", TagUtil.encodeItemStackOnServer(this.result));
@@ -54,11 +53,11 @@ public class KettleBrewingServerRecipe implements ReliableServerRecipe {
     }
 
     @Override
-    public void loadFromTag(NbtCompound nbt) {
+    public void loadFromTag(CompoundTag nbt) {
         this.ingredients = TagUtil.readList(nbt, "ingredients", TagUtil::readIngredient);
-        this.container = TagUtil.decodeItemStackOnClient(nbt.getCompound("container").orElseGet(NbtCompound::new));
-        this.result = TagUtil.decodeItemStackOnClient(nbt.getCompound("result").orElseGet(NbtCompound::new));
-        this.brewingTime = nbt.getInt("brewing_time", 0);
+        this.container = TagUtil.decodeItemStackOnClient(nbt.getCompound("container").orElseGet(CompoundTag::new));
+        this.result = TagUtil.decodeItemStackOnClient(nbt.getCompound("result").orElseGet(CompoundTag::new));
+        this.brewingTime = nbt.getIntOr("brewing_time", 0);
     }
 
     @Override

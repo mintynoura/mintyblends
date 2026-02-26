@@ -1,13 +1,13 @@
 package io.github.mintynoura.mintyblends.util;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 
 public class ModTags {
     public static class Items {
@@ -19,7 +19,7 @@ public class ModTags {
         public static final TagKey<Item> CAT_LOVED = createTag("cat_loved");
 
         private static TagKey<Item> createTag(String name) {
-            return TagKey.of(RegistryKeys.ITEM, Identifier.of(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
         }
     }
 
@@ -29,7 +29,7 @@ public class ModTags {
         public static final TagKey<Block> RENDFLOWER_GROWN_ON = createTag("rendflower_grown_on");
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(RegistryKeys.BLOCK, Identifier.of(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
         }
     }
 
@@ -45,7 +45,7 @@ public class ModTags {
         public static final TagKey<Biome> HAS_SAGEBRUSH = createTag("has_sagebrush");
 
         private static TagKey<Biome> createTag(String name) {
-            return TagKey.of(RegistryKeys.BIOME, Identifier.of(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
         }
     }
 
@@ -53,7 +53,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> IGNORES_CENSER = createTag("ignores_censer");
 
         private static TagKey<EntityType<?>> createTag(String name) {
-            return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
         }
     }
 }

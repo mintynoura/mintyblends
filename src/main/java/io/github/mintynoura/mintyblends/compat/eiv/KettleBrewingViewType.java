@@ -5,19 +5,18 @@ import de.crafty.eiv.common.recipe.inventory.RecipeViewMenu;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.ModBlocks;
 import io.github.mintynoura.mintyblends.registry.ModItems;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 
 public class KettleBrewingViewType implements IEivRecipeViewType {
 
     public static final IEivRecipeViewType INSTANCE = new KettleBrewingViewType();
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatableWithFallback("recipe.mintyblends.kettle_brewing", "Kettle Brewing");
+    public Component getDisplayName() {
+        return Component.translatableWithFallback("recipe.mintyblends.kettle_brewing", "Kettle Brewing");
     }
 
     @Override
@@ -32,7 +31,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public Identifier getGuiTexture() {
-        return Identifier.of(MintyBlends.MOD_ID, "textures/gui/eiv/kettle.png");
+        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/eiv/kettle.png");
     }
 
     @Override
@@ -54,7 +53,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public Identifier getId() {
-        return Identifier.of(MintyBlends.MOD_ID, "kettle_brewing");
+        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing");
     }
 
     @Override
