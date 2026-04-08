@@ -8,7 +8,7 @@ import de.crafty.eiv.common.recipe.inventory.SlotContent;
 import de.crafty.eiv.common.recipe.rendering.AnimationTicker;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -72,7 +72,7 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
     }
 
     @Override
-    public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         int brewProgress = Math.round(this.brewingTicker.getProgress() * 24.0F);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 77, 20, 0, 0, brewProgress, 16, 24, 16);
     }

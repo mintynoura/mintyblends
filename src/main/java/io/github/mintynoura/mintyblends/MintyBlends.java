@@ -3,12 +3,18 @@ package io.github.mintynoura.mintyblends;
 import com.mojang.serialization.Codec;
 import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
+import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.worldgen.ModPlacedFeatures;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,15 +34,21 @@ public class MintyBlends implements ModInitializer {
 		ModItems.registerItems();
 		ModCompostables.registerCompostableItems();
 		ModBlockEntities.registerBlockEntities();
-		ModScreenHandlers.registerScreenHandlers();
+		ModMenus.registerMenus();
 		ModRecipes.registerRecipes();
 		ModLootTables.registerLootTables();
 		ModStatusEffects.registerStatusEffects();
 		ModComponents.registerComponents();
 		ModSoundEvents.registerSoundEffects();
 		ModParticleTypes.registerParticleTypes();
-		ModWorldgenFeatures.registerWorldgenFeatures();
-		ModTrades.registerTrades();
+
+		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_CATNIP), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.CATNIP_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_CULINARY_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.CULINARY_HERB_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.CRIMSON_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.CUREFLOWER_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_MEDICINAL_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.MEDICINAL_HERB_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_MINT), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.MINT_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_SAGEBRUSH), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.SAGEBRUSH_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.DARK_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.SILENT_FLOWER_PLACED_FEATURE_KEY);
 
 		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
 			FarmersDelightCompat.registerItems();

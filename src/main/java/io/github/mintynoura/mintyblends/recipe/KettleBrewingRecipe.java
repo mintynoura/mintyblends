@@ -4,12 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.recipe.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -28,16 +29,16 @@ import java.util.List;
 public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     private final List<Ingredient> ingredients;
-    private final ItemStack result;
-    private final ItemStack container;
+    private final ItemStackTemplate result;
+    private final ItemStackTemplate container;
     private final int brewingTime;
     @Nullable
     private PlacementInfo ingredientPlacement;
 
-    public static final ItemStack defaultContainer = PotionContents.createItemStack(Items.POTION, Potions.WATER);
+    public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
     public static final int defaultBrewingTime = 200;
 
-    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStack result, ItemStack container, int brewingTime) {
+    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStackTemplate result, ItemStackTemplate container, int brewingTime) {
         this.ingredients = ingredients;
         this.result = result;
         this.container = container;
@@ -48,11 +49,11 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         return ingredients;
     }
 
-    public ItemStack getResult() {
+    public ItemStackTemplate getResult() {
         return result;
     }
 
-    public ItemStack getContainer() {
+    public ItemStackTemplate getContainer() {
         return container;
     }
 
@@ -71,8 +72,18 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         }
     }
     @Override
-    public ItemStack craft(KettleBrewingRecipeInput input, HolderLookup.Provider registries) {
-        return this.result.copy();
+    public ItemStack assemble(KettleBrewingRecipeInput input) {
+        return this.result.create();
+    }
+
+    @Override
+    public boolean showNotification() {
+        return false;
+    }
+
+    @Override
+    public String group() {
+        return "";
     }
 
     @Override
@@ -98,37 +109,27 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         return null;
     }
 
-    public static class Serializer implements RecipeSerializer<KettleBrewingRecipe> {
+    public static class Serializer {
         private static final MapCodec<KettleBrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
-                                ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                                ItemStack.CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
+                                ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                                ItemStackTemplate.CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
                                 Codec.INT.fieldOf("brewing_time").orElse(defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
                         )
                         .apply(instance, KettleBrewingRecipe::new)
         );
-        public static final StreamCodec<RegistryFriendlyByteBuf, KettleBrewingRecipe> PACKET_CODEC = StreamCodec.composite(
+        public static final StreamCodec<RegistryFriendlyByteBuf, KettleBrewingRecipe> STREAM_CODEC = StreamCodec.composite(
                 Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()),
                 recipe -> recipe.ingredients,
-                ItemStack.STREAM_CODEC,
+                ItemStackTemplate.STREAM_CODEC,
                 recipe -> recipe.result,
-                ItemStack.STREAM_CODEC,
+                ItemStackTemplate.STREAM_CODEC,
                 recipe -> recipe.container,
                 ByteBufCodecs.INT,
                 recipe -> recipe.brewingTime,
                 KettleBrewingRecipe::new
         );
-
-
-        @Override
-        public MapCodec<KettleBrewingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, KettleBrewingRecipe> streamCodec() {
-            return PACKET_CODEC;
-        }
     }
+    public static final RecipeSerializer<KettleBrewingRecipe> SERIALIZER = new RecipeSerializer<>(Serializer.CODEC, Serializer.STREAM_CODEC);
 }

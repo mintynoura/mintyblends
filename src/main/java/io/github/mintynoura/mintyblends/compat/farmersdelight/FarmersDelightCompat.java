@@ -1,8 +1,8 @@
 package io.github.mintynoura.mintyblends.compat.farmersdelight;
 
 import io.github.mintynoura.mintyblends.registry.ModItems;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -30,11 +30,11 @@ public class FarmersDelightCompat {
             .usingConvertsTo(Items.BOWL));
 
     public static void registerItems() {
-        ItemGroupEvents.modifyEntriesEvent(ModItems.MINTYBLENDS_ITEM_GROUP_KEY).register(entries -> {
-            entries.accept(FRIED_GREENS);
-            entries.accept(TOMATO_SOUP);
-            entries.accept(ONION_SOUP);
-            entries.accept(VEGETABLE_PORRIDGE);
+        CreativeModeTabEvents.modifyOutputEvent(ModItems.MINTYBLENDS_ITEM_GROUP_KEY).register(output -> {
+            output.accept(FRIED_GREENS);
+            output.accept(TOMATO_SOUP);
+            output.accept(ONION_SOUP);
+            output.accept(VEGETABLE_PORRIDGE);
         });
         addFoodEffects();
     }

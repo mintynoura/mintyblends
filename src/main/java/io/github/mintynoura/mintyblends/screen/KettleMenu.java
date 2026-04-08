@@ -2,7 +2,7 @@ package io.github.mintynoura.mintyblends.screen;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
-import io.github.mintynoura.mintyblends.registry.ModScreenHandlers;
+import io.github.mintynoura.mintyblends.registry.ModMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
@@ -15,20 +15,22 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
-public class KettleScreenHandler extends AbstractContainerMenu {
+@NullMarked
+public class KettleMenu extends AbstractContainerMenu {
     private final Container inventory;
     public final KettleBlockEntity kettleBlockEntity;
     private final ContainerData propertyDelegate;
     private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "container/kettle/empty_container");
 
 
-    public KettleScreenHandler(int syncId, Inventory playerInventory, BlockPos pos) {
+    public KettleMenu(int syncId, Inventory playerInventory, BlockPos pos) {
         this(syncId, playerInventory, playerInventory.player.level().getBlockEntity(pos), new SimpleContainerData(3));
     }
 
-    public KettleScreenHandler(int syncId, Inventory playerInventory, BlockEntity kettleBlockEntity, ContainerData propertyDelegate) {
-        super(ModScreenHandlers.KETTLE_SCREEN_HANDLER, syncId);
+    public KettleMenu(int syncId, Inventory playerInventory, BlockEntity kettleBlockEntity, ContainerData propertyDelegate) {
+        super(ModMenus.KETTLE_MENU, syncId);
         this.inventory = (Container) kettleBlockEntity;
         this.kettleBlockEntity = (KettleBlockEntity) kettleBlockEntity;
         this.propertyDelegate = propertyDelegate;

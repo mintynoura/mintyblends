@@ -1,25 +1,44 @@
 package io.github.mintynoura.mintyblends.registry;
 
 
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
+import io.github.mintynoura.mintyblends.MintyBlends;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.TradeCost;
+import net.minecraft.world.item.trading.VillagerTrade;
+import net.minecraft.world.item.trading.VillagerTrades;
 import net.minecraft.world.level.block.Block;
 
+import java.util.List;
+import java.util.Optional;
+
 public class ModTrades {
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_CATNIP = createKey("wandering_trader/emerald_catnip");
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_CULINARY_HERB = createKey("wandering_trader/emerald_culinary_herb");
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_MEDICINAL_HERB = createKey("wandering_trader/emerald_medicinal_herb");
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_MINT = createKey("wandering_trader/emerald_mint");
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_SAGEBRUSH = createKey("wandering_trader/emerald_sagebrush");
+    public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_SILENT_FLOWER = createKey("wandering_trader/emerald_silent_flower");
 
-    public static void registerTrades() {
-        registerHerbTrade(ModBlocks.MINT);
-        registerHerbTrade(ModBlocks.CATNIP);
-        registerHerbTrade(ModBlocks.MEDICINAL_HERB);
-        registerHerbTrade(ModBlocks.CULINARY_HERB);
-        registerHerbTrade(ModBlocks.SAGEBRUSH);
-
-        TradeOfferHelper.registerWanderingTraderOffers(factories ->
-                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new VillagerTrades.ItemsForEmeralds(ModBlocks.SILENT_FLOWER.asItem(), 1, 1, 7, 1)));
+   private static VillagerTrade registerHerbTrade(Block block) {
+        return new VillagerTrade(new TradeCost(Items.EMERALD, 3), new ItemStackTemplate(block.asItem(), 2), 6, 1, 0.05F, Optional.empty(), List.of());
+    }
+    private static ResourceKey<VillagerTrade> createKey(String name) {
+        return ResourceKey.create(Registries.VILLAGER_TRADE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
     }
 
-    private static void registerHerbTrade(Block block) {
-        TradeOfferHelper.registerWanderingTraderOffers(factories ->
-                factories.addOffersToPool(TradeOfferHelper.WanderingTraderOffersBuilder.SELL_COMMON_ITEMS_POOL, new VillagerTrades.ItemsForEmeralds(block.asItem(), 3, 2, 6, 1)));
+    public static void register(BootstrapContext<VillagerTrade> context) {
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CATNIP, registerHerbTrade(ModBlocks.CATNIP));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CULINARY_HERB, registerHerbTrade(ModBlocks.CULINARY_HERB));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MEDICINAL_HERB, registerHerbTrade(ModBlocks.MEDICINAL_HERB));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MINT, registerHerbTrade(ModBlocks.MINT));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_SAGEBRUSH, registerHerbTrade(ModBlocks.SAGEBRUSH));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_SILENT_FLOWER,
+                new VillagerTrade(new TradeCost(Items.EMERALD, 1), new ItemStackTemplate(ModBlocks.SILENT_FLOWER.asItem()), 7, 1, 0.05F, Optional.empty(), List.of())
+        );
     }
 }

@@ -7,7 +7,6 @@ import io.github.mintynoura.mintyblends.registry.ModLootTables;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -31,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Ocelot.class)
 public abstract class OcelotEntityMixin extends Animal {
 
-    @Shadow abstract boolean isTrusting();
+    @Shadow protected abstract boolean isTrusting();
 
     @Shadow protected abstract void setTrusting(boolean trusting);
 
@@ -41,7 +40,7 @@ public abstract class OcelotEntityMixin extends Animal {
         super(entityType, world);
     }
 
-    @WrapOperation(method = "method_58370", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/tags/TagKey;)Z"))
+    @WrapOperation(method = "lambda$registerGoals$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/tags/TagKey;)Z"))
     private static boolean mintyBlends$addCatnipToGoal(ItemStack instance, TagKey<Item> tag, Operation<Boolean> original) {
         return original.call(instance, tag) || instance.is(ModTags.Items.CAT_LOVED);
     }
@@ -59,7 +58,6 @@ public abstract class OcelotEntityMixin extends Animal {
            }
 
            if (this.isTrusting() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 ) {
-               this.makeSound(SoundEvents.CAT_PURR);
                if (!this.level().isClientSide()) {
                    this.dropFromGiftLootTable((ServerLevel) this.level(),
                            ModLootTables.OCELOT_GIFT,
@@ -75,7 +73,6 @@ public abstract class OcelotEntityMixin extends Animal {
            }
 
            if (this.isTrusting() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0) {
-               this.makeSound(SoundEvents.CAT_PURR);
                cir.setReturnValue(InteractionResult.SUCCESS);
            }
        }

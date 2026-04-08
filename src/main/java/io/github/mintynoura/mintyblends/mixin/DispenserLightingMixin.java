@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$6")
+@Mixin(targets = "net.minecraft.core.dispenser.DispenseItemBehavior$5")
 public abstract class DispenserLightingMixin extends OptionalDispenseItemBehavior {
 
-    @ModifyExpressionValue(method = "dispenseSilently", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/CampfireBlock;canLight(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
-    private boolean mintyblends$addKettleLighting(boolean original, @Local BlockState blockState, @Local ServerLevel serverWorld, @Local BlockPos blockPos) {
-        return blockState.is(ModBlocks.KETTLE) ? KettleBlock.canBeLit(blockState, serverWorld, blockPos) : original;
+    @ModifyExpressionValue(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/CampfireBlock;canLight(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
+    private boolean mintyblends$addKettleLighting(boolean original, @Local(name = "target") BlockState target, @Local(name = "level") ServerLevel level, @Local(name = "targetPos") BlockPos targetPos) {
+        return target.is(ModBlocks.KETTLE) ? KettleBlock.canBeLit(target, level, targetPos) : original;
     }
 }

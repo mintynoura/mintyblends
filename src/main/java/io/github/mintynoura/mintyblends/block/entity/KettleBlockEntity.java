@@ -5,9 +5,9 @@ import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
 import io.github.mintynoura.mintyblends.registry.*;
-import io.github.mintynoura.mintyblends.screen.KettleScreenHandler;
+import io.github.mintynoura.mintyblends.screen.KettleMenu;
 import io.github.mintynoura.mintyblends.util.ModTags;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -58,7 +58,7 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
 @NullMarked
-public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedScreenHandlerFactory<BlockPos> {
+public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     private int progress = 0;
@@ -169,7 +169,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new KettleScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+        return new KettleMenu(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     public void light() {
@@ -201,12 +201,12 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             KettleBrewingRecipeInput recipeInput,
             NonNullList<ItemStack> inventory) {
         if (recipe != null) {
-            ItemStack itemStack = recipe.value().craft(recipeInput, registries);
+            ItemStack itemStack = recipe.value().assemble(recipeInput);
             if (itemStack.isEmpty()) {
                 return false;
             } else {
                 ItemStack container = inventory.get(OUTPUT_SLOT);
-                return ItemStack.isSameItemSameComponents(container, recipe.value().getContainer());
+                return ItemStack.isSameItemSameComponents(container, recipe.value().getContainer().create());
             }
         } else return false;
     }
@@ -216,7 +216,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         ItemStack itemStack;
         boolean hasContainer = false;
         boolean hasIngredients = false;
-        if (ItemStack.isSameItemSameComponents(container, KettleBrewingRecipe.defaultContainer)) {
+        if (ItemStack.isSameItemSameComponents(container, KettleBrewingRecipe.defaultContainer.create())) {
             hasContainer = true;
         }
         if (recipeInput.getStackCount() < 1) {
@@ -271,12 +271,12 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         List<ItemStack> recipeRemainders = new ArrayList<>();
         for (int i = 0; i < recipeInput.size(); i++) {
             Item item = recipeInput.getItem(i).getItem();
-            recipeRemainders.add(item.getCraftingRemainder());
+            if (item.getCraftingRemainder() != null) recipeRemainders.add(item.getCraftingRemainder().create());
         }
         for (int i = 0; i <= OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);
         }
-        ItemStack result = recipe.value().craft(recipeInput, dynamicRegistryManager);
+        ItemStack result = recipe.value().assemble(recipeInput);
         this.setItem(OUTPUT_SLOT, result);
         for (ItemStack remainder : recipeRemainders) {
             DefaultDispenseItemBehavior.spawnItem(level, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
@@ -292,7 +292,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         List<ConsumeEffect> consumeEffects = new ArrayList<>();
         for (int i = 0; i < recipeInput.size(); i++) {
             Item item = recipeInput.getItem(i).getItem();
-            recipeRemainders.add(item.getCraftingRemainder());
+            if (item.getCraftingRemainder() != null) recipeRemainders.add(item.getCraftingRemainder().create());
         }
         for (int i = 0; i < recipeInput.size(); i++) {
             itemStack = recipeInput.getItem(i);

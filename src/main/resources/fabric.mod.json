@@ -21,7 +21,7 @@
 			"io.github.mintynoura.mintyblends.MintyBlendsClient"
 		],
 		"fabric-datagen": [
-			"io.github.mintynoura.mintyblends.MintyBlendsDataGenerator"
+			"io.github.mintynoura.mintyblends.datagen.MintyBlendsDataGenerator"
 		],
 		"eiv": [
 			"io.github.mintynoura.mintyblends.compat.eiv.EivIntegration"
@@ -39,8 +39,8 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.17.2",
-		"minecraft": "~1.21.8",
-		"java": ">=21",
+		"minecraft": "~26.1",
+		"java": ">=25",
 		"fabric-api": "*"
 	}
 }

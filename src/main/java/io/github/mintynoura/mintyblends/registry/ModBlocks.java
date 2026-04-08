@@ -3,7 +3,6 @@ package io.github.mintynoura.mintyblends.registry;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.*;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.minecraft.block.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

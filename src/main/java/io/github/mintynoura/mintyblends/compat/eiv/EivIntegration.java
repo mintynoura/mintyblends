@@ -8,6 +8,6 @@ import io.github.mintynoura.mintyblends.registry.ModRecipes;
 public class EivIntegration implements IExtendedItemViewIntegration {
     @Override
     public void onIntegrationInitialize() {
-        ItemView.addRecipeProvider(list -> ServerRecipeManager.INSTANCE.getRecipesForType(ModRecipes.KETTLE_BREWING_RECIPE_TYPE).forEach(recipe -> list.add(new KettleBrewingServerRecipe(recipe.getIngredients(), recipe.getContainer(), recipe.getResult(), recipe.getBrewingTime()))));
+        ItemView.addRecipeProvider(list -> ServerRecipeManager.INSTANCE.getRecipesForType(ModRecipes.KETTLE_BREWING_RECIPE_TYPE).forEach(recipe -> list.add(new KettleBrewingServerRecipe(recipe.getIngredients(), recipe.getContainer().create(), recipe.getResult().create(), recipe.getBrewingTime()))));
     }
 }

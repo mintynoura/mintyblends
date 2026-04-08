@@ -1,33 +1,32 @@
 package io.github.mintynoura.mintyblends.recipe;
 
+import com.mojang.serialization.MapCodec;
 import io.github.mintynoura.mintyblends.item.CenserItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.registry.ModComponents;
 import io.github.mintynoura.mintyblends.registry.ModRecipes;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import java.util.*;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SuspiciousEffectHolder;
+import org.jspecify.annotations.NonNull;
 
 public class CenserBlendRecipe extends CustomRecipe {
-    public CenserBlendRecipe(CraftingBookCategory category) {
-        super(category);
-    }
+    public static MapCodec<CenserBlendRecipe> MAP_CODEC = MapCodec.unit(new CenserBlendRecipe());
+    public static StreamCodec<RegistryFriendlyByteBuf, CenserBlendRecipe> STREAM_CODEC = StreamCodec.unit(new CenserBlendRecipe());
 
     @Override
-    public boolean matches(CraftingInput input, Level world) {
+    public boolean matches(CraftingInput input, Level level) {
         ItemStack itemStack;
         boolean hasCenser = false;
         boolean hasIngredients = false;
@@ -54,7 +53,7 @@ public class CenserBlendRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInput input, HolderLookup.Provider registries) {
+    public @NonNull ItemStack assemble(CraftingInput input) {
         ItemStack itemStack;
         ItemStack censer = ItemStack.EMPTY;
         Set<MobEffectInstance> statusEffectSet = new HashSet<>();
@@ -92,9 +91,10 @@ public class CenserBlendRecipe extends CustomRecipe {
         return censer;
     }
 
+    public static final RecipeSerializer<CenserBlendRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
     @Override
-    public RecipeSerializer<CenserBlendRecipe> getSerializer() {
+    public @NonNull RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipes.CENSER_BLEND_RECIPE_SERIALIZER;
     }
-
 }

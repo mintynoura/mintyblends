@@ -36,10 +36,10 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "getDamageAfterMagicAbsorb", at = @At("HEAD"), cancellable = true)
-    private void mintyBlends$addRendingDamage(DamageSource source, float amount, CallbackInfoReturnable<Float> cir) {
-        if (this.hasEffect(ModStatusEffects.RENDING) && !source.is(DamageTypeTags.BYPASSES_EFFECTS)) {
+    private void mintyBlends$addRendingDamage(DamageSource damageSource, float damage, CallbackInfoReturnable<Float> cir) {
+        if (this.hasEffect(ModStatusEffects.RENDING) && !damageSource.is(DamageTypeTags.BYPASSES_EFFECTS)) {
             float rendingModifier = 1 + (this.getEffect(ModStatusEffects.RENDING).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.rendingDamageModifier.value();
-            cir.setReturnValue(amount * rendingModifier);
+            cir.setReturnValue(damage * rendingModifier);
         }
     }
 
@@ -49,10 +49,10 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropFromLootTable(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V", at = @At("TAIL"), cancellable = true)
-    private void mintyBlends$addMintDrop(ServerLevel world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
+    private void mintyBlends$addMintDrop(ServerLevel level, DamageSource source, boolean playerKilled, CallbackInfo ci) {
         if (((LivingEntity)(Object) this) instanceof ServerPlayer) {
             if (this.getName().getString().matches("mintynoura")) {
-                this.spawnAtLocation(world, new ItemStack(ModItems.MINT_LEAVES, 2));
+                this.spawnAtLocation(level, new ItemStack(ModItems.MINT_LEAVES, 2));
             }
         }
     }

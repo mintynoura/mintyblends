@@ -1,6 +1,6 @@
 package io.github.mintynoura.mintyblends.registry;
 
-import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
+import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.minecraft.world.item.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,13 @@ public class ModCompostables {
 
     public static void compostItems() {
         for (Item item : compost85) {
-            CompostingChanceRegistry.INSTANCE.add(item, 0.85f);
+            CompostableRegistry.INSTANCE.add(item, 0.85f);
         }
         for (Item item : compost65) {
-            CompostingChanceRegistry.INSTANCE.add(item, 0.65f);
+            CompostableRegistry.INSTANCE.add(item, 0.65f);
         }
         for (Item item : compost30) {
-            CompostingChanceRegistry.INSTANCE.add(item, 0.30f);
+            CompostableRegistry.INSTANCE.add(item, 0.30f);
         }
     }
 

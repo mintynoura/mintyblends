@@ -5,7 +5,6 @@ import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
 import io.github.mintynoura.mintyblends.registry.ModBlockEntities;
 import io.github.mintynoura.mintyblends.registry.ModParticleTypes;
 import io.github.mintynoura.mintyblends.registry.ModSoundEvents;
-import net.minecraft.block.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +12,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.FireChargeItem;
@@ -43,9 +41,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Map;
 
+@NullMarked
 public class KettleBlock extends BaseEntityBlock {
 
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
@@ -112,29 +112,27 @@ public class KettleBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos,
-                                         Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+                                          Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack heldStack = player.getItemInHand(hand);
         boolean isFireCharge = heldStack.getItem() instanceof FireChargeItem;
         boolean isFlintAndSteel = heldStack.getItem() instanceof FlintAndSteelItem;
-        KettleBlockEntity blockEntity = (KettleBlockEntity) world.getBlockEntity(pos);
+        KettleBlockEntity blockEntity = (KettleBlockEntity) level.getBlockEntity(pos);
         if ((isFireCharge || isFlintAndSteel) && !state.getValue(LIT)) {
             blockEntity.light();
             if (isFireCharge) {
-                world.playSound(player, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 0.2F + 1.0F);
+                level.playSound(player, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
                 player.getItemInHand(hand).shrink(1);
             } else {
-                world.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
+                level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 player.getItemInHand(hand).hurtWithoutBreaking(1, player);
             }
-            world.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             return InteractionResult.SUCCESS;
         }
-        if (!world.isClientSide()) {
-            MenuProvider screenHandlerFactory = blockEntity;
-            if (screenHandlerFactory != null) {
-                player.openMenu(screenHandlerFactory);
-            }
+        if (!level.isClientSide()) {
+            player.openMenu(state.getMenuProvider(level, pos));
+            player.awardStat(ModBlockEntities.INTERACT_WITH_KETTLE);
         }
         return InteractionResult.SUCCESS;
     }

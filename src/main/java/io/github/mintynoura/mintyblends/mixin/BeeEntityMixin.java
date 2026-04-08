@@ -19,20 +19,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.minecraft.world.entity.animal.bee.Bee$BeeGrowCropGoal")
 public abstract class BeeEntityMixin extends Goal {
 
-    @Final
+
+
     @Shadow
-    Bee field_20373;
+    @Final
+    Bee this$0;
 
     @Inject(method = "tick()V", at = @At("TAIL"))
     private void mintyBlends$tickHerb(CallbackInfo info) {
-        if (field_20373.getRandom().nextInt(this.adjustedTickDelay(15)) == 0) {
+        if (this$0.getRandom().nextInt(this.adjustedTickDelay(15)) == 0) {
             for (int i = 0; i <= 2; i++) {
-                BlockPos herbPos = field_20373.blockPosition().below(i);
-                BlockState herbBlock = field_20373.level().getBlockState(herbPos);
+                BlockPos herbPos = this$0.blockPosition().below(i);
+                BlockState herbBlock = this$0.level().getBlockState(herbPos);
                 Block herb = herbBlock.getBlock();
                 if (herbBlock.is(BlockTags.BEE_GROWABLES) && herb instanceof HerbBlock) {
-                    ((HerbBlock) herb).performBonemeal((ServerLevel) field_20373.level(), field_20373.getRandom(), herbPos, herbBlock);
-                    field_20373.level().levelEvent(LevelEvent.PARTICLES_BEE_GROWTH, herbPos, 15);
+                    ((HerbBlock) herb).performBonemeal((ServerLevel) this$0.level(), this$0.getRandom(), herbPos, herbBlock);
+                    this$0.level().levelEvent(LevelEvent.PARTICLES_BEE_GROWTH, herbPos, 15);
                 }
             }
         }

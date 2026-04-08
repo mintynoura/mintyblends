@@ -48,7 +48,7 @@ public class CenserItem extends Item {
         CenserComponent component = censer.get(ModComponents.CENSER_COMPONENT);
 
         float diameter = 2 * component.range();
-        List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.getType().is(ModTags.EntityTypes.IGNORES_CENSER));
+        List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(ModTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
         }
