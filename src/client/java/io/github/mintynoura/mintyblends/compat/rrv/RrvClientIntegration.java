@@ -6,6 +6,6 @@ import java.util.Collections;
 
 public class RrvClientIntegration {
     public static void onIntegrationInitialize() {
-        ItemView.registerClientRecipeWrapper(KettleBrewingServerRecipe.TYPE, serverRecipe -> Collections.singletonList(new KettleBrewingClientRecipe(serverRecipe)));
+        ItemView.addClientRecipeWrapper(KettleBrewingServerRecipe.TYPE, serverRecipe -> Collections.singletonList(new KettleBrewingClientRecipe(serverRecipe)));
     }
 }

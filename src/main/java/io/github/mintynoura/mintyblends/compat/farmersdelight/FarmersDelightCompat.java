@@ -16,12 +16,12 @@ public class FarmersDelightCompat {
             .food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build(), FoodValues.ConsumableValues.NOURISHMENT_SHORT_DURATION)
             .stacksTo(16)
             .usingConvertsTo(Items.BOWL));
-    public static final Item ONION_SOUP = ModItems.registerItem("onion_soup", settings -> new ConsumableItem(settings, true, false), new Item.Properties()
-            .food(new FoodProperties.Builder().nutrition(10).saturationModifier(0.6f).build(), FoodValues.ConsumableValues.COMFORT_MEDIUM_DURATION)
-            .stacksTo(16)
-            .usingConvertsTo(Items.BOWL));
+//    public static final Item ONION_SOUP = ModItems.registerItem("onion_soup", settings -> new ConsumableItem(settings, true, false), new Item.Properties()
+//            .food(new FoodProperties.Builder().nutrition(10).saturationModifier(0.6f).build(), FoodValues.ConsumableValues.COMFORT_MEDIUM_DURATION)
+//            .stacksTo(16)
+//            .usingConvertsTo(Items.BOWL));
     public static final Item TOMATO_SOUP = ModItems.registerItem("tomato_soup", settings -> new ConsumableItem(settings, true, false), new Item.Properties()
-            .food(new FoodProperties.Builder().nutrition(12).saturationModifier(0.6f).build(), FoodValues.ConsumableValues.COMFORT_MEDIUM_DURATION)
+            .food(new FoodProperties.Builder().nutrition(12).saturationModifier(0.6f).build(), FoodValues.ConsumableValues.NOURISHMENT_MEDIUM_DURATION)
             .stacksTo(16)
             .usingConvertsTo(Items.BOWL));
     public static final Item VEGETABLE_PORRIDGE = ModItems.registerItem("vegetable_porridge", settings -> new ConsumableItem(settings, true, false), new Item.Properties()
@@ -33,7 +33,7 @@ public class FarmersDelightCompat {
         CreativeModeTabEvents.modifyOutputEvent(ModItems.MINTYBLENDS_ITEM_GROUP_KEY).register(output -> {
             output.accept(FRIED_GREENS);
             output.accept(TOMATO_SOUP);
-            output.accept(ONION_SOUP);
+//            output.accept(ONION_SOUP);
             output.accept(VEGETABLE_PORRIDGE);
         });
         addFoodEffects();
@@ -42,7 +42,7 @@ public class FarmersDelightCompat {
     public static void addFoodEffects() {
         DefaultItemComponentEvents.MODIFY.register( modifyContext ->  {
             modifyContext.modify(ModItems.BEETROOT_SALAD, builder -> builder.set(DataComponents.CONSUMABLE, FoodValues.ConsumableValues.FRUIT_SALAD));
-            modifyContext.modify(ModItems.PUMPKIN_STEW, builder -> builder.set(DataComponents.CONSUMABLE, FoodValues.ConsumableValues.COMFORT_SHORT_DURATION));
+            modifyContext.modify(ModItems.PUMPKIN_STEW, builder -> builder.set(DataComponents.CONSUMABLE, FoodValues.ConsumableValues.NOURISHMENT_SHORT_DURATION));
         });
     }
 }

@@ -16,7 +16,7 @@
   "experience": 1.0,
   "ingredients": [
     "#c:crops/grain",
-    "#c:foods/milk",
+    "#c:drinks/milk",
     "#c:foods/vegetable",
     "mintyblends:culinary_leaves"
   ],

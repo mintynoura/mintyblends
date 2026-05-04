@@ -55,21 +55,6 @@ public class MintyBlendsClient implements ClientModInitializer {
 						return 0xffffffff;
 					}
 				}), ModBlocks.HORTENSIA_CROP);
-//		BlockColorRegistry.register((state, view, pos, tintIndex) -> {
-//				if (view != null && pos != null) {
-//					if (state.getValue(HortensiaCropBlock.HALF) == DoubleBlockHalf.UPPER) {
-//						pos = pos.below();
-//					}
-//					boolean coldTag = view.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_PINK_HORTENSIAS);
-//					boolean temperateTag = view.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_PURPLE_HORTENSIAS);
-//					boolean warmTag = view.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_BLUE_HORTENSIAS);
-//
-//					if (!temperateTag && coldTag && !warmTag) return COLD_CLIMATE_COLOR;
-//					if (!temperateTag && !coldTag && warmTag) return WARM_CLIMATE_COLOR;
-//				}
-//				return TEMPERATE_CLIMATE_COLOR;
-//
-//        }, ModBlocks.HORTENSIA_CROP);
 
 		MenuScreens.register(ModMenus.KETTLE_MENU, KettleScreen::new);
 
