@@ -3,8 +3,8 @@ package io.github.mintynoura.mintyblends.compat.rrv;
 import cc.cassian.rrv.api.recipe.ReliableClientRecipeType;
 import cc.cassian.rrv.common.recipe.inventory.RecipeViewMenu;
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
-import io.github.mintynoura.mintyblends.registry.ModItems;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -60,11 +60,11 @@ public class KettleBrewingClientRecipeType implements ReliableClientRecipeType {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.KETTLE);
+        return new ItemStack(MintyBlendsBlocks.KETTLE);
     }
 
     @Override
     public List<ItemStack> getCraftReferences() {
-        return List.of(new ItemStack(ModBlocks.KETTLE), new ItemStack(ModItems.HERBAL_BREW));
+        return List.of(new ItemStack(MintyBlendsBlocks.KETTLE), new ItemStack(MintyBlendsItems.HERBAL_BREW));
     }
 }

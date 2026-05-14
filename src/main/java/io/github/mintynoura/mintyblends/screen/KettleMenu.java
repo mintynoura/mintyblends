@@ -2,7 +2,7 @@ package io.github.mintynoura.mintyblends.screen;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
-import io.github.mintynoura.mintyblends.registry.ModMenus;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
@@ -30,7 +30,7 @@ public class KettleMenu extends AbstractContainerMenu {
     }
 
     public KettleMenu(int syncId, Inventory playerInventory, BlockEntity kettleBlockEntity, ContainerData propertyDelegate) {
-        super(ModMenus.KETTLE_MENU, syncId);
+        super(MintyBlendsMenus.KETTLE_MENU, syncId);
         this.inventory = (Container) kettleBlockEntity;
         this.kettleBlockEntity = (KettleBlockEntity) kettleBlockEntity;
         this.propertyDelegate = propertyDelegate;

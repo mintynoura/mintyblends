@@ -2,9 +2,9 @@ package io.github.mintynoura.mintyblends.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
-import io.github.mintynoura.mintyblends.registry.ModBlockEntities;
-import io.github.mintynoura.mintyblends.registry.ModParticleTypes;
-import io.github.mintynoura.mintyblends.registry.ModSoundEvents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlockEntities;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -132,7 +132,7 @@ public class KettleBlock extends BaseEntityBlock {
         }
         if (!level.isClientSide()) {
             player.openMenu(state.getMenuProvider(level, pos));
-            player.awardStat(ModBlockEntities.INTERACT_WITH_KETTLE);
+            player.awardStat(MintyBlendsBlockEntities.INTERACT_WITH_KETTLE);
         }
         return InteractionResult.SUCCESS;
     }
@@ -145,7 +145,7 @@ public class KettleBlock extends BaseEntityBlock {
                         pos.getX() + 0.5,
                         pos.getY() + 0.5,
                         pos.getZ() + 0.5,
-                        ModSoundEvents.BLOCK_KETTLE_AMBIENT,
+                        MintyBlendsSoundEvents.BLOCK_KETTLE_AMBIENT,
                         SoundSource.BLOCKS,
                         0.5F + random.nextFloat(),
                         random.nextFloat() * 0.7F + 0.5f,
@@ -157,7 +157,7 @@ public class KettleBlock extends BaseEntityBlock {
                double h = random.nextDouble() * 0.6 - 0.3;
                double i = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * 0.52 : h;
                double k = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * 0.52 : h;
-               world.addParticle(ModParticleTypes.KETTLE_STEAM, pos.getX() + 0.5 + i, pos.getY() + 1, pos.getZ() + 0.5 + k, 0.0, 0.07, 0.0);
+               world.addParticle(MintyBlendsParticleTypes.KETTLE_STEAM, pos.getX() + 0.5 + i, pos.getY() + 1, pos.getZ() + 0.5 + k, 0.0, 0.07, 0.0);
            }
         }
     }
@@ -193,7 +193,7 @@ public class KettleBlock extends BaseEntityBlock {
         if (world.isClientSide()) {
             return null;
         }
-        return createTickerHelper(type, ModBlockEntities.KETTLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+        return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
     }
 
     @Override

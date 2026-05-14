@@ -7,7 +7,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 
-public class ModParticleTypes {
+public class MintyBlendsParticleTypes {
     public static final SimpleParticleType KETTLE_STEAM = Registry.register(BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_steam"), FabricParticleTypes.simple());
 
     public static void registerParticleTypes() {}

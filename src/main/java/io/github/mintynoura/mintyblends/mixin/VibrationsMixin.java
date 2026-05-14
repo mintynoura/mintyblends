@@ -2,7 +2,7 @@ package io.github.mintynoura.mintyblends.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import io.github.mintynoura.mintyblends.registry.ModStatusEffects;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsStatusEffects;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,28 +27,28 @@ public abstract class VibrationsMixin {
     @WrapMethod(
             method = "handleGameEvent(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/gameevent/GameEvent$Context;Lnet/minecraft/world/phys/Vec3;)Z"
     )
-    private boolean mintyBlends$distanceShenanigans(ServerLevel world, Holder<GameEvent> event, GameEvent.Context emitter, Vec3 emitterPos, Operation<Boolean> original) {
-        Entity source = emitter.sourceEntity();
-        if (!(source instanceof LivingEntity entity)) return original.call(world, event, emitter, emitterPos);
+    private boolean mintyBlends$distanceShenanigans(ServerLevel level, Holder<GameEvent> event, GameEvent.Context context, Vec3 sourcePosition, Operation<Boolean> original) {
+        Entity source = context.sourceEntity();
+        if (!(source instanceof LivingEntity entity)) return original.call(level, event, context, sourcePosition);
 
         VibrationSystem.User callback = system.getVibrationUser();
-        Optional<Vec3> listenerPos = callback.getPositionSource().getPosition(world);
-        if (listenerPos.isEmpty()) return original.call(world, event, emitter, emitterPos);
+        Optional<Vec3> listenerPos = callback.getPositionSource().getPosition(level);
+        if (listenerPos.isEmpty()) return original.call(level, event, context, sourcePosition);
 
         int listenerRange = callback.getListenerRadius();
         double offset = mintyBlends$getOffset(entity);
-        double distance = emitterPos.distanceTo(listenerPos.get()) + offset;
+        double distance = sourcePosition.distanceTo(listenerPos.get()) + offset;
 
         if (listenerRange < distance) {
             return false;
         }
 
-        return original.call(world, event, emitter, emitterPos);
+        return original.call(level, event, context, sourcePosition);
     }
 
     @Unique
     private double mintyBlends$getOffset(LivingEntity entity) {
-        MobEffectInstance effectInstance = entity.getEffect(ModStatusEffects.STEALTH);
+        MobEffectInstance effectInstance = entity.getEffect(MintyBlendsStatusEffects.STEALTH);
         if (effectInstance == null) return 0;
 
         return (effectInstance.getAmplifier() + 1) * 2;

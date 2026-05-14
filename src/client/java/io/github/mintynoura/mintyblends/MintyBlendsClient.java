@@ -4,9 +4,9 @@ import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
 import io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration;
 import io.github.mintynoura.mintyblends.compat.rrv.RrvClientIntegration;
 import io.github.mintynoura.mintyblends.particle.KettleSteamParticle;
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
-import io.github.mintynoura.mintyblends.registry.ModParticleTypes;
-import io.github.mintynoura.mintyblends.registry.ModMenus;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsMenus;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import net.fabricmc.api.ClientModInitializer;
@@ -54,11 +54,11 @@ public class MintyBlendsClient implements ClientModInitializer {
 					public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 						return 0xffffffff;
 					}
-				}), ModBlocks.HORTENSIA_CROP);
+				}), MintyBlendsBlocks.HORTENSIA_CROP);
 
-		MenuScreens.register(ModMenus.KETTLE_MENU, KettleScreen::new);
+		MenuScreens.register(MintyBlendsMenus.KETTLE_MENU, KettleScreen::new);
 
-		ParticleProviderRegistry.getInstance().register(ModParticleTypes.KETTLE_STEAM, KettleSteamParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(MintyBlendsParticleTypes.KETTLE_STEAM, KettleSteamParticle.Factory::new);
 
 		if (FabricLoader.getInstance().isModLoaded("eiv")) {
 			EivClientIntegration.onIntegrationInitialize();

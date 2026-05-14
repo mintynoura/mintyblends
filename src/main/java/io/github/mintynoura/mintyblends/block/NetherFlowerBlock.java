@@ -1,6 +1,6 @@
 package io.github.mintynoura.mintyblends.block;
 
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -44,9 +44,9 @@ public class NetherFlowerBlock extends FlowerBlock implements BonemealableBlock 
         for (int i = 0; i < 16; i++) {
             newPos = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
             if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(ModTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
-                world.setBlock(newPos, ModBlocks.RENDFLOWER.defaultBlockState(), Block.UPDATE_ALL);
+                world.setBlock(newPos, MintyBlendsBlocks.RENDFLOWER.defaultBlockState(), Block.UPDATE_ALL);
             } else if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(ModTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
-                world.setBlock(newPos, ModBlocks.CUREFLOWER.defaultBlockState(), Block.UPDATE_ALL);
+                world.setBlock(newPos, MintyBlendsBlocks.CUREFLOWER.defaultBlockState(), Block.UPDATE_ALL);
             }
         }
     }

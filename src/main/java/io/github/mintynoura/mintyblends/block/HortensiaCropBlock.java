@@ -1,6 +1,6 @@
 package io.github.mintynoura.mintyblends.block;
 
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -56,7 +56,7 @@ public class HortensiaCropBlock extends PitcherCropBlock {
 
     private static boolean canGrowInto(LevelReader world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
-        return blockState.isAir() || blockState.is(ModBlocks.HORTENSIA_CROP);
+        return blockState.isAir() || blockState.is(MintyBlendsBlocks.HORTENSIA_CROP);
     }
 
 
@@ -90,7 +90,7 @@ public class HortensiaCropBlock extends PitcherCropBlock {
 
 
     private static boolean isLower(BlockState state) {
-        return state.is(ModBlocks.HORTENSIA_CROP) && state.getValue(HALF) == DoubleBlockHalf.LOWER;
+        return state.is(MintyBlendsBlocks.HORTENSIA_CROP) && state.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     @Nullable

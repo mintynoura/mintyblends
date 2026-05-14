@@ -12,6 +12,7 @@ import net.minecraft.world.item.component.ConsumableListener;
 import net.minecraft.world.level.Level;
 
 public record HerbComponent(Identifier herbalEffect) implements ConsumableListener {
+    // TODO: Stream codecs for everything
     public static final Codec<HerbComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Identifier.CODEC.optionalFieldOf("herbal_effect", Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "empty")).forGetter(HerbComponent::herbalEffect)
     ).apply(builder, HerbComponent::new));

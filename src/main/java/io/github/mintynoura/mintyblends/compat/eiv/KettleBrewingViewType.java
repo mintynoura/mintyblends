@@ -3,8 +3,8 @@ package io.github.mintynoura.mintyblends.compat.eiv;
 import de.crafty.eiv.common.api.recipe.IEivRecipeViewType;
 import de.crafty.eiv.common.recipe.inventory.RecipeViewMenu;
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
-import io.github.mintynoura.mintyblends.registry.ModItems;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsItems;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -58,11 +58,11 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.KETTLE);
+        return new ItemStack(MintyBlendsBlocks.KETTLE);
     }
 
     @Override
     public List<ItemStack> getCraftReferences() {
-        return List.of(new ItemStack(ModBlocks.KETTLE), new ItemStack(ModItems.HERBAL_BREW));
+        return List.of(new ItemStack(MintyBlendsBlocks.KETTLE), new ItemStack(MintyBlendsItems.HERBAL_BREW));
     }
 }

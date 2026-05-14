@@ -3,7 +3,7 @@ package io.github.mintynoura.mintyblends.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.mintynoura.mintyblends.registry.ModRecipes;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -88,12 +88,12 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     @Override
     public RecipeSerializer<? extends Recipe<KettleBrewingRecipeInput>> getSerializer() {
-        return ModRecipes.KETTLE_BREWING_RECIPE_SERIALIZER;
+        return MintyBlendsRecipes.KETTLE_BREWING_RECIPE_SERIALIZER;
     }
 
     @Override
     public RecipeType<? extends Recipe<KettleBrewingRecipeInput>> getType() {
-        return ModRecipes.KETTLE_BREWING_RECIPE_TYPE;
+        return MintyBlendsRecipes.KETTLE_BREWING_RECIPE_TYPE;
     }
 
     @Override

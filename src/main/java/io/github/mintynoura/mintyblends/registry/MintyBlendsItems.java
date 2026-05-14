@@ -31,36 +31,36 @@ import net.minecraft.world.item.consume_effects.RemoveStatusEffectsConsumeEffect
 import java.util.List;
 import java.util.function.Function;
 
-public class ModItems {
+public class MintyBlendsItems {
     public static final Item MINT_LEAVES = registerItem("mint_leaves", Item::new, new Item.Properties()
             .food(new FoodProperties(0, 0f, true))
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH)));
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH)));
     public static final Item CATNIP_LEAVES = registerItem("catnip_leaves", Item::new, new Item.Properties()
             .food(new FoodProperties(0, 0f, true),
                     Consumable.builder().onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.SLOWNESS)).build())
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)));
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)));
     public static final Item MEDICINAL_LEAVES = registerItem("medicinal_leaves", Item::new, new Item.Properties()
             .food(new FoodProperties(0, 0f, true))
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.HEAL)));
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.HEAL)));
     public static final Item CULINARY_LEAVES = registerItem("culinary_leaves", Item::new, new Item.Properties()
             .food(new FoodProperties(0, 0f, false))
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.FEED)));
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.FEED)));
     public static final Item SAGEBRUSH_LEAVES = registerItem("sagebrush_leaves", Item::new, new Item.Properties()
             .food(new FoodProperties(0, 0f, true),
-                    Consumable.builder().onConsume(new RemoveStatusEffectsConsumeEffect(HolderSet.direct(MobEffects.WEAKNESS, ModStatusEffects.RENDING))).build()));
+                    Consumable.builder().onConsume(new RemoveStatusEffectsConsumeEffect(HolderSet.direct(MobEffects.WEAKNESS, MintyBlendsStatusEffects.RENDING))).build()));
 
-    public static final Item CUREFLOWER = registerItem("cureflower", settings -> new BlockItem(ModBlocks.CUREFLOWER, settings), new Item.Properties()
+    public static final Item CUREFLOWER = registerItem("cureflower", settings -> new BlockItem(MintyBlendsBlocks.CUREFLOWER, settings), new Item.Properties()
             .useBlockDescriptionPrefix()
             .food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.1f).alwaysEdible().build(),
                     Consumable.builder().onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.WITHER)).build()));
-    public static final Item RENDFLOWER = registerItem("rendflower", settings -> new BlockItem(ModBlocks.RENDFLOWER, settings), new Item.Properties()
+    public static final Item RENDFLOWER = registerItem("rendflower", settings -> new BlockItem(MintyBlendsBlocks.RENDFLOWER, settings), new Item.Properties()
             .useBlockDescriptionPrefix()
             .food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.1f).alwaysEdible().build(),
-                    Consumable.builder().onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(ModStatusEffects.RENDING, 400, 0), 0.9f)).build()));
-    public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(ModBlocks.HORTENSIA_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
+                    Consumable.builder().onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MintyBlendsStatusEffects.RENDING, 400, 0), 0.9f)).build()));
+    public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(MintyBlendsBlocks.HORTENSIA_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
 
     public static final Item HERBAL_BREW = registerItem("herbal_brew", HerbalBrewItem::new, new Item.Properties()
-            .component(ModComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()))
             .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
@@ -68,7 +68,7 @@ public class ModItems {
     public static final Item MINT_TEA = registerItem("mint_tea", Item::new, new Item.Properties()
             .food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build(),
                     Consumables.defaultDrink().onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1800, 0))).build())
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
             .usingConvertsTo(Items.GLASS_BOTTLE));
     public static final Item GLOW_BERRY_TEA = registerItem("glow_berry_tea", Item::new, new Item.Properties()
             .food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.3f).build(),
@@ -89,7 +89,7 @@ public class ModItems {
 
     public static final Item MINT_JELLY = registerItem("mint_jelly", Item::new, new Item.Properties()
             .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.4f).build())
-            .component(ModComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
+            .component(MintyBlendsComponents.HERB_COMPONENT, new HerbComponent(HerbalEffectType.EXTINGUISH))
             .stacksTo(16)
             .usingConvertsTo(Items.BOWL));
     public static final Item BEETROOT_SALAD = registerItem("beetroot_salad", Item::new, new Item.Properties()
@@ -107,13 +107,13 @@ public class ModItems {
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Properties()
-            .component(ModComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()))
             .durability(3));
     public static final Item GOLDEN_CENSER = registerItem("golden_censer", CenserItem::new, new Item.Properties()
-            .component(ModComponents.CENSER_COMPONENT, new CenserComponent(7f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(7f, List.of(), List.of(), List.of(), List.of()))
             .durability(2));
     public static final Item IRON_CENSER = registerItem("iron_censer", CenserItem::new, new Item.Properties()
-            .component(ModComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of(), List.of()))
             .durability(4));
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
@@ -129,24 +129,24 @@ public class ModItems {
             .icon(() -> new ItemStack(MINT_LEAVES))
             .title(Component.translatableWithFallback("itemGroup.mintyblends", "Minty Blends"))
             .displayItems((params, output) -> {
-                output.accept(ModBlocks.MINT);
+                output.accept(MintyBlendsBlocks.MINT);
                 output.accept(MINT_LEAVES);
-                output.accept(ModBlocks.CATNIP);
+                output.accept(MintyBlendsBlocks.CATNIP);
                 output.accept(CATNIP_LEAVES);
-                output.accept(ModBlocks.MEDICINAL_HERB);
+                output.accept(MintyBlendsBlocks.MEDICINAL_HERB);
                 output.accept(MEDICINAL_LEAVES);
-                output.accept(ModBlocks.CULINARY_HERB);
+                output.accept(MintyBlendsBlocks.CULINARY_HERB);
                 output.accept(CULINARY_LEAVES);
-                output.accept(ModBlocks.SAGEBRUSH);
+                output.accept(MintyBlendsBlocks.SAGEBRUSH);
                 output.accept(SAGEBRUSH_LEAVES);
-                output.accept(ModBlocks.SILENT_FLOWER);
+                output.accept(MintyBlendsBlocks.SILENT_FLOWER);
                 output.accept(CUREFLOWER);
                 output.accept(RENDFLOWER);
                 output.accept(HORTENSIA_SEEDS);
-                output.accept(ModBlocks.PURPLE_HORTENSIA);
-                output.accept(ModBlocks.PINK_HORTENSIA);
-                output.accept(ModBlocks.BLUE_HORTENSIA);
-                output.accept(ModBlocks.KETTLE);
+                output.accept(MintyBlendsBlocks.PURPLE_HORTENSIA);
+                output.accept(MintyBlendsBlocks.PINK_HORTENSIA);
+                output.accept(MintyBlendsBlocks.BLUE_HORTENSIA);
+                output.accept(MintyBlendsBlocks.KETTLE);
                 output.accept(COPPER_CENSER);
                 output.accept(IRON_CENSER);
                 output.accept(GOLDEN_CENSER);

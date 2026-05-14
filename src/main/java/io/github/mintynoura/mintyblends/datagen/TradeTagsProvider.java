@@ -1,6 +1,6 @@
 package io.github.mintynoura.mintyblends.datagen;
 
-import io.github.mintynoura.mintyblends.registry.ModTrades;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsTrades;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -19,11 +19,11 @@ public class TradeTagsProvider extends FabricTagsProvider<VillagerTrade> {
     @Override
     protected void addTags(HolderLookup.Provider registries) {
         this.builder(VillagerTradeTags.WANDERING_TRADER_COMMON)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_CATNIP)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_CULINARY_HERB)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_MEDICINAL_HERB)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_MINT)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_SAGEBRUSH)
-                .add(ModTrades.WANDERING_TRADER_EMERALD_SILENT_FLOWER);
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_CATNIP)
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_CULINARY_HERB)
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_MEDICINAL_HERB)
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_MINT)
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_SAGEBRUSH)
+                .add(MintyBlendsTrades.WANDERING_TRADER_EMERALD_SILENT_FLOWER);
     }
 }

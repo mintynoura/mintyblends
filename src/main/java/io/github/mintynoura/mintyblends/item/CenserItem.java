@@ -1,8 +1,8 @@
 package io.github.mintynoura.mintyblends.item;
 
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
-import io.github.mintynoura.mintyblends.registry.ModComponents;
-import io.github.mintynoura.mintyblends.registry.ModSoundEvents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsSoundEvents;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import java.util.List;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +32,7 @@ public class CenserItem extends Item {
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack itemStack = super.getDefaultInstance();
-        itemStack.set(ModComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()));
+        itemStack.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()));
         return itemStack;
     }
 
@@ -41,11 +41,11 @@ public class CenserItem extends Item {
         ItemStack censer = user.getItemInHand(hand);
         ItemStack flintAndSteel = user.getOffhandItem();
 
-        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.has(ModComponents.CENSER_COMPONENT)) {
+        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.has(MintyBlendsComponents.CENSER_COMPONENT)) {
             return InteractionResult.FAIL;
         }
 
-        CenserComponent component = censer.get(ModComponents.CENSER_COMPONENT);
+        CenserComponent component = censer.get(MintyBlendsComponents.CENSER_COMPONENT);
 
         float diameter = 2 * component.range();
         List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(ModTags.EntityTypes.IGNORES_CENSER));
@@ -55,7 +55,7 @@ public class CenserItem extends Item {
         censer.hurtAndBreak(1, user, EquipmentSlot.MAINHAND);
         flintAndSteel.hurtAndBreak(1, user, EquipmentSlot.OFFHAND);
         world.playSound(user, user.blockPosition(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
-        world.playSound(user, user.blockPosition(), ModSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
+        world.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
 
         world.gameEvent(user, GameEvent.ITEM_INTERACT_FINISH, user.blockPosition());
         if (!world.isClientSide()) {
@@ -66,6 +66,6 @@ public class CenserItem extends Item {
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {
-        stack.get(ModComponents.CENSER_COMPONENT).applyIncense(entity, stack);
+        stack.get(MintyBlendsComponents.CENSER_COMPONENT).applyIncense(entity, stack);
     }
 }

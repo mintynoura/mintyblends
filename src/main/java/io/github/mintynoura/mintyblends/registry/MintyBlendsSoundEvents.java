@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
-public class ModSoundEvents {
+public class MintyBlendsSoundEvents {
     public static final SoundEvent BLOCK_KETTLE_AMBIENT = register("block.kettle.ambient");
     public static final SoundEvent BLOCK_KETTLE_EXTINGUISH = register("block.kettle.extinguish");
     public static final SoundEvent ITEM_CENSER_BURN = register("item.censer.burn");

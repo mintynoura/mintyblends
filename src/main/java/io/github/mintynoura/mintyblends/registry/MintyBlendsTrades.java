@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 import java.util.Optional;
 
-public class ModTrades {
+public class MintyBlendsTrades {
     public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_CATNIP = createKey("wandering_trader/emerald_catnip");
     public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_CULINARY_HERB = createKey("wandering_trader/emerald_culinary_herb");
     public static final ResourceKey<VillagerTrade> WANDERING_TRADER_EMERALD_MEDICINAL_HERB = createKey("wandering_trader/emerald_medicinal_herb");
@@ -32,13 +32,13 @@ public class ModTrades {
     }
 
     public static void register(BootstrapContext<VillagerTrade> context) {
-        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CATNIP, registerHerbTrade(ModBlocks.CATNIP));
-        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CULINARY_HERB, registerHerbTrade(ModBlocks.CULINARY_HERB));
-        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MEDICINAL_HERB, registerHerbTrade(ModBlocks.MEDICINAL_HERB));
-        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MINT, registerHerbTrade(ModBlocks.MINT));
-        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_SAGEBRUSH, registerHerbTrade(ModBlocks.SAGEBRUSH));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CATNIP, registerHerbTrade(MintyBlendsBlocks.CATNIP));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_CULINARY_HERB, registerHerbTrade(MintyBlendsBlocks.CULINARY_HERB));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MEDICINAL_HERB, registerHerbTrade(MintyBlendsBlocks.MEDICINAL_HERB));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_MINT, registerHerbTrade(MintyBlendsBlocks.MINT));
+        VillagerTrades.register(context, WANDERING_TRADER_EMERALD_SAGEBRUSH, registerHerbTrade(MintyBlendsBlocks.SAGEBRUSH));
         VillagerTrades.register(context, WANDERING_TRADER_EMERALD_SILENT_FLOWER,
-                new VillagerTrade(new TradeCost(Items.EMERALD, 1), new ItemStackTemplate(ModBlocks.SILENT_FLOWER.asItem()), 7, 1, 0.05F, Optional.empty(), List.of())
+                new VillagerTrade(new TradeCost(Items.EMERALD, 1), new ItemStackTemplate(MintyBlendsBlocks.SILENT_FLOWER.asItem()), 7, 1, 0.05F, Optional.empty(), List.of())
         );
     }
 }

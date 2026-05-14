@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 import static net.minecraft.world.level.block.Blocks.litBlockEmission;
 
-public class ModBlocks {
+public class MintyBlendsBlocks {
     public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(MobEffects.FIRE_RESISTANCE, 3f, settings), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
@@ -79,7 +79,7 @@ public class ModBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(ModStatusEffects.RENDING, 9f, settings), BlockBehaviour.Properties.of()
+    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(MintyBlendsStatusEffects.RENDING, 9f, settings), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .noCollision()
                     .instabreak()
@@ -87,7 +87,7 @@ public class ModBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(ModStatusEffects.STEALTH, 7f, settings), BlockBehaviour.Properties.of()
+    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(MintyBlendsStatusEffects.STEALTH, 7f, settings), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -167,14 +167,14 @@ public class ModBlocks {
     }
 
     public static void registerBlocks() {
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.MINT, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.CATNIP, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.MEDICINAL_HERB, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.CULINARY_HERB, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.SAGEBRUSH, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.SILENT_FLOWER, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.PURPLE_HORTENSIA, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.PINK_HORTENSIA, 100, 60);
-        FlammableBlockRegistry.getDefaultInstance().add(ModBlocks.BLUE_HORTENSIA, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.MINT, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.CATNIP, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.MEDICINAL_HERB, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.CULINARY_HERB, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.SAGEBRUSH, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.SILENT_FLOWER, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.PURPLE_HORTENSIA, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.PINK_HORTENSIA, 100, 60);
+        FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.BLUE_HORTENSIA, 100, 60);
     }
 }

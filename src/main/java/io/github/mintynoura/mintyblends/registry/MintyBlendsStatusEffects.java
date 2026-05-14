@@ -11,7 +11,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class ModStatusEffects {
+public class MintyBlendsStatusEffects {
     public static final Holder<MobEffect> REACHING = Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "reaching"), new MintyStatusEffect(MobEffectCategory.BENEFICIAL, 0xe5d4c0)
             .addAttributeModifier(Attributes.BLOCK_INTERACTION_RANGE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "effect.reaching"), MintyBlends.CONFIG.statusEffectSection.reachingBlockRangeModifier.value(), AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "effect.reaching"), MintyBlends.CONFIG.statusEffectSection.reachingEntityRangeModifier.value(), AttributeModifier.Operation.ADD_VALUE));

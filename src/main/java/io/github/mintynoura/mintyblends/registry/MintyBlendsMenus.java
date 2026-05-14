@@ -9,7 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.MenuType;
 
-public class ModMenus {
+public class MintyBlendsMenus {
     public static final MenuType<KettleMenu> KETTLE_MENU = Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_screen_handler"), new ExtendedMenuType<>(KettleMenu::new, BlockPos.STREAM_CODEC));
 
 

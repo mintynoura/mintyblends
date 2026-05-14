@@ -1,7 +1,7 @@
 package io.github.mintynoura.mintyblends.worldgen;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.registry.ModBlocks;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.placement.*;
 
 import java.util.List;
 
-public class ModPlacedFeatures {
+public class MintyBlendsPlacedFeatures {
     public static final ResourceKey<PlacedFeature> CATNIP_PLACED_FEATURE_KEY = createKey("catnip");
     public static final ResourceKey<PlacedFeature> CULINARY_HERB_PLACED_FEATURE_KEY = createKey("culinary_herb");
     public static final ResourceKey<PlacedFeature> CUREFLOWER_PLACED_FEATURE_KEY = createKey("cureflower");
@@ -50,7 +50,7 @@ public class ModPlacedFeatures {
             BiomeFilter.biome(),
             CountPlacement.of(16),
             RandomOffsetPlacement.ofTriangle(2, 1),
-            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(ModBlocks.CUREFLOWER.defaultBlockState(), BlockPos.ZERO))
+            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(MintyBlendsBlocks.CUREFLOWER.defaultBlockState(), BlockPos.ZERO))
     );
     public static List<PlacementModifier> medicinalHerbPlacementModifiers = List.of(
             RarityFilter.onAverageOnceEvery(32),
@@ -95,12 +95,12 @@ public class ModPlacedFeatures {
     public static void register(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        context.register(CATNIP_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.CATNIP_CONFIGURED_KEY), catnipPlacementModifiers));
-        context.register(CULINARY_HERB_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.CULINARY_HERB_CONFIGURED_KEY), culinaryHerbPlacementModifiers));
-        context.register(CUREFLOWER_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.CUREFLOWER_CONFIGURED_KEY), cureflowerPlacementModifiers));
-        context.register(MEDICINAL_HERB_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.MEDICINAL_HERB_CONFIGURED_KEY), medicinalHerbPlacementModifiers));
-        context.register(MINT_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.MINT_CONFIGURED_KEY), mintPlacementModifiers));
-        context.register(SAGEBRUSH_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.SAGEBRUSH_CONFIGURED_KEY), sagebrushPlacementModifiers));
-        context.register(SILENT_FLOWER_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(ModConfiguredFeatures.SILENT_FLOWER_CONFIGURED_KEY), silentFlowerPlacementModifiers));
+        context.register(CATNIP_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.CATNIP_CONFIGURED_KEY), catnipPlacementModifiers));
+        context.register(CULINARY_HERB_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.CULINARY_HERB_CONFIGURED_KEY), culinaryHerbPlacementModifiers));
+        context.register(CUREFLOWER_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.CUREFLOWER_CONFIGURED_KEY), cureflowerPlacementModifiers));
+        context.register(MEDICINAL_HERB_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.MEDICINAL_HERB_CONFIGURED_KEY), medicinalHerbPlacementModifiers));
+        context.register(MINT_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.MINT_CONFIGURED_KEY), mintPlacementModifiers));
+        context.register(SAGEBRUSH_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.SAGEBRUSH_CONFIGURED_KEY), sagebrushPlacementModifiers));
+        context.register(SILENT_FLOWER_PLACED_FEATURE_KEY, new PlacedFeature(configuredFeatures.getOrThrow(MintyBlendsConfiguredFeatures.SILENT_FLOWER_CONFIGURED_KEY), silentFlowerPlacementModifiers));
     }
 }

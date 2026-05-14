@@ -53,7 +53,6 @@ public abstract class CatEntityMixin extends TamableAnimal {
                     this.level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
                 }
                 cir.setReturnValue(InteractionResult.SUCCESS);
-
             }
 
             if (this.isTame() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 && this.isOwnedBy(player)) {
@@ -81,8 +80,10 @@ public abstract class CatEntityMixin extends TamableAnimal {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$tickCatnipCooldown(CallbackInfo ci) {
-        if (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0 && this.getAttached(MintyBlends.CATNIP_COOLDOWN) != null) {
-            this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
+        if (this.hasAttached(MintyBlends.CATNIP_COOLDOWN)) {
+            if (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0) {
+                this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
+            }
         }
     }
 }

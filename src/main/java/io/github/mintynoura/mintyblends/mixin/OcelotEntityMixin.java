@@ -3,7 +3,7 @@ package io.github.mintynoura.mintyblends.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.registry.ModLootTables;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsLootTables;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +34,7 @@ public abstract class OcelotEntityMixin extends Animal {
 
     @Shadow protected abstract void setTrusting(boolean trusting);
 
-    @Shadow protected abstract void spawnTrustingParticles(boolean positive);
+    @Shadow protected abstract void spawnTrustingParticles(boolean success);
 
     protected OcelotEntityMixin(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
@@ -60,7 +60,7 @@ public abstract class OcelotEntityMixin extends Animal {
            if (this.isTrusting() && this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) == 0 ) {
                if (!this.level().isClientSide()) {
                    this.dropFromGiftLootTable((ServerLevel) this.level(),
-                           ModLootTables.OCELOT_GIFT,
+                           MintyBlendsLootTables.OCELOT_GIFT,
                            (world, stack) -> world.addFreshEntity(
                                    new ItemEntity(world, this.getX(), this.getY(), this.getZ(), stack)
                            ));
@@ -80,8 +80,10 @@ public abstract class OcelotEntityMixin extends Animal {
 
     @Inject(method = "customServerAiStep", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$tickCatnipCooldown(CallbackInfo ci) {
-        if (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0 && this.getAttached(MintyBlends.CATNIP_COOLDOWN) != null) {
-            this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
+        if (this.hasAttached(MintyBlends.CATNIP_COOLDOWN)) {
+            if (this.getAttachedOrElse(MintyBlends.CATNIP_COOLDOWN, 0) != 0) {
+                this.setAttached(MintyBlends.CATNIP_COOLDOWN, this.getAttached(MintyBlends.CATNIP_COOLDOWN)-1);
+            }
         }
     }
 }

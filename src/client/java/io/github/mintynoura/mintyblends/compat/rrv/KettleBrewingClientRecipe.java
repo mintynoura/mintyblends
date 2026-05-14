@@ -42,13 +42,13 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
     }
 
     @Override
-    public ReliableClientRecipeType getViewType() {
+    public ReliableClientRecipeType getType() {
         return KettleBrewingClientRecipeType.INSTANCE;
     }
 
     @Override
     public void bindSlots(RecipeViewMenu.SlotFillContext slotFillContext) {
-        for (int i = 0; i < ingredients.size() && i < this.getViewType().getSlotCount() - 1; i++) {
+        for (int i = 0; i < ingredients.size() && i < this.getType().getSlotCount() - 1; i++) {
             slotFillContext.bindSlot(i, ingredients.get(i));
         }
 
@@ -89,7 +89,7 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
 
     @Override
     public void mapRecipeItems(RecipeTransferMap transferMap, AbstractContainerScreen<?> screen) {
-        for (int i = 0; i < this.ingredients.size() && i < this.getViewType().getSlotCount() - 1; i++) {
+        for (int i = 0; i < this.ingredients.size() && i < this.getType().getSlotCount() - 1; i++) {
             transferMap.linkSlots(i, i);
         }
         transferMap.linkSlots(4, 4);

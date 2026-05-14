@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HerbalEffectType {
-
+    // TODO: convert into ConsumeEffects
     public static final List<MobEffectInstance> effectRemoval = new ArrayList<>();
     public static final List<MobEffectInstance> effectAddition = new ArrayList<>();
 

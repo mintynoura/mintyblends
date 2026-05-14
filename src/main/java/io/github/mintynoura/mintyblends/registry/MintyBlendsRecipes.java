@@ -9,7 +9,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class ModRecipes {
+public class MintyBlendsRecipes {
     public static final RecipeSerializer<KettleBrewingRecipe> KETTLE_BREWING_RECIPE_SERIALIZER = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing"), KettleBrewingRecipe.SERIALIZER);
     public static final RecipeSerializer<CenserBlendRecipe> CENSER_BLEND_RECIPE_SERIALIZER = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "crafting_special_censer_blend"), CenserBlendRecipe.SERIALIZER);
 

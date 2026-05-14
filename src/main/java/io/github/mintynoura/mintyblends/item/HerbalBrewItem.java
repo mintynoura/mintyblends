@@ -1,7 +1,7 @@
 package io.github.mintynoura.mintyblends.item;
 
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
-import io.github.mintynoura.mintyblends.registry.ModComponents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import java.util.List;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ public class HerbalBrewItem extends Item {
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack itemStack = super.getDefaultInstance();
-        itemStack.set(ModComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()));
+        itemStack.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()));
         return itemStack;
     }
 }

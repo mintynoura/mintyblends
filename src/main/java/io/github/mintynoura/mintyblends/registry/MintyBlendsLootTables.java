@@ -11,17 +11,17 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public class ModLootTables {
+public class MintyBlendsLootTables {
     private static final ResourceKey<LootTable> SNIFFER_DIGGING_LOOT_TABLE_KEY = BuiltInLootTables.SNIFFER_DIGGING;
     private static final ResourceKey<LootTable> PIGLIN_BARTERING_LOOT_TABLE_KEY = BuiltInLootTables.PIGLIN_BARTERING;
 
     public static void modify() {
         LootTableEvents.MODIFY.register((id, tableBuilder, source, registries) -> {
             if (source.isBuiltin() && SNIFFER_DIGGING_LOOT_TABLE_KEY.equals(id)) {
-                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(ModItems.HORTENSIA_SEEDS)));
+                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(MintyBlendsItems.HORTENSIA_SEEDS)));
             }
             if (source.isBuiltin() && PIGLIN_BARTERING_LOOT_TABLE_KEY.equals(id)) {
-                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(ModBlocks.CUREFLOWER).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
+                tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(MintyBlendsBlocks.CUREFLOWER).setWeight(10).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))));
             }
         }
         );

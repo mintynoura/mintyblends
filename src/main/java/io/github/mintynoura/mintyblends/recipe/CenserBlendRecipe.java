@@ -3,8 +3,8 @@ package io.github.mintynoura.mintyblends.recipe;
 import com.mojang.serialization.MapCodec;
 import io.github.mintynoura.mintyblends.item.CenserItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
-import io.github.mintynoura.mintyblends.registry.ModComponents;
-import io.github.mintynoura.mintyblends.registry.ModRecipes;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 import io.github.mintynoura.mintyblends.util.ModTags;
 import java.util.*;
 import net.minecraft.core.component.DataComponents;
@@ -76,8 +76,8 @@ public class CenserBlendRecipe extends CustomRecipe {
                             statusEffectSet.add(statusEffect);
                         }
                     }
-                    if (itemStack.has(ModComponents.HERB_COMPONENT)) {
-                        Identifier herbalEffect = itemStack.get(ModComponents.HERB_COMPONENT).herbalEffect();
+                    if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
+                        Identifier herbalEffect = itemStack.get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect();
                         herbalEffectSet.add(herbalEffect);
                     }
                     if (itemStack.has(DataComponents.CONSUMABLE)) {
@@ -86,8 +86,8 @@ public class CenserBlendRecipe extends CustomRecipe {
                 }
             }
         }
-        CenserComponent censerComponent = new CenserComponent(censer.get(ModComponents.CENSER_COMPONENT).range(), List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet), List.copyOf(consumeEffects));
-        censer.set(ModComponents.CENSER_COMPONENT, censerComponent) ;
+        CenserComponent censerComponent = new CenserComponent(censer.get(MintyBlendsComponents.CENSER_COMPONENT).range(), List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet), List.copyOf(consumeEffects));
+        censer.set(MintyBlendsComponents.CENSER_COMPONENT, censerComponent) ;
         return censer;
     }
 
@@ -95,6 +95,6 @@ public class CenserBlendRecipe extends CustomRecipe {
 
     @Override
     public @NonNull RecipeSerializer<? extends CustomRecipe> getSerializer() {
-        return ModRecipes.CENSER_BLEND_RECIPE_SERIALIZER;
+        return MintyBlendsRecipes.CENSER_BLEND_RECIPE_SERIALIZER;
     }
 }

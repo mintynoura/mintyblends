@@ -1,6 +1,6 @@
 package io.github.mintynoura.mintyblends.mixin;
 
-import io.github.mintynoura.mintyblends.registry.ModComponents;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.util.HerbalEffectType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -31,8 +31,8 @@ public abstract class SnifferEntityMixin extends Animal {
 
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$catnipInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (player.getItemInHand(hand).has(ModComponents.HERB_COMPONENT) && (this.getState() == Sniffer.State.IDLING || this.getState() == Sniffer.State.SCENTING || this.getState() == Sniffer.State.SNIFFING) && this.getBrain().hasMemoryValue(MemoryModuleType.SNIFF_COOLDOWN)) {
-            if (player.getItemInHand(hand).get(ModComponents.HERB_COMPONENT).herbalEffect().equals(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)) {
+        if (player.getItemInHand(hand).has(MintyBlendsComponents.HERB_COMPONENT) && (this.getState() == Sniffer.State.IDLING || this.getState() == Sniffer.State.SCENTING || this.getState() == Sniffer.State.SNIFFING) && this.getBrain().hasMemoryValue(MemoryModuleType.SNIFF_COOLDOWN)) {
+            if (player.getItemInHand(hand).get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect().equals(HerbalEffectType.LOWER_SNIFFER_COOLDOWN)) {
                 long cooldown = this.getBrain().getTimeUntilExpiry(MemoryModuleType.SNIFF_COOLDOWN);
                 if (cooldown > 0) {
                     if (!this.level().isClientSide()) {
