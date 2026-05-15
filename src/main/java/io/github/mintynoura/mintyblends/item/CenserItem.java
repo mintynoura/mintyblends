@@ -3,7 +3,7 @@ package io.github.mintynoura.mintyblends.item;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsSoundEvents;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import java.util.List;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +48,7 @@ public class CenserItem extends Item {
         CenserComponent component = censer.get(MintyBlendsComponents.CENSER_COMPONENT);
 
         float diameter = 2 * component.range();
-        List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(ModTags.EntityTypes.IGNORES_CENSER));
+        List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(MintyBlendsTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
         }

@@ -92,7 +92,7 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<MobEffect
         }
 
         if (bl) {
-            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").withStyle(ChatFormatting.GRAY));
+            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.no_effects", "No Potion Effects").withStyle(ChatFormatting.GRAY));
         }
 
         if (!list.isEmpty()) {
@@ -140,21 +140,18 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<MobEffect
         if (!this.ingredients.isEmpty()) {
             Set<String> ingredientSet = new HashSet<>();
             consumer.accept(Component.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").withStyle(ChatFormatting.GRAY));
-//            for (String ingredient : ingredients) {
-//                textConsumer.accept(
-//                    CommonComponents.space().append(
-//                            Component.translatable(
-//                                    ingredient
-//                            ).withStyle(ChatFormatting.DARK_AQUA)
-//                    )
-//                );
-//            }
             for (String ingredient : ingredients) {
                 if (!ingredientSet.contains(ingredient)) {
-                    consumer.accept(
+                    if (Collections.frequency(ingredients, ingredient) > 1) {
+                        consumer.accept(
+                                CommonComponents.space().append(
+                                        Component.translatable(ingredient).append(" x" + Collections.frequency(ingredients, ingredient)).withStyle(ChatFormatting.DARK_AQUA)
+                                ));
+                    } else consumer.accept(
                             CommonComponents.space().append(
-                                    Component.translatable(ingredient).append(" x" + Collections.frequency(ingredients, ingredient)).withStyle(ChatFormatting.DARK_AQUA)
-                            ));
+                                    Component.translatable(ingredient).withStyle(ChatFormatting.DARK_AQUA)
+                            )
+                    );
                     ingredientSet.add(ingredient);
                 }
             }

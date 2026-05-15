@@ -5,7 +5,11 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.util.HerbalEffectType;
+
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -97,7 +101,7 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
         }
 
         if (bl) {
-            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.no_effects", "No Status Effects").withStyle(ChatFormatting.GRAY));
+            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.no_effects", "No Potion Effects").withStyle(ChatFormatting.GRAY));
         }
 
         if (!list.isEmpty()) {
@@ -141,25 +145,32 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
 
 
     @Override
-    public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag type, DataComponentGetter components) {
         if (type.isAdvanced()) {
-            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.range", "Range:").append(CommonComponents.space().append(String.valueOf(range))));
-            textConsumer.accept(CommonComponents.EMPTY);
+            consumer.accept(Component.translatableWithFallback("tooltip.mintyblends.range", "Range:").append(CommonComponents.space().append(String.valueOf(range))));
+            consumer.accept(CommonComponents.EMPTY);
         }
         if (!this.ingredients.isEmpty()) {
-            textConsumer.accept(Component.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").withStyle(ChatFormatting.GRAY));
+            Set<String> ingredientSet = new HashSet<>();
+            consumer.accept(Component.translatableWithFallback("tooltip.mintyblends.ingredients", "Ingredients:").withStyle(ChatFormatting.GRAY));
             for (String ingredient : ingredients) {
-                textConsumer.accept(
-                        CommonComponents.space().append(
-                                Component.translatable(
-                                        ingredient
-                                ).withStyle(ChatFormatting.DARK_AQUA)
-                        )
-                );
+                if (!ingredientSet.contains(ingredient)) {
+                    if (Collections.frequency(ingredients, ingredient) > 1) {
+                        consumer.accept(
+                                CommonComponents.space().append(
+                                        Component.translatable(ingredient).append(" x" + Collections.frequency(ingredients, ingredient)).withStyle(ChatFormatting.DARK_AQUA)
+                                ));
+                    } else consumer.accept(
+                            CommonComponents.space().append(
+                                    Component.translatable(ingredient).withStyle(ChatFormatting.DARK_AQUA)
+                            )
+                    );
+                    ingredientSet.add(ingredient);
+                }
             }
-            textConsumer.accept(CommonComponents.EMPTY);
+            consumer.accept(CommonComponents.EMPTY);
         }
-        buildTooltip(this.getEffects(), textConsumer, components.getOrDefault(DataComponents.POTION_DURATION_SCALE, 1.0F), context.tickRate());
+        buildTooltip(this.getEffects(), consumer, components.getOrDefault(DataComponents.POTION_DURATION_SCALE, 1.0F), context.tickRate());
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {

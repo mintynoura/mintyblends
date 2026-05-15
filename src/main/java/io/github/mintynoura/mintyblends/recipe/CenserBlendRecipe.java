@@ -2,23 +2,14 @@ package io.github.mintynoura.mintyblends.recipe;
 
 import com.mojang.serialization.MapCodec;
 import io.github.mintynoura.mintyblends.item.CenserItem;
-import io.github.mintynoura.mintyblends.item.component.CenserComponent;
-import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
-import io.github.mintynoura.mintyblends.util.ModTags;
-import java.util.*;
-import net.minecraft.core.component.DataComponents;
+import io.github.mintynoura.mintyblends.util.BlendUtils;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import org.jspecify.annotations.NonNull;
 
 public class CenserBlendRecipe extends CustomRecipe {
@@ -36,12 +27,12 @@ public class CenserBlendRecipe extends CustomRecipe {
             for (int i = 0; i < input.size(); i++) {
                 itemStack = input.getItem(i);
                 if (!itemStack.isEmpty()) {
-                    if (itemStack.is(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
+                    if (itemStack.is(MintyBlendsTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
                         if (hasCenser) {
                             return false;
                         }
                         hasCenser = true;
-                    } else if (!itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
+                    } else if (!itemStack.is(MintyBlendsTags.Items.BLENDING_INGREDIENTS)) {
                         return false;
                     } else {
                         hasIngredients = true;
@@ -54,41 +45,7 @@ public class CenserBlendRecipe extends CustomRecipe {
 
     @Override
     public @NonNull ItemStack assemble(CraftingInput input) {
-        ItemStack itemStack;
-        ItemStack censer = ItemStack.EMPTY;
-        Set<MobEffectInstance> statusEffectSet = new HashSet<>();
-        Set<Identifier> herbalEffectSet = new HashSet<>();
-        Set<String> ingredientSet = new HashSet<>();
-        List<ConsumeEffect> consumeEffects = new ArrayList<>();
-        for (int i = 0; i < input.size(); i++) {
-            itemStack = input.getItem(i);
-            if (!itemStack.isEmpty()) {
-                if (itemStack.is(ModTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
-                    censer = new ItemStack(itemStack.getItem());
-                } else if (itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
-                    if (itemStack.getItem() != Items.AIR) {
-                        ingredientSet.add(itemStack.getItem().getDescriptionId());
-                    }
-                    if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(ModTags.Items.HERBS)) {
-                        SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
-                        if (suspiciousStewIngredient != null) {
-                            MobEffectInstance statusEffect = new MobEffectInstance(suspiciousStewIngredient.getSuspiciousEffects().effects().getFirst().createEffectInstance());
-                            statusEffectSet.add(statusEffect);
-                        }
-                    }
-                    if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
-                        Identifier herbalEffect = itemStack.get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect();
-                        herbalEffectSet.add(herbalEffect);
-                    }
-                    if (itemStack.has(DataComponents.CONSUMABLE)) {
-                        consumeEffects.addAll(itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects());
-                    }
-                }
-            }
-        }
-        CenserComponent censerComponent = new CenserComponent(censer.get(MintyBlendsComponents.CENSER_COMPONENT).range(), List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet), List.copyOf(consumeEffects));
-        censer.set(MintyBlendsComponents.CENSER_COMPONENT, censerComponent) ;
-        return censer;
+        return BlendUtils.blendCenser(input);
     }
 
     public static final RecipeSerializer<CenserBlendRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);

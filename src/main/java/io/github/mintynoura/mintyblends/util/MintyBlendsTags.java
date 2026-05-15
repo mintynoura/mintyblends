@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
-public class ModTags {
+public class MintyBlendsTags {
     public static class Items {
 
         public static final TagKey<Item> HERBS = createTag("herbs");

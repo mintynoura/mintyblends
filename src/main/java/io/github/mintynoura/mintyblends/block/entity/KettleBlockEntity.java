@@ -5,14 +5,13 @@ import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
 import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.screen.KettleMenu;
-import io.github.mintynoura.mintyblends.util.BlendingHelper;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.BlendUtils;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -216,7 +214,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             for (int i = 0; i < recipeInput.size(); i++) {
                 itemStack = recipeInput.getItem(i);
                 if (!itemStack.isEmpty()) {
-                    if (!itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
+                    if (!itemStack.is(MintyBlendsTags.Items.BLENDING_INGREDIENTS)) {
                         return false;
                     } else {
                         hasIngredients = true;
@@ -239,7 +237,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 this.brewTime = this.getBrewingTime(getRecipe().get());
                 setChanged(world, pos, state);
                 if (this.progress == this.brewTime) {
-                    craftRecipe(world.registryAccess(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
+                    craftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
                     postCraft(world, state);
                 }
             } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
@@ -255,15 +253,10 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
     }
 
     private void craftRecipe(
-            RegistryAccess dynamicRegistryManager,
             RecipeHolder<KettleBrewingRecipe> recipe,
             KettleBrewingRecipeInput recipeInput
     ) {
-        List<ItemStack> recipeRemainders = new ArrayList<>();
-        for (int i = 0; i < recipeInput.size(); i++) {
-            Item item = recipeInput.getItem(i).getItem();
-            if (item.getCraftingRemainder() != null) recipeRemainders.add(item.getCraftingRemainder().create());
-        }
+        List<ItemStack> recipeRemainders = BlendUtils.recipeRemainders(recipeInput);
         for (int i = 0; i <= OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);
         }
@@ -288,11 +281,11 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 //        for (int i = 0; i < recipeInput.size(); i++) {
 //            itemStack = recipeInput.getItem(i);
 //            if (!itemStack.isEmpty()) {
-//                if (itemStack.is(ModTags.Items.BLENDING_INGREDIENTS)) {
+//                if (itemStack.is(MintyBlendsTags.Items.BLENDING_INGREDIENTS)) {
 //                    if (itemStack.getItem() != Items.AIR) {
 //                        ingredientSet.add(itemStack.getItem().getDescriptionId());
 //                    }
-//                    if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(ModTags.Items.HERBS)) {
+//                    if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(MintyBlendsTags.Items.HERBS)) {
 //                        SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
 //                        if (suspiciousStewIngredient != null) {
 //                            MobEffectInstance statusEffect = new MobEffectInstance(suspiciousStewIngredient.getSuspiciousEffects().effects().getFirst().createEffectInstance());
@@ -311,10 +304,10 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 //        }
 //        HerbalBrewComponent herbalBrewComponent = new HerbalBrewComponent(List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet));
 //        Consumable consumableComponent = new Consumable(1.6f, ItemUseAnimation.DRINK, SoundEvents.GENERIC_DRINK, false, consumeEffects);
-        ItemStack herbalBrew = BlendingHelper.blendBrew(recipeInput);
+        ItemStack herbalBrew = BlendUtils.blendBrew(recipeInput);
 //        herbalBrew.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, herbalBrewComponent);
 //        herbalBrew.set(DataComponents.CONSUMABLE, consumableComponent);
-        for (ItemStack remainder : BlendingHelper.blendRemainders(recipeInput)) {
+        for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
             DefaultDispenseItemBehavior.spawnItem(level, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
         }
         for (int i = 0; i < OUTPUT_SLOT; i++) {

@@ -18,7 +18,7 @@
 //import net.minecraft.world.item.crafting.Ingredient;
 //import vectorwing.farmersdelight.common.crafting.CookingPotBookCategory;
 //import vectorwing.farmersdelight.common.tag.CommonTags;
-//import vectorwing.farmersdelight.common.tag.ModTags;
+//import vectorwing.farmersdelight.common.tag.MintyBlendsTags;
 //import vectorwing.farmersdelight.data.builder.CookingPotRecipeBuilder;
 //import vectorwing.farmersdelight.data.builder.CuttingBoardRecipeBuilder;
 //
@@ -35,7 +35,7 @@
 //            @Override
 //            public void buildRecipes() {
 //                HolderGetter<Item> holderGetter = wrapperLookup.lookupOrThrow(Registries.ITEM);
-//                CookingPotRecipeBuilder.cookingPotRecipe(holderGetter, FarmersDelightCompat.FRIED_GREENS.asItem(), 1, 200, 1.0f, Items.BOWL).addIngredient(ModTags.WILD_CROPS_ITEM).addIngredient(ItemTags.SMALL_FLOWERS).addIngredient(CommonTags.CROPS_CABBAGE).addIngredient(MintyBlendsItems.CULINARY_LEAVES).unlockedByItems("has_culinary_leaves", MintyBlendsItems.CULINARY_LEAVES).setRecipeBookCategory(CookingPotBookCategory.MEALS).build(withConditions(output, ResourceConditions.anyModsLoaded("farmersdelight")));
+//                CookingPotRecipeBuilder.cookingPotRecipe(holderGetter, FarmersDelightCompat.FRIED_GREENS.asItem(), 1, 200, 1.0f, Items.BOWL).addIngredient(MintyBlendsTags.WILD_CROPS_ITEM).addIngredient(ItemTags.SMALL_FLOWERS).addIngredient(CommonTags.CROPS_CABBAGE).addIngredient(MintyBlendsItems.CULINARY_LEAVES).unlockedByItems("has_culinary_leaves", MintyBlendsItems.CULINARY_LEAVES).setRecipeBookCategory(CookingPotBookCategory.MEALS).build(withConditions(output, ResourceConditions.anyModsLoaded("farmersdelight")));
 //                CookingPotRecipeBuilder.cookingPotRecipe(holderGetter, FarmersDelightCompat.ONION_SOUP.asItem(), 1, 200, 1.0f, Items.BOWL).addIngredient(CommonTags.CROPS_ONION).addIngredient(CommonTags.CROPS_ONION).addIngredient(CommonTags.FOODS_MILK).addIngredient(MintyBlendsItems.CULINARY_LEAVES).unlockedByItems("has_culinary_leaves", MintyBlendsItems.CULINARY_LEAVES).setRecipeBookCategory(CookingPotBookCategory.MEALS).build(withConditions(output, ResourceConditions.anyModsLoaded("farmersdelight")));
 //                CookingPotRecipeBuilder.cookingPotRecipe(holderGetter, FarmersDelightCompat.TOMATO_SOUP.asItem(), 1, 200, 1.0f, Items.BOWL).addIngredient(CommonTags.CROPS_TOMATO).addIngredient(CommonTags.CROPS_TOMATO).addIngredient(CommonTags.CROPS_ONION).addIngredient(MintyBlendsItems.CULINARY_LEAVES).addIngredient(Items.SUGAR).unlockedByItems("has_culinary_leaves", MintyBlendsItems.CULINARY_LEAVES).setRecipeBookCategory(CookingPotBookCategory.MEALS).build(withConditions(output, ResourceConditions.anyModsLoaded("farmersdelight")));
 //                CookingPotRecipeBuilder.cookingPotRecipe(holderGetter, FarmersDelightCompat.VEGETABLE_PORRIDGE.asItem(), 1, 200, 1.0f, Items.BOWL).addIngredient(CommonTags.CROPS_GRAIN).addIngredient(CommonTags.FOODS_MILK).addIngredient(ConventionalItemTags.VEGETABLE_FOODS).addIngredient(MintyBlendsItems.CULINARY_LEAVES).unlockedByItems("has_culinary_leaves", MintyBlendsItems.CULINARY_LEAVES).setRecipeBookCategory(CookingPotBookCategory.MEALS).build(withConditions(output, ResourceConditions.anyModsLoaded("farmersdelight")));

@@ -8,7 +8,7 @@ import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsMenus;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
@@ -37,9 +37,9 @@ public class MintyBlendsClient implements ClientModInitializer {
 							if (state.getValue(HortensiaCropBlock.HALF) == DoubleBlockHalf.UPPER) {
 								pos = pos.below();
 							}
-							boolean coldTag = level.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_PINK_HORTENSIAS);
-							boolean temperateTag = level.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_PURPLE_HORTENSIAS);
-							boolean warmTag = level.getBiomeFabric(pos).is(ModTags.Biomes.PRODUCES_BLUE_HORTENSIAS);
+							boolean coldTag = level.getBiomeFabric(pos).is(MintyBlendsTags.Biomes.PRODUCES_PINK_HORTENSIAS);
+							boolean temperateTag = level.getBiomeFabric(pos).is(MintyBlendsTags.Biomes.PRODUCES_PURPLE_HORTENSIAS);
+							boolean warmTag = level.getBiomeFabric(pos).is(MintyBlendsTags.Biomes.PRODUCES_BLUE_HORTENSIAS);
 
 							if (!temperateTag && coldTag && !warmTag) return COLD_CLIMATE_COLOR;
 							if (!temperateTag && !coldTag && warmTag) return WARM_CLIMATE_COLOR;

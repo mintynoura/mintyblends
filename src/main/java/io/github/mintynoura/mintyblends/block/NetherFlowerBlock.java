@@ -1,7 +1,7 @@
 package io.github.mintynoura.mintyblends.block;
 
 import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +25,7 @@ public class NetherFlowerBlock extends FlowerBlock implements BonemealableBlock 
 
     @Override
     protected boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
-        return floor.is(ModTags.Blocks.CUREFLOWER_GROWN_ON) || floor.is(ModTags.Blocks.RENDFLOWER_GROWN_ON) || super.mayPlaceOn(floor, world, pos);
+        return floor.is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) || floor.is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) || super.mayPlaceOn(floor, world, pos);
     }
 
     @Override
@@ -43,9 +43,9 @@ public class NetherFlowerBlock extends FlowerBlock implements BonemealableBlock 
         BlockPos newPos;
         for (int i = 0; i < 16; i++) {
             newPos = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
-            if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(ModTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
+            if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
                 world.setBlock(newPos, MintyBlendsBlocks.RENDFLOWER.defaultBlockState(), Block.UPDATE_ALL);
-            } else if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(ModTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
+            } else if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
                 world.setBlock(newPos, MintyBlendsBlocks.CUREFLOWER.defaultBlockState(), Block.UPDATE_ALL);
             }
         }

@@ -3,7 +3,7 @@ package io.github.mintynoura.mintyblends;
 import com.mojang.serialization.Codec;
 import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import io.github.mintynoura.mintyblends.worldgen.MintyBlendsPlacedFeatures;
 import net.fabricmc.api.ModInitializer;
 
@@ -42,12 +42,12 @@ public class MintyBlends implements ModInitializer {
 		MintyBlendsSoundEvents.registerSoundEffects();
 		MintyBlendsParticleTypes.registerParticleTypes();
 
-		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_CATNIP), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CATNIP_PLACED_FEATURE_KEY);
-		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_CULINARY_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CULINARY_HERB_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_CATNIP), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CATNIP_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_CULINARY_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CULINARY_HERB_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.CRIMSON_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CUREFLOWER_PLACED_FEATURE_KEY);
-		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_MEDICINAL_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.MEDICINAL_HERB_PLACED_FEATURE_KEY);
-		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_MINT), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.MINT_PLACED_FEATURE_KEY);
-		BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.HAS_SAGEBRUSH), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.SAGEBRUSH_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_MEDICINAL_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.MEDICINAL_HERB_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_MINT), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.MINT_PLACED_FEATURE_KEY);
+		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_SAGEBRUSH), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.SAGEBRUSH_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.DARK_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.SILENT_FLOWER_PLACED_FEATURE_KEY);
 
 		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {

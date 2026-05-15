@@ -38,12 +38,11 @@
 
   "item.mintyblends.fried_greens": "Fried Greens",
   "item.mintyblends.fried_mushrooms": "Fried Mushrooms",
-  "item.mintyblends.onion_soup": "Onion Soup",
   "item.mintyblends.tomato_soup": "Tomato Soup",
   "item.mintyblends.vegetable_porridge": "Vegetable Porridge",
 
   "tooltip.mintyblends.ingredients": "Ingredients:",
-  "tooltip.mintyblends.no_effects": "No Status Effects",
+  "tooltip.mintyblends.no_effects": "No Potion Effects",
   "tooltip.mintyblends.range": "Range:",
 
   "effect.mintyblends.reaching": "Reaching",

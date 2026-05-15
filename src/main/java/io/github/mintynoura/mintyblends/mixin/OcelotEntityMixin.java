@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsLootTables;
-import io.github.mintynoura.mintyblends.util.ModTags;
+import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -42,12 +42,12 @@ public abstract class OcelotEntityMixin extends Animal {
 
     @WrapOperation(method = "lambda$registerGoals$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/tags/TagKey;)Z"))
     private static boolean mintyBlends$addCatnipToGoal(ItemStack instance, TagKey<Item> tag, Operation<Boolean> original) {
-        return original.call(instance, tag) || instance.is(ModTags.Items.CAT_LOVED);
+        return original.call(instance, tag) || instance.is(MintyBlendsTags.Items.CAT_LOVED);
     }
 
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void mintyBlends$catnipInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-       if (player.getItemInHand(hand).is(ModTags.Items.CAT_LOVED)) {
+       if (player.getItemInHand(hand).is(MintyBlendsTags.Items.CAT_LOVED)) {
            if (!this.isTrusting()) {
                if (!this.level().isClientSide()) {
                    this.setTrusting(true);
