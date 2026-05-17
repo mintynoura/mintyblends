@@ -12,6 +12,10 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class MintyBlendsLootTables {
+    // minty blends loot tables
+    public static final ResourceKey<LootTable> OCELOT_GIFT = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "gameplay/ocelot_gift"));
+
+    // vanilla loot tables
     private static final ResourceKey<LootTable> SNIFFER_DIGGING_LOOT_TABLE_KEY = BuiltInLootTables.SNIFFER_DIGGING;
     private static final ResourceKey<LootTable> PIGLIN_BARTERING_LOOT_TABLE_KEY = BuiltInLootTables.PIGLIN_BARTERING;
 
@@ -27,9 +31,7 @@ public class MintyBlendsLootTables {
         );
     }
 
-    public static final ResourceKey<LootTable> OCELOT_GIFT = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "gameplay/ocelot_gift"));
-
-    public static void registerLootTables() {
+    public static void initialize() {
         modify();
     }
 }

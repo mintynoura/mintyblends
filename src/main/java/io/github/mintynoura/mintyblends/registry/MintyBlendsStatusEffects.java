@@ -18,5 +18,5 @@ public class MintyBlendsStatusEffects {
     public static final Holder<MobEffect> RENDING = Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "rending"), new MintyStatusEffect(MobEffectCategory.HARMFUL, 0xd5a3dc));
     public static final Holder<MobEffect> STEALTH = Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "stealth"), new MintyStatusEffect(MobEffectCategory.BENEFICIAL, 0x6167cf));
 
-    public static void registerStatusEffects() {}
+    public static void initialize() {}
 }

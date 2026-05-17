@@ -15,5 +15,5 @@ public class MintyBlendsSoundEvents {
         return Registry.register(BuiltInRegistries.SOUND_EVENT, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name), SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name)));
     }
 
-    public static void registerSoundEffects() {}
+    public static void initialize() {}
 }

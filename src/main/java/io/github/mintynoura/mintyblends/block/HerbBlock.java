@@ -32,7 +32,7 @@ public class HerbBlock extends VegetationBlock implements SuspiciousEffectHolder
     private static final VoxelShape SHAPE = Block.column(10.0, 0.0, 16.0);
 
     public HerbBlock(Holder<MobEffect> stewEffect, float effectLengthInSeconds, BlockBehaviour.Properties settings) {
-        this(createStewEffectList(stewEffect, effectLengthInSeconds), settings);
+        this(makeEffectList(stewEffect, effectLengthInSeconds), settings);
     }
 
     protected HerbBlock(SuspiciousStewEffects stewEffects, BlockBehaviour.Properties properties) {
@@ -40,7 +40,7 @@ public class HerbBlock extends VegetationBlock implements SuspiciousEffectHolder
         this.stewEffects = stewEffects;
     }
 
-    protected static SuspiciousStewEffects createStewEffectList(Holder<MobEffect> effect, float effectLengthInSeconds) {
+    protected static SuspiciousStewEffects makeEffectList(Holder<MobEffect> effect, float effectLengthInSeconds) {
         return new SuspiciousStewEffects(List.of(new SuspiciousStewEffects.Entry(effect, Mth.floor(effectLengthInSeconds * 20.0F))));
     }
 
@@ -60,17 +60,17 @@ public class HerbBlock extends VegetationBlock implements SuspiciousEffectHolder
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return BonemealableBlock.hasSpreadableNeighbourPos(level, pos, state);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
-        return true;
-    }
-
-    @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
-        BonemealableBlock.findSpreadableNeighbourPos(world, pos, state).ifPresent(posx -> world.setBlockAndUpdate(posx, this.defaultBlockState()));
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        BonemealableBlock.findSpreadableNeighbourPos(level, pos, state).ifPresent(posx -> level.setBlockAndUpdate(posx, this.defaultBlockState()));
     }
 }

@@ -15,7 +15,7 @@ public class MintyBlendsComponents {
     public static final DataComponentType<CenserComponent> CENSER_COMPONENT = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "censer_contents"), DataComponentType.<CenserComponent>builder().persistent(CenserComponent.CODEC).build());
     public static final DataComponentType<HerbComponent> HERB_COMPONENT = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "herb"), DataComponentType.<HerbComponent>builder().persistent(HerbComponent.CODEC).build());
 
-    public static void registerComponents() {
+    public static void initialize() {
         ItemComponentTooltipProviderRegistry.addFirst(HERBAL_BREW_COMPONENT);
         ItemComponentTooltipProviderRegistry.addFirst(CENSER_COMPONENT);
     }

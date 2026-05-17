@@ -37,7 +37,7 @@ public class CenserItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+    public InteractionResult use(Level level, Player user, InteractionHand hand) {
         ItemStack censer = user.getItemInHand(hand);
         ItemStack flintAndSteel = user.getOffhandItem();
 
@@ -48,18 +48,18 @@ public class CenserItem extends Item {
         CenserComponent component = censer.get(MintyBlendsComponents.CENSER_COMPONENT);
 
         float diameter = 2 * component.range();
-        List<LivingEntity> entitiesList = world.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(MintyBlendsTags.EntityTypes.IGNORES_CENSER));
+        List<LivingEntity> entitiesList = level.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(MintyBlendsTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
         }
         censer.hurtAndBreak(1, user, EquipmentSlot.MAINHAND);
         flintAndSteel.hurtAndBreak(1, user, EquipmentSlot.OFFHAND);
-        world.playSound(user, user.blockPosition(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
-        world.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
+        level.playSound(user, user.blockPosition(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+        level.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
 
-        world.gameEvent(user, GameEvent.ITEM_INTERACT_FINISH, user.blockPosition());
-        if (!world.isClientSide()) {
-            ((ServerLevel) world).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, user.getX(), user.getY() + 1, user.getZ(), 8, 0.625, 0.25, 0.625, 0);
+        level.gameEvent(user, GameEvent.ITEM_INTERACT_FINISH, user.blockPosition());
+        if (!level.isClientSide()) {
+            ((ServerLevel) level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, user.getX(), user.getY(0.5), user.getZ(), 8, 0.625, 0.25, 0.625, 0);
             user.awardStat(Stats.ITEM_USED.get(user.getItemInHand(hand).getItem()));
         }
         return InteractionResult.SUCCESS;

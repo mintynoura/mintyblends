@@ -7,9 +7,6 @@ import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 
 public class MintyBlendsConfig extends ReflectiveConfig {
-    @Comment("The amount of health to restore when applying the \"mintyblends:heal\" Herbal Effect (e.g. Medicinal Leaves)")
-    @SerializedName("heal_amount")
-    public final TrackedValue<Float> healAmount = this.value(2f);
     @Comment("The amount of hunger to fill when applying the \"mintyblends:feed\" Herbal Effect (e.g. Culinary Leaves)")
     @SerializedName("nutrition_amount")
     public final TrackedValue<Integer> nutritionAmount = this.value(2);
@@ -28,7 +25,7 @@ public class MintyBlendsConfig extends ReflectiveConfig {
 
     @SerializedName("StatusEffects")
     public final StatusEffectSection statusEffectSection = new StatusEffectSection();
-    public static final class StatusEffectSection extends folk.sisby.kaleido.lib.quiltconfig.api.ReflectiveConfig.Section {
+    public static final class StatusEffectSection extends Section {
         @Comment("The block reach attribute increase for the Reaching effect, per level")
         @SerializedName("reaching_block_range_increase")
         public final TrackedValue<Float> reachingBlockRangeModifier = this.value(2f);

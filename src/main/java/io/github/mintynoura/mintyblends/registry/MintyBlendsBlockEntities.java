@@ -23,6 +23,6 @@ public class MintyBlendsBlockEntities {
         return location;
     }
 
-    public static void registerBlockEntities() {
+    public static void initialize() {
     }
 }

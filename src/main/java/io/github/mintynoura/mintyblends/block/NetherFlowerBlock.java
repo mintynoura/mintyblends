@@ -10,8 +10,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,29 +22,29 @@ public class NetherFlowerBlock extends FlowerBlock implements BonemealableBlock 
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
-        return floor.is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) || floor.is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) || super.mayPlaceOn(floor, world, pos);
+    protected boolean mayPlaceOn(BlockState floor, BlockGetter level, BlockPos pos) {
+        return floor.is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) || floor.is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) || super.mayPlaceOn(floor, level, pos);
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
-        return BonemealableBlock.hasSpreadableNeighbourPos(world, pos, state);
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return BonemealableBlock.hasSpreadableNeighbourPos(level, pos, state);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos newPos;
         for (int i = 0; i < 16; i++) {
             newPos = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
-            if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
-                world.setBlock(newPos, MintyBlendsBlocks.RENDFLOWER.defaultBlockState(), Block.UPDATE_ALL);
-            } else if (world.getBlockState(newPos).is(Blocks.AIR) && world.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
-                world.setBlock(newPos, MintyBlendsBlocks.CUREFLOWER.defaultBlockState(), Block.UPDATE_ALL);
+            if (level.isEmptyBlock(newPos) && level.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.RENDFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
+                level.setBlockAndUpdate(newPos, MintyBlendsBlocks.RENDFLOWER.defaultBlockState());
+            } else if (level.isEmptyBlock(newPos) && level.getBlockState(newPos.below()).is(MintyBlendsTags.Blocks.CUREFLOWER_GROWN_ON) && random.nextInt(6) == 0) {
+                level.setBlockAndUpdate(newPos, MintyBlendsBlocks.CUREFLOWER.defaultBlockState());
             }
         }
     }

@@ -45,38 +45,38 @@ public class HortensiaCropBlock extends PitcherCropBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return this.shapeFunction.apply(state);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 
-    private static boolean canGrowInto(LevelReader world, BlockPos pos) {
-        BlockState blockState = world.getBlockState(pos);
+    private static boolean canGrowInto(LevelReader level, BlockPos pos) {
+        BlockState blockState = level.getBlockState(pos);
         return blockState.isAir() || blockState.is(MintyBlendsBlocks.HORTENSIA_CROP);
     }
 
 
-    private void grow(ServerLevel world, BlockState state, BlockPos pos, int amount) {
+    private void grow(ServerLevel level, BlockState state, BlockPos pos, int amount) {
         int i = Math.min(state.getValue(AGE) + amount, 4);
-        if (this.canGrow(world, pos, state, i)) {
+        if (this.canGrow(level, pos, state, i)) {
             BlockState blockState = state.setValue(AGE, i);
-            world.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
+            level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
             if (isDouble(i)) {
-                world.setBlock(pos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
+                level.setBlock(pos.above(), blockState.setValue(HALF, DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
             }
         }
     }
 
-    private boolean canGrow(LevelReader world, BlockPos pos, BlockState state, int age) {
-        return !this.isMaxAge(state) && sufficientLight(world, pos) && (!isDouble(age) || canGrowInto(world, pos.above()));
+    private boolean canGrow(LevelReader level, BlockPos pos, BlockState state, int age) {
+        return !this.isMaxAge(state) && sufficientLight(level, pos) && (!isDouble(age) || canGrowInto(level, pos.above()));
     }
 
-    private static boolean sufficientLight(LevelReader world, BlockPos pos) {
-        return world.getRawBrightness(pos, 0) >= 8;
+    private static boolean sufficientLight(LevelReader level, BlockPos pos) {
+        return level.getRawBrightness(pos, 0) >= 8;
     }
 
     private boolean isMaxAge(BlockState state) {
@@ -94,12 +94,12 @@ public class HortensiaCropBlock extends PitcherCropBlock {
     }
 
     @Nullable
-    private HortensiaCropBlock.LowerHalfContext getLowerHalfContext(LevelReader world, BlockPos pos, BlockState state) {
+    private HortensiaCropBlock.LowerHalfContext getLowerHalfContext(LevelReader level, BlockPos pos, BlockState state) {
         if (isLower(state)) {
             return new HortensiaCropBlock.LowerHalfContext(pos, state);
         } else {
             BlockPos blockPos = pos.below();
-            BlockState blockState = world.getBlockState(blockPos);
+            BlockState blockState = level.getBlockState(blockPos);
             return isLower(blockState) ? new HortensiaCropBlock.LowerHalfContext(blockPos, blockState) : null;
         }
     }
@@ -108,16 +108,16 @@ public class HortensiaCropBlock extends PitcherCropBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
-        LowerHalfContext lowerHalfContext = this.getLowerHalfContext(world, pos, state);
-        return lowerHalfContext != null && this.canGrow(world, lowerHalfContext.pos, lowerHalfContext.state, lowerHalfContext.state.getValue(AGE) + 1);
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        LowerHalfContext lowerHalfContext = this.getLowerHalfContext(level, pos, state);
+        return lowerHalfContext != null && this.canGrow(level, lowerHalfContext.pos, lowerHalfContext.state, lowerHalfContext.state.getValue(AGE) + 1);
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
-        HortensiaCropBlock.LowerHalfContext lowerHalfContext = this.getLowerHalfContext(world, pos, state);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        HortensiaCropBlock.LowerHalfContext lowerHalfContext = this.getLowerHalfContext(level, pos, state);
         if (lowerHalfContext != null) {
-            this.grow(world, lowerHalfContext.state, lowerHalfContext.pos, 1);
+            this.grow(level, lowerHalfContext.state, lowerHalfContext.pos, 1);
         }
     }
 }

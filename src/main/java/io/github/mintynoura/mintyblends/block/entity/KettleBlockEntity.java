@@ -49,6 +49,7 @@ import java.util.*;
 @NullMarked
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
+    // TODO: increase ingredient slots to 8, rework burner
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     private int progress = 0;
     private int brewTime;
@@ -59,11 +60,11 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 
     @Nullable
     private Component customName;
-    protected final ContainerData propertyDelegate;
+    protected final ContainerData containerData;
 
     public KettleBlockEntity(BlockPos pos, BlockState state) {
         super(MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, pos, state);
-        this.propertyDelegate = new ContainerData() {
+        this.containerData = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
@@ -158,7 +159,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new KettleMenu(syncId, playerInventory, this, this.propertyDelegate);
+        return new KettleMenu(syncId, playerInventory, this, this.containerData);
     }
 
     public void light() {
@@ -225,28 +226,28 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         }
     }
 
-    public void tick(Level world, BlockPos pos, BlockState state) {
+    public void tick(Level level, BlockPos pos, BlockState state) {
         boolean changed = state.getValue(KettleBlock.LIT) ^ this.isLit();
         if (changed) {
             state = state.setValue(KettleBlock.LIT, this.isLit());
-            world.setBlock(pos, state, Block.UPDATE_ALL);
+            level.setBlock(pos, state, Block.UPDATE_ALL);
         }
         if (this.isLit()) {
-            if (hasRecipe() && canCraftRecipe(world.registryAccess(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
+            if (hasRecipe() && canCraftRecipe(level.registryAccess(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
                 this.progress++;
                 this.brewTime = this.getBrewingTime(getRecipe().get());
-                setChanged(world, pos, state);
+                setChanged(level, pos, state);
                 if (this.progress == this.brewTime) {
                     craftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
-                    postCraft(world, state);
+                    postCraft(level, state);
                 }
             } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
                 this.progress++;
                 this.brewTime = KettleBrewingRecipe.defaultBrewingTime;
-                setChanged(world, pos, state);
+                setChanged(level, pos, state);
                 if (this.progress == this.brewTime) {
                     blend(new KettleBrewingRecipeInput(getIngredients()));
-                   postCraft(world, state);
+                   postCraft(level, state);
                 }
             } else this.progress = 0;
         } else this.progress = 0;
@@ -316,17 +317,17 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         this.setItem(OUTPUT_SLOT, herbalBrew);
     }
 
-    private void postCraft(Level world, BlockState state) {
-        RandomSource random = world.getRandom();
+    private void postCraft(Level level, BlockState state) {
+        RandomSource random = level.getRandom();
         Direction direction = state.getValue(HorizontalDirectionalBlock.FACING).getClockWise();
         double h = random.nextDouble() * 0.6 - 0.3;
         double i = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * 0.52 : h;
         double k = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * 0.52 : h;
         for (int count = 0; count < 3; count++) {
-            ((ServerLevel) world).sendParticles(MintyBlendsParticleTypes.KETTLE_STEAM, worldPosition.getX() + 0.5 + i, worldPosition.getY() + 1, worldPosition.getZ() + 0.5 + k, 1, 0, 0.1, 0, 0);
+            ((ServerLevel) level).sendParticles(MintyBlendsParticleTypes.KETTLE_STEAM, worldPosition.getX() + 0.5 + i, worldPosition.getY() + 1, worldPosition.getZ() + 0.5 + k, 1, 0, 0.1, 0, 0);
         }
         if (this.litUses == 1) {
-            world.playSound(
+            level.playSound(
                     null,
                     worldPosition.getX() + 0.5,
                     worldPosition.getY() + 0.5,

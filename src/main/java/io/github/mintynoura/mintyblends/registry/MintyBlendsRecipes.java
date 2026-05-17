@@ -20,5 +20,5 @@ public class MintyBlendsRecipes {
         }
     });
 
-    public static void registerRecipes() {}
+    public static void initialize() {}
 }

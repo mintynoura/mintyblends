@@ -166,7 +166,7 @@ public class MintyBlendsBlocks {
         return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
     }
 
-    public static void registerBlocks() {
+    public static void initialize() {
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.MINT, 100, 60);
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.CATNIP, 100, 60);
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.MEDICINAL_HERB, 100, 60);

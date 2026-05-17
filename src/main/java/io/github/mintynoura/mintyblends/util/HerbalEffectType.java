@@ -52,8 +52,6 @@ public class HerbalEffectType {
             }
         }
 
-        if (herbalEffect.equals(EXTINGUISH)) livingEntity.extinguishFire();
-        if (herbalEffect.equals(HEAL)) livingEntity.heal(config.healAmount.value());
         if (herbalEffect.equals(FEED) && livingEntity instanceof Player) {
             ((Player) livingEntity).getFoodData().eat(config.nutritionAmount.value(), config.saturationModifier.value());
         }

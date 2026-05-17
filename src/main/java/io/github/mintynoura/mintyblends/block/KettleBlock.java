@@ -69,12 +69,12 @@ public class KettleBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 
-    public static boolean canBeLit(BlockState state, Level world, BlockPos pos) {
-        return tryLight(state, world, pos);
+    public static boolean canBeLit(BlockState state, Level level, BlockPos pos) {
+        return tryLight(state, level, pos);
     }
 
-    private static boolean tryLight(BlockState state, Level world, BlockPos pos) {
-        KettleBlockEntity blockEntity = (KettleBlockEntity) world.getBlockEntity(pos);
+    private static boolean tryLight(BlockState state, Level level, BlockPos pos) {
+        KettleBlockEntity blockEntity = (KettleBlockEntity) level.getBlockEntity(pos);
         if (!state.getValue(LIT)) {
             blockEntity.light();
             return true;
@@ -87,12 +87,12 @@ public class KettleBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return OUTLINE_SHAPES_BY_DIRECTION.get(state.getValue(FACING));
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return BASE_SHAPE;
     }
 
@@ -138,10 +138,10 @@ public class KettleBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (state.getValue(LIT)) {
             if (random.nextFloat() < 0.11f) {
-                world.playLocalSound(
+                level.playLocalSound(
                         pos.getX() + 0.5,
                         pos.getY() + 0.5,
                         pos.getZ() + 0.5,
@@ -157,7 +157,7 @@ public class KettleBlock extends BaseEntityBlock {
                double h = random.nextDouble() * 0.6 - 0.3;
                double i = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * 0.52 : h;
                double k = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * 0.52 : h;
-               world.addParticle(MintyBlendsParticleTypes.KETTLE_STEAM, pos.getX() + 0.5 + i, pos.getY() + 1, pos.getZ() + 0.5 + k, 0.0, 0.07, 0.0);
+               level.addParticle(MintyBlendsParticleTypes.KETTLE_STEAM, pos.getX() + 0.5 + i, pos.getY() + 1, pos.getZ() + 0.5 + k, 0.0, 0.07, 0.0);
            }
         }
     }
@@ -184,13 +184,13 @@ public class KettleBlock extends BaseEntityBlock {
 
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
-        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(world.getBlockEntity(pos));
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        if (world.isClientSide()) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide()) {
             return null;
         }
         return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));

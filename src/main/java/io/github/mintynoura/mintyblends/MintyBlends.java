@@ -30,18 +30,27 @@ public class MintyBlends implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		MintyBlendsBlocks.registerBlocks();
-		MintyBlendsItems.registerItems();
-		MintyBlendsCompostables.registerCompostableItems();
-		MintyBlendsBlockEntities.registerBlockEntities();
-		MintyBlendsMenus.registerMenus();
-		MintyBlendsRecipes.registerRecipes();
-		MintyBlendsLootTables.registerLootTables();
-		MintyBlendsStatusEffects.registerStatusEffects();
-		MintyBlendsComponents.registerComponents();
-		MintyBlendsSoundEvents.registerSoundEffects();
-		MintyBlendsParticleTypes.registerParticleTypes();
+		MintyBlendsBlocks.initialize();
+		MintyBlendsItems.initialize();
+		MintyBlendsCompostables.initialize();
+		MintyBlendsBlockEntities.initialize();
+		MintyBlendsMenus.initialize();
+		MintyBlendsRecipes.initialize();
+		MintyBlendsLootTables.initialize();
+		MintyBlendsStatusEffects.initialize();
+		MintyBlendsComponents.initialize();
+		MintyBlendsSoundEvents.initialize();
+		MintyBlendsParticleTypes.initialize();
+		MintyBlendsConsumeEffects.initialize();
 
+		addBiomeFeatures();
+
+		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
+			FarmersDelightCompat.registerItems();
+		}
+	}
+
+	public static void addBiomeFeatures() {
 		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_CATNIP), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CATNIP_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_CULINARY_HERB), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CULINARY_HERB_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.CRIMSON_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.CUREFLOWER_PLACED_FEATURE_KEY);
@@ -49,9 +58,5 @@ public class MintyBlends implements ModInitializer {
 		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_MINT), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.MINT_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.tag(MintyBlendsTags.Biomes.HAS_SAGEBRUSH), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.SAGEBRUSH_PLACED_FEATURE_KEY);
 		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.DARK_FOREST), GenerationStep.Decoration.VEGETAL_DECORATION, MintyBlendsPlacedFeatures.SILENT_FLOWER_PLACED_FEATURE_KEY);
-
-		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
-			FarmersDelightCompat.registerItems();
-		}
 	}
 }
