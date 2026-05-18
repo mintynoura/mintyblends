@@ -26,7 +26,6 @@ import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -63,15 +62,8 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<MobEffect
     }
 
     public void apply(LivingEntity user, float durationMultiplier) {
-        if (user.level() instanceof ServerLevel serverWorld) {
-            Player playerEntity2 = user instanceof Player playerEntity ? playerEntity : null;
-            this.forEachEffect(effect -> {
-                if (effect.getEffect().value().isInstantenous()) {
-                    effect.getEffect().value().applyInstantenousEffect(serverWorld, playerEntity2, playerEntity2, user, effect.getAmplifier(), 1.0);
-                } else {
-                    user.addEffect(effect);
-                }
-            }, durationMultiplier);
+        if (user.level() instanceof ServerLevel) {
+            this.forEachEffect(effect -> user.addEffect(new MobEffectInstance(effect)), durationMultiplier);
         }
     }
 

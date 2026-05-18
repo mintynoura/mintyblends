@@ -43,7 +43,7 @@ public class MintyBlendsBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(MobEffects.INSTANT_HEALTH, 1f, settings), BlockBehaviour.Properties.of()
+    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(MobEffects.INSTANT_HEALTH, 0.05f, settings), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()

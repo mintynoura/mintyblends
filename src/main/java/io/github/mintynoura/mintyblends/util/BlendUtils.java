@@ -39,7 +39,8 @@ public class BlendUtils {
                     if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(MintyBlendsTags.Items.HERBS)) {
                         SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
                         if (suspiciousStewIngredient != null) {
-                            suspiciousStewIngredient.getSuspiciousEffects().effects().stream().map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
+                            suspiciousStewIngredient.getSuspiciousEffects().effects().stream()
+                                    .map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
                         }
                     }
                     if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
@@ -78,7 +79,8 @@ public class BlendUtils {
                     if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(MintyBlendsTags.Items.HERBS)) {
                         SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
                         if (suspiciousStewIngredient != null) {
-                            suspiciousStewIngredient.getSuspiciousEffects().effects().stream().map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
+                            suspiciousStewIngredient.getSuspiciousEffects().effects().stream()
+                                    .map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
                         }
                     }
                     if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
@@ -109,7 +111,8 @@ public class BlendUtils {
                 int durationStack = 0;
                 for (Map.Entry<Holder<MobEffect>, Boolean> duplicate : duplicateMap.entrySet()) {
                     if (duplicate.getValue()) {
-                        List<MobEffectInstance> effectsToStack = mobEffects.stream().filter(duplicateEffect -> duplicateEffect.getEffect().equals(duplicate.getKey())).toList();
+                        List<MobEffectInstance> effectsToStack = mobEffects.stream()
+                                .filter(duplicateEffect -> duplicateEffect.getEffect().equals(duplicate.getKey())).toList();
                         for (MobEffectInstance stackingEffect : effectsToStack) {
                             durationStack += stackingEffect.getDuration();
                         }
