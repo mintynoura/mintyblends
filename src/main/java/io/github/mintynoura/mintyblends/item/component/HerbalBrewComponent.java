@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.mintynoura.mintyblends.util.HerbalEffectType;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,10 +14,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,12 +36,18 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.Level;
 
-public record HerbalBrewComponent(List<Identifier> herbalEffects, List<MobEffectInstance> potionEffects, List<String> ingredients) implements ConsumableListener, TooltipProvider {
+public record HerbalBrewComponent(List<MobEffectInstance> potionEffects, List<String> ingredients) implements ConsumableListener, TooltipProvider {
     public static final Codec<HerbalBrewComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(HerbalBrewComponent::herbalEffects),
             MobEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(HerbalBrewComponent::potionEffects),
             Codec.STRING.listOf().optionalFieldOf("ingredients",List.of()).forGetter(HerbalBrewComponent::ingredients)
             ).apply(builder, HerbalBrewComponent::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, HerbalBrewComponent> STREAM_CODEC = StreamCodec.composite(
+      MobEffectInstance.STREAM_CODEC.apply(ByteBufCodecs.list()),
+      HerbalBrewComponent::potionEffects,
+      ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
+      HerbalBrewComponent::ingredients,
+      HerbalBrewComponent::new
+    );
 
     public List<MobEffectInstance> potionEffects() {
         return Lists.transform(this.potionEffects, MobEffectInstance::new);
@@ -154,9 +161,6 @@ public record HerbalBrewComponent(List<Identifier> herbalEffects, List<MobEffect
 
     @Override
     public void onConsume(Level world, LivingEntity user, ItemStack stack, Consumable consumable) {
-        for (Identifier herbalEffect : herbalEffects) {
-            HerbalEffectType.applyHerb(user, herbalEffect);
-        }
         this.apply(user, stack.getOrDefault(DataComponents.POTION_DURATION_SCALE, 1.0F));
     }
 }

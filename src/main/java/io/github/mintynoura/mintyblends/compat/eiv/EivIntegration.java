@@ -5,6 +5,7 @@ import de.crafty.eiv.common.api.recipe.ItemView;
 import de.crafty.eiv.common.recipe.ServerRecipeManager;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 
+// TODO: stack sensitive brews
 public class EivIntegration implements IExtendedItemViewIntegration {
     @Override
     public void onIntegrationInitialize() {

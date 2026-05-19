@@ -15,7 +15,17 @@
           "duration": 60,
           "id": "minecraft:fire_resistance"
         }
-      ]
+      ],
+      "minecraft:consumable": {
+        "on_consume_effects": [
+          {
+            "type": "mintyblends:extinguish",
+            "particle": {
+              "type": "minecraft:snowflake"
+            }
+          }
+        ]
+      }
     },
     "count": 1,
     "id": "minecraft:suspicious_stew"

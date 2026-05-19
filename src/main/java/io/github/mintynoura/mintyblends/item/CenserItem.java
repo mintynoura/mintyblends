@@ -32,7 +32,7 @@ public class CenserItem extends Item {
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack itemStack = super.getDefaultInstance();
-        itemStack.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()));
+        itemStack.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of()));
         return itemStack;
     }
 

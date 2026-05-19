@@ -4,7 +4,7 @@ import cc.cassian.rrv.api.ReliableRecipeViewerPlugin;
 import cc.cassian.rrv.api.recipe.ItemView;
 import cc.cassian.rrv.common.recipe.ServerRecipeManager;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
-
+// TODO: stack sensitive brews
 public class RrvIntegration implements ReliableRecipeViewerPlugin {
     @Override
     public void onIntegrationInitialize() {

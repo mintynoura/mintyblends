@@ -8,7 +8,6 @@ import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
@@ -28,7 +27,6 @@ public class BlendUtils {
     public static ItemStack blendBrew(KettleBrewingRecipeInput recipeInput) {
         List<MobEffectInstance> mobEffects = new ArrayList<>();
         Set<MobEffectInstance> appliedMobEffects = new HashSet<>();
-        List<Identifier> herbalEffects = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
         List<ConsumeEffect> consumeEffects = new ArrayList<>();
         for (int i = 0; i < recipeInput.size(); i++) {
@@ -43,10 +41,6 @@ public class BlendUtils {
                                     .map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
                         }
                     }
-                    if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
-                        Identifier herbalEffect = itemStack.get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect();
-                        herbalEffects.add(herbalEffect);
-                    }
                     if (itemStack.has(DataComponents.CONSUMABLE)) {
                         consumeEffects.addAll(itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects());
                     }
@@ -57,7 +51,7 @@ public class BlendUtils {
             stackEffects(mobEffects, appliedMobEffects);
         }
         ItemStack herbalBrew = new ItemStack(MintyBlendsItems.HERBAL_BREW);
-        herbalBrew.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(herbalEffects, List.copyOf(appliedMobEffects), ingredients));
+        herbalBrew.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.copyOf(appliedMobEffects), ingredients));
         herbalBrew.set(DataComponents.CONSUMABLE, new Consumable(1.6f, ItemUseAnimation.DRINK, SoundEvents.GENERIC_DRINK, false, consumeEffects));
         return herbalBrew;
     }
@@ -66,7 +60,6 @@ public class BlendUtils {
         ItemStack censer = ItemStack.EMPTY;
         List<MobEffectInstance> mobEffects = new ArrayList<>();
         Set<MobEffectInstance> appliedMobEffects = new HashSet<>();
-        List<Identifier> herbalEffects = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
         List<ConsumeEffect> consumeEffects = new ArrayList<>();
         for (int i = 0; i < recipeInput.size(); i++) {
@@ -83,10 +76,6 @@ public class BlendUtils {
                                     .map(SuspiciousStewEffects.Entry::createEffectInstance).forEach(mobEffects::add);
                         }
                     }
-                    if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
-                        Identifier herbalEffect = itemStack.get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect();
-                        herbalEffects.add(herbalEffect);
-                    }
                     if (itemStack.has(DataComponents.CONSUMABLE)) {
                         consumeEffects.addAll(itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects());
                     }
@@ -96,7 +85,7 @@ public class BlendUtils {
         if (!mobEffects.isEmpty()) {
             stackEffects(mobEffects, appliedMobEffects);
         }
-        censer.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(censer.get(MintyBlendsComponents.CENSER_COMPONENT).range(), herbalEffects, List.copyOf(appliedMobEffects), ingredients, consumeEffects)) ;
+        censer.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(censer.get(MintyBlendsComponents.CENSER_COMPONENT).range(), List.copyOf(appliedMobEffects), ingredients, consumeEffects)) ;
         return censer;
     }
 

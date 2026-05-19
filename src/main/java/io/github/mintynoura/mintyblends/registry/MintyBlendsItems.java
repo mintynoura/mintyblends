@@ -2,7 +2,6 @@ package io.github.mintynoura.mintyblends.registry;
 
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.item.CenserItem;
-import io.github.mintynoura.mintyblends.item.HerbalBrewItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
 import io.github.mintynoura.mintyblends.util.MintyBlendsConsumables;
@@ -45,8 +44,8 @@ public class MintyBlendsItems {
             .food(MintyBlendsFoods.RENDFLOWER, MintyBlendsConsumables.RENDFLOWER));
     public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(MintyBlendsBlocks.HORTENSIA_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
 
-    public static final Item HERBAL_BREW = registerItem("herbal_brew", HerbalBrewItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of(), List.of()))
+    public static final Item HERBAL_BREW = registerItem("herbal_brew", Item::new, new Item.Properties()
+            .component(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of()))
             .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
@@ -85,13 +84,13 @@ public class MintyBlendsItems {
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of()))
             .durability(3));
     public static final Item GOLDEN_CENSER = registerItem("golden_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(7f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(7f, List.of(), List.of(), List.of()))
             .durability(2));
     public static final Item IRON_CENSER = registerItem("iron_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of()))
             .durability(4));
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {

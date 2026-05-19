@@ -16,14 +16,17 @@
           "id": "minecraft:speed"
         }
       ],
-      "mintyblends:herb": {
-        "herbal_effect": "mintyblends:lower_sniffer_cooldown"
-      },
       "minecraft:consumable": {
         "on_consume_effects": [
           {
             "type": "minecraft:remove_effects",
             "effects": "minecraft:slowness"
+          },
+          {
+            "type": "mintyblends:modify_sniffer_cooldown",
+            "particle": {
+              "type": "minecraft:happy_villager"
+            }
           }
         ]
       }

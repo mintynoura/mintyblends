@@ -16,8 +16,15 @@
           "id": "minecraft:fire_resistance"
         }
       ],
-      "mintyblends:herb": {
-        "herbal_effect": "mintyblends:extinguish"
+      "minecraft:consumable": {
+        "on_consume_effects": [
+          {
+            "type": "mintyblends:extinguish",
+            "particle": {
+              "type": "minecraft:snowflake"
+            }
+          }
+        ]
       }
     },
     "count": 1,

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.mintynoura.mintyblends.util.HerbalEffectType;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,11 +15,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -28,7 +28,6 @@ import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -38,14 +37,24 @@ import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public record CenserComponent(float range, List<Identifier> herbalEffects, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
+public record CenserComponent(float range, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
     public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             ExtraCodecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
-            Identifier.CODEC.listOf().optionalFieldOf("herbal_effects", List.of()).forGetter(CenserComponent::herbalEffects),
             MobEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects),
             Codec.STRING.listOf().optionalFieldOf("ingredients", List.of()).forGetter(CenserComponent::ingredients),
             ConsumeEffect.CODEC.listOf().optionalFieldOf("consume_effects", List.of()).forGetter(CenserComponent::consumeEffects)
             ).apply(builder, CenserComponent::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, CenserComponent> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.FLOAT,
+            CenserComponent::range,
+            MobEffectInstance.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            CenserComponent::potionEffects,
+            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()),
+            CenserComponent::ingredients,
+            ConsumeEffect.STREAM_CODEC.apply(ByteBufCodecs.list()),
+            CenserComponent::consumeEffects,
+            CenserComponent::new
+    );
 
     @Override
     public float range() {
@@ -72,15 +81,8 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
     }
 
     public void apply(LivingEntity user, float durationMultiplier) {
-        if (user.level() instanceof ServerLevel serverWorld) {
-            Player playerEntity2 = user instanceof Player playerEntity ? playerEntity : null;
-            this.forEachEffect(effect -> {
-                if (effect.getEffect().value().isInstantenous()) {
-                    effect.getEffect().value().applyInstantenousEffect(serverWorld, playerEntity2, playerEntity2, user, effect.getAmplifier(), 1.0);
-                } else {
-                    user.addEffect(effect);
-                }
-            }, durationMultiplier);
+        if (!user.level().isClientSide()) {
+            this.forEachEffect(user::addEffect, durationMultiplier);
         }
     }
 
@@ -174,9 +176,6 @@ public record CenserComponent(float range, List<Identifier> herbalEffects, List<
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {
-        for (Identifier herbalEffect : this.herbalEffects) {
-            HerbalEffectType.applyHerb(entity, herbalEffect);
-        }
         if (!entity.level().isClientSide()) {
             this.consumeEffects.forEach(effect -> effect.apply(entity.level(), stack, entity));
         }
