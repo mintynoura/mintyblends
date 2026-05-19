@@ -23,7 +23,6 @@ import net.minecraft.world.level.Level;
 
 import java.util.*;
 
-// TODO: sound effect and particles
 public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, Optional<List<EffectConversion>> effectConversions,
                                           Optional<ParticleOptions> particle, boolean particlesOnlyWhenConverted,
                                           Optional<Holder<SoundEvent>> soundEvent) implements ConsumeEffect {
