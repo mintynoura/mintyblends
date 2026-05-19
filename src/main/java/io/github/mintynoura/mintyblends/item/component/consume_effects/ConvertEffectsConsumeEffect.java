@@ -3,14 +3,17 @@ package io.github.mintynoura.mintyblends.item.component.consume_effects;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsConsumeEffects;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,12 +24,17 @@ import net.minecraft.world.level.Level;
 import java.util.*;
 
 // TODO: sound effect and particles
-public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, Optional<List<EffectConversion>> effectConversions) implements ConsumeEffect {
+public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, Optional<List<EffectConversion>> effectConversions,
+                                          Optional<ParticleOptions> particle, boolean particlesOnlyWhenConverted,
+                                          Optional<Holder<SoundEvent>> soundEvent) implements ConsumeEffect {
     public static final MapCodec<ConvertEffectsConsumeEffect> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             Codec.BOOL.optionalFieldOf("positive_to_negative", true).forGetter(ConvertEffectsConsumeEffect::positiveToNegative),
             Codec.BOOL.optionalFieldOf("negative_to_positive", true).forGetter(ConvertEffectsConsumeEffect::negativeToPositive),
-            EffectConversion.CODEC.listOf().optionalFieldOf("effect_conversions").forGetter(ConvertEffectsConsumeEffect::effectConversions)
-    ).apply(i, ConvertEffectsConsumeEffect::new));
+            ExtraCodecs.compactListCodec(EffectConversion.CODEC).optionalFieldOf("effect_conversions").forGetter(ConvertEffectsConsumeEffect::effectConversions),
+            ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(ConvertEffectsConsumeEffect::particle),
+            Codec.BOOL.optionalFieldOf("particles_only_when_converted", false).forGetter(ConvertEffectsConsumeEffect::particlesOnlyWhenConverted),
+            SoundEvent.CODEC.optionalFieldOf("sound").forGetter(ConvertEffectsConsumeEffect::soundEvent)
+            ).apply(i, ConvertEffectsConsumeEffect::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, ConvertEffectsConsumeEffect> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.BOOL,
             ConvertEffectsConsumeEffect::positiveToNegative,
@@ -34,8 +42,16 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
             ConvertEffectsConsumeEffect::negativeToPositive,
             EffectConversion.STREAM_CODEC.apply(ByteBufCodecs.list()).apply(ByteBufCodecs::optional),
             ConvertEffectsConsumeEffect::effectConversions,
+            ParticleTypes.STREAM_CODEC.apply(ByteBufCodecs::optional),
+            ConvertEffectsConsumeEffect::particle,
+            ByteBufCodecs.BOOL,
+            ConvertEffectsConsumeEffect::particlesOnlyWhenConverted,
+            SoundEvent.STREAM_CODEC.apply(ByteBufCodecs::optional),
+            ConvertEffectsConsumeEffect::soundEvent,
             ConvertEffectsConsumeEffect::new
     );
+    public static Map<Holder<MobEffect>, Holder<MobEffect>> conversionMap = new HashMap<>();
+
     @Override
     public Type<? extends ConsumeEffect> getType() {
         return MintyBlendsConsumeEffects.CONVERT_EFFECTS;
@@ -44,25 +60,11 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
     @Override
     public boolean apply(Level level, ItemStack stack, LivingEntity user) {
         boolean anyConverted = false;
-
         Holder<MobEffect> mobEffect;
         List<MobEffectInstance> effectsToRemove = new ArrayList<>();
         List<MobEffectInstance> effectsToAdd = new ArrayList<>();
-        Map<Holder<MobEffect>, Holder<MobEffect>> conversionMap = new HashMap<>();
-        Map<String, String> configMap = MintyBlends.CONFIG.statusEffectSection.statusEffectMap.value();
 
-        if (!configMap.isEmpty()) {
-            for (Map.Entry<String, String> entry : configMap.entrySet()) {
-                if (isValidIdentifier(entry.getKey()) && isValidIdentifier(entry.getValue())) {
-                    Identifier keyId = Identifier.parse(entry.getKey());
-                    Identifier valueId = Identifier.parse(entry.getValue());
-                    if (isValidEffect(keyId) && isValidEffect(valueId)) {
-                        Holder<MobEffect> key = BuiltInRegistries.MOB_EFFECT.get(keyId).orElseThrow();
-                        Holder<MobEffect> value = BuiltInRegistries.MOB_EFFECT.get(valueId).orElseThrow();
-                        conversionMap.put(key, value);
-                    }
-                }
-            }
+        if (!conversionMap.isEmpty()) {
             if (positiveToNegative || effectConversions.isPresent()) {
                 effectConversions.ifPresent(conversions -> conversions.forEach(effectConversion -> conversionMap.put(effectConversion.effect, effectConversion.convertedEffect)));
                 for (MobEffectInstance effect : user.getActiveEffects()) {
@@ -89,20 +91,13 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
             anyConverted = true;
             effectsToRemove.clear();
             effectsToAdd.clear();
+            if (soundEvent.isPresent()) {
+                level.playSound(null, user.getOnPos(), soundEvent.orElseThrow().value(), SoundSource.PLAYERS);
+            }
         }
+        if ((!particlesOnlyWhenConverted || anyConverted) && level instanceof ServerLevel serverLevel)
+            particle.ifPresent(particleOptions -> serverLevel.sendParticles(particleOptions, user.getX(), user.getY(0.5), user.getZ(), 5, 0.25, 0.25, 0.25, 0));
         return anyConverted;
-    }
-
-    public static boolean isValidIdentifier(String effect) {
-        boolean bl = Identifier.tryParse(effect) != null;
-        if (!bl) MintyBlends.LOGGER.error("Invalid identifier: {}", effect);
-        return bl;
-    }
-
-    public static boolean isValidEffect(Identifier id) {
-        boolean bl = BuiltInRegistries.MOB_EFFECT.get(id).isPresent();
-        if (!bl) MintyBlends.LOGGER.error("Unknown effect: {}", id);
-        return bl;
     }
 
     public static Holder<MobEffect> getKeyEffect(Holder<MobEffect> value, Map<Holder<MobEffect>, Holder<MobEffect>> map) {

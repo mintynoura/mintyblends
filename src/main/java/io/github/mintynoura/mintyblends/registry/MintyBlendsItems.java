@@ -6,10 +6,12 @@ import io.github.mintynoura.mintyblends.item.HerbalBrewItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.item.component.HerbComponent;
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
+import io.github.mintynoura.mintyblends.item.component.consume_effects.ConvertEffectsConsumeEffect;
 import io.github.mintynoura.mintyblends.item.component.consume_effects.ExtinguishConsumeEffect;
 import io.github.mintynoura.mintyblends.item.component.consume_effects.HealConsumeEffect;
 import io.github.mintynoura.mintyblends.util.HerbalEffectType;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -19,6 +21,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -120,6 +123,10 @@ public class MintyBlendsItems {
     public static final Item IRON_CENSER = registerItem("iron_censer", CenserItem::new, new Item.Properties()
             .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of(), List.of()))
             .durability(4));
+    public static final Item TEST = registerItem("test", Item::new, new Item.Properties()
+            .component(DataComponents.CONSUMABLE, Consumables.defaultFood().onConsume(
+                    new ConvertEffectsConsumeEffect(true, true, Optional.empty(),
+                            Optional.of(ParticleTypes.WITCH), false, Optional.of(Holder.direct(SoundEvents.ZOMBIE_INFECT)))).build()));
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
         ResourceKey<Item> itemRegistryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
@@ -166,6 +173,7 @@ public class MintyBlendsItems {
                     output.accept(BEETROOT_SALAD);
                     output.accept(STEAK_TARTARE);
                     output.accept(PUMPKIN_STEW);
+                    output.accept(TEST);
                 })
                 .build()
         );

@@ -17,16 +17,16 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public record ExtinguishConsumeEffect(Optional<ParticleOptions> particle, boolean onlySummonParticlesWhenExtinguishing) implements ConsumeEffect {
+public record ExtinguishConsumeEffect(Optional<ParticleOptions> particle, boolean particlesOnlyWhenExtinguished) implements ConsumeEffect {
     public static final MapCodec<ExtinguishConsumeEffect> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(ExtinguishConsumeEffect::particle),
-            Codec.BOOL.optionalFieldOf("only_summon_particles_when_extinguishing", false).forGetter(ExtinguishConsumeEffect::onlySummonParticlesWhenExtinguishing)
+            Codec.BOOL.optionalFieldOf("particles_only_when_extinguished", false).forGetter(ExtinguishConsumeEffect::particlesOnlyWhenExtinguished)
     ).apply(i, ExtinguishConsumeEffect::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtinguishConsumeEffect> STREAM_CODEC = StreamCodec.composite(
             ParticleTypes.STREAM_CODEC.apply(ByteBufCodecs::optional),
             ExtinguishConsumeEffect::particle,
             ByteBufCodecs.BOOL,
-            ExtinguishConsumeEffect::onlySummonParticlesWhenExtinguishing,
+            ExtinguishConsumeEffect::particlesOnlyWhenExtinguished,
             ExtinguishConsumeEffect::new
     );
     @Override
@@ -37,7 +37,7 @@ public record ExtinguishConsumeEffect(Optional<ParticleOptions> particle, boolea
     @Override
     public boolean apply(Level level, ItemStack stack, LivingEntity user) {
         if (level instanceof ServerLevel serverLevel) {
-            if (!onlySummonParticlesWhenExtinguishing || user.isOnFire()) {
+            if (!particlesOnlyWhenExtinguished || user.isOnFire()) {
                 particle.ifPresent(particleOptions -> serverLevel.sendParticles(particleOptions, user.getX(), user.getY(0.5), user.getZ(), 5, 0.25, 0.25, 0.25, 0));
             }
             user.extinguishFire();
