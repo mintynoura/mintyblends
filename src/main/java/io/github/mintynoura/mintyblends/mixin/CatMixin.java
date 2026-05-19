@@ -29,12 +29,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Cat.class)
-public abstract class CatEntityMixin extends TamableAnimal {
+public abstract class CatMixin extends TamableAnimal {
 
     @Shadow
     protected abstract CatSoundVariant.CatSoundSet getSoundSet();
 
-    protected CatEntityMixin(EntityType<? extends Cat> entityType, Level world) {
+    protected CatMixin(EntityType<? extends Cat> entityType, Level world) {
         super(entityType, world);
     }
 

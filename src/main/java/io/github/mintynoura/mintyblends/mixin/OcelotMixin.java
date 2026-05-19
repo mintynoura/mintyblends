@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Ocelot.class)
-public abstract class OcelotEntityMixin extends Animal {
+public abstract class OcelotMixin extends Animal {
 
     @Shadow protected abstract boolean isTrusting();
 
@@ -36,7 +36,7 @@ public abstract class OcelotEntityMixin extends Animal {
 
     @Shadow protected abstract void spawnTrustingParticles(boolean success);
 
-    protected OcelotEntityMixin(EntityType<? extends Animal> entityType, Level world) {
+    protected OcelotMixin(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
     }
 

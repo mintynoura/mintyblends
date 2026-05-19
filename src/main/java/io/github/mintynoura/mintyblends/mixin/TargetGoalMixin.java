@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(TargetGoal.class)
-public abstract class TrackTargetGoalMixin {
+public abstract class TargetGoalMixin {
 
     @Shadow @Final protected Mob mob;
 

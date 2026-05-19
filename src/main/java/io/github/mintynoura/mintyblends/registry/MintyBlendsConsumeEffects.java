@@ -2,9 +2,7 @@ package io.github.mintynoura.mintyblends.registry;
 
 import com.mojang.serialization.MapCodec;
 import io.github.mintynoura.mintyblends.MintyBlends;
-import io.github.mintynoura.mintyblends.item.component.consume_effects.ConvertEffectsConsumeEffect;
-import io.github.mintynoura.mintyblends.item.component.consume_effects.ExtinguishConsumeEffect;
-import io.github.mintynoura.mintyblends.item.component.consume_effects.HealConsumeEffect;
+import io.github.mintynoura.mintyblends.item.component.consume_effects.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,6 +20,8 @@ public class MintyBlendsConsumeEffects {
     public static final ConsumeEffect.Type<ExtinguishConsumeEffect> EXTINGUISH = register("extinguish", ExtinguishConsumeEffect.CODEC, ExtinguishConsumeEffect.STREAM_CODEC);
     public static final ConsumeEffect.Type<HealConsumeEffect> HEAL = register("heal", HealConsumeEffect.CODEC, HealConsumeEffect.STREAM_CODEC);
     public static final ConsumeEffect.Type<ConvertEffectsConsumeEffect> CONVERT_EFFECTS = register("convert_effects", ConvertEffectsConsumeEffect.CODEC, ConvertEffectsConsumeEffect.STREAM_CODEC);
+    public static final ConsumeEffect.Type<ClearEffectsByCategoryConsumeEffect> CLEAR_EFFECTS_BY_CATEGORY = register("clear_effects_by_category", ClearEffectsByCategoryConsumeEffect.CODEC, ClearEffectsByCategoryConsumeEffect.STREAM_CODEC);
+    public static final ConsumeEffect.Type<ModifySnifferCooldownConsumeEffect> MODIFY_SNIFFER_COOLDOWN = register("modify_sniffer_cooldown", ModifySnifferCooldownConsumeEffect.CODEC, ModifySnifferCooldownConsumeEffect.STREAM_CODEC);
 
     public static <T extends ConsumeEffect> ConsumeEffect.Type<T> register(final String name, final MapCodec<T> codec, final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
         return Registry.register(BuiltInRegistries.CONSUME_EFFECT_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name), new ConsumeEffect.Type<>(codec, streamCodec));

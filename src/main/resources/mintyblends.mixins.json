@@ -3,14 +3,14 @@
   "package": "io.github.mintynoura.mintyblends.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "BeeEntityMixin",
-    "CatEntityMixin",
+    "BeeGoalMixin",
+    "CatMixin",
     "DispenserLightingMixin",
     "LivingEntityMixin",
-    "OcelotEntityMixin",
-    "SnifferEntityMixin",
-    "TrackTargetGoalMixin",
-    "VibrationsMixin"
+    "OcelotMixin",
+    "SnifferMixin",
+    "TargetGoalMixin",
+    "VibrationListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -19,7 +19,7 @@ import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(VibrationSystem.Listener.class)
-public abstract class VibrationsMixin {
+public abstract class VibrationListenerMixin {
     @Shadow
     @Final
     private VibrationSystem system;

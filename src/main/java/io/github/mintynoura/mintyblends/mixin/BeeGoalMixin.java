@@ -17,9 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net.minecraft.world.entity.animal.bee.Bee$BeeGrowCropGoal")
-public abstract class BeeEntityMixin extends Goal {
-
-
+public abstract class BeeGoalMixin extends Goal {
 
     @Shadow
     @Final
