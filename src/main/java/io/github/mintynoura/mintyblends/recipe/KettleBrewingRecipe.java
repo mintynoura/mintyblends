@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     private final ItemStackTemplate container;
     private final int brewingTime;
     @Nullable
-    private PlacementInfo ingredientPlacement;
+    private PlacementInfo placementInfo;
 
     public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
     public static final int defaultBrewingTime = 200;
@@ -62,7 +63,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public boolean matches(KettleBrewingRecipeInput recipeInput, Level world) {
+    public boolean matches(KettleBrewingRecipeInput recipeInput, @NonNull Level world) {
         if (recipeInput.getStackCount() != this.ingredients.size()) {
             return false;
         } else {
@@ -72,7 +73,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
         }
     }
     @Override
-    public ItemStack assemble(KettleBrewingRecipeInput input) {
+    public @NonNull ItemStack assemble(@NonNull KettleBrewingRecipeInput input) {
         return this.result.create();
     }
 
@@ -82,31 +83,36 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public String group() {
+    public @NonNull String group() {
         return "";
     }
 
     @Override
-    public RecipeSerializer<? extends Recipe<KettleBrewingRecipeInput>> getSerializer() {
+    public @NonNull RecipeSerializer<? extends Recipe<KettleBrewingRecipeInput>> getSerializer() {
         return MintyBlendsRecipes.KETTLE_BREWING_RECIPE_SERIALIZER;
     }
 
     @Override
-    public RecipeType<? extends Recipe<KettleBrewingRecipeInput>> getType() {
+    public @NonNull RecipeType<? extends Recipe<KettleBrewingRecipeInput>> getType() {
         return MintyBlendsRecipes.KETTLE_BREWING_RECIPE_TYPE;
     }
 
     @Override
-    public PlacementInfo placementInfo() {
-        if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = PlacementInfo.create(this.ingredients);
+    public @NonNull PlacementInfo placementInfo() {
+        if (this.placementInfo == null) {
+            this.placementInfo = PlacementInfo.create(this.ingredients);
         }
-        return this.ingredientPlacement;
+        return this.placementInfo;
     }
 
     @Override
-    public RecipeBookCategory recipeBookCategory() {
+    public @Nullable RecipeBookCategory recipeBookCategory() {
         return null;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 
     public static class Serializer {

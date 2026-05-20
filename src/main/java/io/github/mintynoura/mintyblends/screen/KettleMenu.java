@@ -22,7 +22,7 @@ public class KettleMenu extends AbstractContainerMenu {
     private final Container inventory;
     public final KettleBlockEntity kettleBlockEntity;
     private final ContainerData containerData;
-    private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "container/kettle/empty_container");
+    private static final Identifier EMPTY_CONTAINER_SLOT_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "container/kettle/empty_container");
 
 
     public KettleMenu(int containerId, Inventory inventory, BlockPos pos) {

@@ -32,7 +32,7 @@ public class CenserItem extends Item {
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack itemStack = super.getDefaultInstance();
-        itemStack.set(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of()));
+        itemStack.set(MintyBlendsComponents.CENSER, new CenserComponent(5f, List.of(), List.of(), List.of()));
         return itemStack;
     }
 
@@ -41,11 +41,11 @@ public class CenserItem extends Item {
         ItemStack censer = user.getItemInHand(hand);
         ItemStack flintAndSteel = user.getOffhandItem();
 
-        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.has(MintyBlendsComponents.CENSER_COMPONENT)) {
+        if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.has(MintyBlendsComponents.CENSER)) {
             return InteractionResult.FAIL;
         }
 
-        CenserComponent component = censer.get(MintyBlendsComponents.CENSER_COMPONENT);
+        CenserComponent component = censer.get(MintyBlendsComponents.CENSER);
 
         float diameter = 2 * component.range();
         List<LivingEntity> entitiesList = level.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(MintyBlendsTags.EntityTypes.IGNORES_CENSER));
@@ -66,6 +66,6 @@ public class CenserItem extends Item {
     }
 
     public void applyIncense(LivingEntity entity, ItemStack stack) {
-        stack.get(MintyBlendsComponents.CENSER_COMPONENT).applyIncense(entity, stack);
+        stack.get(MintyBlendsComponents.CENSER).applyIncense(entity, stack);
     }
 }

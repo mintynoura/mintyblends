@@ -24,6 +24,7 @@ import java.util.function.Function;
 
 import static net.minecraft.world.level.block.Blocks.litBlockEmission;
 
+// TODO: placeable brews and censers
 public class MintyBlendsBlocks {
     public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(MobEffects.FIRE_RESISTANCE, 3f, settings), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
@@ -159,11 +160,11 @@ public class MintyBlendsBlocks {
     }
 
     private static ResourceKey<Block> keyOfBlock(String name) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
     }
 
     private static ResourceKey<Item> keyOfItem(String name) {
-        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
     }
 
     public static void initialize() {

@@ -1,6 +1,5 @@
 package io.github.mintynoura.mintyblends;
 
-import com.mojang.serialization.Codec;
 import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
 import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
@@ -13,6 +12,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import org.slf4j.Logger;
@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Paths;
 
 public class MintyBlends implements ModInitializer {
-	public static final String MOD_ID = "mintyblends";
+	public static final String ID = "mintyblends";
 
-	public static final AttachmentType<Integer> CATNIP_COOLDOWN = AttachmentRegistry.createPersistent(Identifier.fromNamespaceAndPath(MOD_ID, "catnip_cooldown"), Codec.INT);
+	public static final AttachmentType<Integer> CATNIP_COOLDOWN = AttachmentRegistry.createPersistent(Identifier.fromNamespaceAndPath(ID, "catnip_cooldown"), ExtraCodecs.NON_NEGATIVE_INT);
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 	public static final MintyBlendsConfig CONFIG = MintyBlendsConfig.createToml(Paths.get("config"), "", "mintyblends", MintyBlendsConfig.class);
 
 	@Override

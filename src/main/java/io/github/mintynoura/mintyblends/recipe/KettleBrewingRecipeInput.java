@@ -5,6 +5,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
+import org.jspecify.annotations.NonNull;
 
 public class KettleBrewingRecipeInput implements RecipeInput {
 
@@ -30,7 +31,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
     }
 
     @Override
-    public ItemStack getItem(int slot) {
+    public @NonNull ItemStack getItem(int slot) {
         return this.stacks.get(slot);
     }
 

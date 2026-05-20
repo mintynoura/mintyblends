@@ -12,7 +12,7 @@ public class MintyBlendsSoundEvents {
     public static final SoundEvent ITEM_CENSER_BURN = register("item.censer.burn");
 
     public static SoundEvent register(String name) {
-        return Registry.register(BuiltInRegistries.SOUND_EVENT, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name), SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name)));
+        return Registry.register(BuiltInRegistries.SOUND_EVENT, Identifier.fromNamespaceAndPath(MintyBlends.ID, name), SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MintyBlends.ID, name)));
     }
 
     public static void initialize() {}

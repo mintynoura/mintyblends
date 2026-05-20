@@ -24,12 +24,11 @@ public class MintyBlendsConsumeEffects {
     public static final ConsumeEffect.Type<ModifySnifferCooldownConsumeEffect> MODIFY_SNIFFER_COOLDOWN = register("modify_sniffer_cooldown", ModifySnifferCooldownConsumeEffect.CODEC, ModifySnifferCooldownConsumeEffect.STREAM_CODEC);
 
     public static <T extends ConsumeEffect> ConsumeEffect.Type<T> register(final String name, final MapCodec<T> codec, final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
-        return Registry.register(BuiltInRegistries.CONSUME_EFFECT_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name), new ConsumeEffect.Type<>(codec, streamCodec));
+        return Registry.register(BuiltInRegistries.CONSUME_EFFECT_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name), new ConsumeEffect.Type<>(codec, streamCodec));
     }
 
     public static void populateEffectConversionMap() {
         Map<String, String> configMap = MintyBlends.CONFIG.statusEffectSection.statusEffectMap.value();
-
         for (Map.Entry<String, String> entry : configMap.entrySet()) {
             if (isValidIdentifier(entry.getKey()) && isValidIdentifier(entry.getValue())) {
                 Identifier keyId = Identifier.parse(entry.getKey());

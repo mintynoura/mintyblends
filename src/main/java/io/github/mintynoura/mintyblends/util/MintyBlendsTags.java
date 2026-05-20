@@ -20,7 +20,7 @@ public class MintyBlendsTags {
         public static final TagKey<Item> CAT_LOVED = createTag("cat_loved");
 
         private static TagKey<Item> createTag(String name) {
-            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 
@@ -30,7 +30,7 @@ public class MintyBlendsTags {
         public static final TagKey<Block> RENDFLOWER_GROWN_ON = createTag("rendflower_grown_on");
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 
@@ -46,7 +46,7 @@ public class MintyBlendsTags {
         public static final TagKey<Biome> HAS_SAGEBRUSH = createTag("has_sagebrush");
 
         private static TagKey<Biome> createTag(String name) {
-            return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 
@@ -54,7 +54,7 @@ public class MintyBlendsTags {
         public static final TagKey<EntityType<?>> IGNORES_CENSER = createTag("ignores_censer");
 
         private static TagKey<EntityType<?>> createTag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 }

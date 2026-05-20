@@ -28,7 +28,7 @@ public class MintyBlendsConfiguredFeatures {
     public static SimpleBlockConfiguration silentFlowerFeature = new SimpleBlockConfiguration(BlockStateProvider.simple(MintyBlendsBlocks.SILENT_FLOWER));
 
     public static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
     }
 
     public static void register(BootstrapContext<ConfiguredFeature<?, ?>> context) {

@@ -49,7 +49,7 @@ import java.util.*;
 @NullMarked
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
-    // TODO: increase ingredient slots to 8, rework burner
+    // TODO: remove burner extinguishing, add different container and result slot?
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     private int progress = 0;
     private int brewTime;
@@ -305,11 +305,13 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
 //        }
 //        HerbalBrewComponent herbalBrewComponent = new HerbalBrewComponent(List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet));
 //        Consumable consumableComponent = new Consumable(1.6f, ItemUseAnimation.DRINK, SoundEvents.GENERIC_DRINK, false, consumeEffects);
-        ItemStack herbalBrew = BlendUtils.blendBrew(recipeInput);
+        ItemStack herbalBrew = BlendUtils.blendBrew(recipeInput, level.getRandom());
 //        herbalBrew.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, herbalBrewComponent);
 //        herbalBrew.set(DataComponents.CONSUMABLE, consumableComponent);
-        for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
-            DefaultDispenseItemBehavior.spawnItem(level, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
+        if (level instanceof ServerLevel serverLevel) {
+            for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
+                DefaultDispenseItemBehavior.spawnItem(serverLevel, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
+            }
         }
         for (int i = 0; i < OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);

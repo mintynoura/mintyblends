@@ -31,7 +31,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public Identifier getGuiTexture() {
-        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/eiv/kettle.png");
+        return Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/eiv/kettle.png");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public Identifier getId() {
-        return Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing");
+        return Identifier.fromNamespaceAndPath(MintyBlends.ID, "kettle_brewing");
     }
 
     @Override

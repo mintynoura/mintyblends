@@ -1,24 +1,29 @@
 package io.github.mintynoura.mintyblends;
 import folk.sisby.kaleido.api.ReflectiveConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
+import folk.sisby.kaleido.lib.quiltconfig.api.annotations.FloatRange;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.IntegerRange;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.SerializedName;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 
 public class MintyBlendsConfig extends ReflectiveConfig {
-    @Comment("The amount of hunger to fill when applying the \"mintyblends:feed\" Herbal Effect (e.g. Culinary Leaves)")
-    @SerializedName("nutrition_amount")
-    public final TrackedValue<Integer> nutritionAmount = this.value(2);
-    @Comment("The amount of saturation to fill when applying the \"mintyblends:feed\" Herbal Effect (e.g. Culinary Leaves)")
-    @SerializedName("saturation_modifier")
-    public final TrackedValue<Float> saturationModifier = this.value(0.2f);
-
-    @Comment("The cooldown timer in ticks for cat gifts after being fed Catnip")
+    @Comment("The modifier Sugar applies to potion effect durations when used as a blending ingredient")
+    @SerializedName("sugar_duration_modifier")
+    @FloatRange(min = 1.0f, max = 10.0f)
+    public final TrackedValue<Float> sugarDurationModifier = this.value(1.5f);
+    @Comment("Whether or not to increase the default Potion stack size")
+    @SerializedName("modify_potion_stack_size")
+    public final TrackedValue<Boolean> modifyPotionStackSize = this.value(true);
+    @Comment("The max stack size for Potions, only applied when \"modify_potion_stack_size\" is enabled")
+    @SerializedName("potion_stack_size")
+    @IntegerRange(min = 1, max = 99)
+    public final TrackedValue<Integer> potionStackSize = this.value(16);
+    @Comment("The cooldown timer in ticks for Cat gifts after being fed Catnip")
     @SerializedName("cat_catnip_cooldown")
     @IntegerRange(min = 0, max = Integer.MAX_VALUE)
     public final TrackedValue<Integer> catCatnipCooldown = this.value(6000);
-    @Comment("The cooldown timer in ticks for ocelot gifts after being fed Catnip")
+    @Comment("The cooldown timer in ticks for Ocelot gifts after being fed Catnip")
     @SerializedName("ocelot_catnip_cooldown")
     @IntegerRange(min = 0, max = Integer.MAX_VALUE)
     public final TrackedValue<Integer> ocelotCatnipCooldown = this.value(6000);

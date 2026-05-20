@@ -89,7 +89,7 @@ public class MintyBlendsPlacedFeatures {
     );
 
     private static ResourceKey<PlacedFeature> createKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
     }
 
     public static void register(BootstrapContext<PlacedFeature> context) {

@@ -28,7 +28,7 @@ public class MintyBlendsTrades {
         return new VillagerTrade(new TradeCost(Items.EMERALD, 3), new ItemStackTemplate(block.asItem(), 2), 6, 1, 0.05F, Optional.empty(), List.of());
     }
     private static ResourceKey<VillagerTrade> createKey(String name) {
-        return ResourceKey.create(Registries.VILLAGER_TRADE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        return ResourceKey.create(Registries.VILLAGER_TRADE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
     }
 
     public static void register(BootstrapContext<VillagerTrade> context) {

@@ -11,9 +11,9 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/container/kettle.png");
-    private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/progress.png");
-    private static final Identifier LIT = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/lit.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/container/kettle.png");
+    private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/progress.png");
+    private static final Identifier LIT = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/lit.png");
 
     public KettleScreen(KettleMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

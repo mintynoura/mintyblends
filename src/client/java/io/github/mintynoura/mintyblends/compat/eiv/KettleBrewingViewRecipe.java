@@ -19,7 +19,7 @@ import java.util.List;
 
 public class KettleBrewingViewRecipe implements IEivViewRecipe {
 
-    private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "textures/gui/sprites/container/kettle/progress.png");
+    private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/progress.png");
 
     private final List<SlotContent> ingredients;
     private final SlotContent container;
@@ -38,7 +38,7 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
         this.result = SlotContent.of(serverRecipe.getResult());
         this.brewingTime = serverRecipe.getBrewingTime();
 
-        this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "brewing_ticker"), this.brewingTime);
+        this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.ID, "brewing_ticker"), this.brewingTime);
     }
 
     @Override

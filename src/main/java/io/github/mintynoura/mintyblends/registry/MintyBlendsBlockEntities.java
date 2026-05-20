@@ -12,12 +12,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 @SuppressWarnings("deprecation")
 public class MintyBlendsBlockEntities {
-    public static final BlockEntityType<KettleBlockEntity> KETTLE_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_block_entity"),
+    public static final BlockEntityType<KettleBlockEntity> KETTLE_BLOCK_ENTITY = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, "kettle_block_entity"),
             FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, MintyBlendsBlocks.KETTLE).build(null));
     public static final Identifier INTERACT_WITH_KETTLE = makeCustomStat("interact_with_kettle", StatFormatter.DEFAULT);
 
     public static Identifier makeCustomStat(final String id, final StatFormatter formatter) {
-        Identifier location = Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, id);
+        Identifier location = Identifier.fromNamespaceAndPath(MintyBlends.ID, id);
         Registry.register(BuiltInRegistries.CUSTOM_STAT, id, location);
         Stats.CUSTOM.get(location, formatter);
         return location;

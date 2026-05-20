@@ -7,6 +7,7 @@ import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
 import io.github.mintynoura.mintyblends.util.MintyBlendsConsumables;
 import io.github.mintynoura.mintyblends.util.MintyBlendsFoods;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,7 +46,7 @@ public class MintyBlendsItems {
     public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(MintyBlendsBlocks.HORTENSIA_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
 
     public static final Item HERBAL_BREW = registerItem("herbal_brew", Item::new, new Item.Properties()
-            .component(MintyBlendsComponents.HERBAL_BREW_COMPONENT, new HerbalBrewComponent(List.of(), List.of()))
+            .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(List.of(), List.of()))
             .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
@@ -84,23 +85,23 @@ public class MintyBlendsItems {
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(5f, List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(5f, List.of(), List.of(), List.of()))
             .durability(3));
     public static final Item GOLDEN_CENSER = registerItem("golden_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(7f, List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(7f, List.of(), List.of(), List.of()))
             .durability(2));
     public static final Item IRON_CENSER = registerItem("iron_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER_COMPONENT, new CenserComponent(3f, List.of(), List.of(), List.of()))
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(3f, List.of(), List.of(), List.of()))
             .durability(4));
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
-        ResourceKey<Item> itemRegistryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, name));
+        ResourceKey<Item> itemRegistryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         Item item = factory.apply(settings.setId(itemRegistryKey));
         Registry.register(BuiltInRegistries.ITEM, itemRegistryKey, item);
         return item;
     }
 
-    public static final ResourceKey<CreativeModeTab> MINTYBLENDS_ITEM_GROUP_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "item_group"));
+    public static final ResourceKey<CreativeModeTab> MINTYBLENDS_ITEM_GROUP_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MintyBlends.ID, "item_group"));
 
     public static void initialize() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MINTYBLENDS_ITEM_GROUP_KEY, FabricCreativeModeTab.builder()
@@ -141,5 +142,12 @@ public class MintyBlendsItems {
                 })
                 .build()
         );
+
+        DefaultItemComponentEvents.MODIFY.register(context -> {
+            context.modify(Items.SUGAR, builder -> builder.set(MintyBlendsComponents.BLEND_EFFECT_DURATION_MODIFIER, MintyBlends.CONFIG.sugarDurationModifier.value()));
+            if (MintyBlends.CONFIG.modifyPotionStackSize.value()) {
+                context.modify(Items.POTION, builder -> builder.set(DataComponents.MAX_STACK_SIZE, MintyBlends.CONFIG.potionStackSize.value()));
+            }
+        });
     }
 }

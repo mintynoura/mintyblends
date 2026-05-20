@@ -18,7 +18,7 @@ public class KettleBrewingServerRecipe implements IEivServerRecipe {
     private int brewingTime;
 
 
-    public static final EivRecipeType<KettleBrewingServerRecipe> TYPE = EivRecipeType.register(Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "kettle_brewing"),
+    public static final EivRecipeType<KettleBrewingServerRecipe> TYPE = EivRecipeType.register(Identifier.fromNamespaceAndPath(MintyBlends.ID, "kettle_brewing"),
             () -> new KettleBrewingServerRecipe(List.of(), ItemStack.EMPTY, ItemStack.EMPTY, 0));
 
     public KettleBrewingServerRecipe(List<Ingredient> ingredients, ItemStack container, ItemStack result, int brewingTime) {

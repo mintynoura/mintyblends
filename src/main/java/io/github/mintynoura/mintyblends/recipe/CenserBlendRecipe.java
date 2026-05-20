@@ -7,6 +7,7 @@ import io.github.mintynoura.mintyblends.util.BlendUtils;
 import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -17,7 +18,7 @@ public class CenserBlendRecipe extends CustomRecipe {
     public static StreamCodec<RegistryFriendlyByteBuf, CenserBlendRecipe> STREAM_CODEC = StreamCodec.unit(new CenserBlendRecipe());
 
     @Override
-    public boolean matches(CraftingInput input, Level level) {
+    public boolean matches(CraftingInput input, @NonNull Level level) {
         ItemStack itemStack;
         boolean hasCenser = false;
         boolean hasIngredients = false;
@@ -44,8 +45,8 @@ public class CenserBlendRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NonNull ItemStack assemble(CraftingInput input) {
-        return BlendUtils.blendCenser(input);
+    public @NonNull ItemStack assemble(@NonNull CraftingInput input) {
+        return BlendUtils.blendCenser(input, RandomSource.create());
     }
 
     public static final RecipeSerializer<CenserBlendRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);

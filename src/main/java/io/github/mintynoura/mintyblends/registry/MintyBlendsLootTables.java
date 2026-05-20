@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class MintyBlendsLootTables {
     // minty blends loot tables
-    public static final ResourceKey<LootTable> OCELOT_GIFT = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MintyBlends.MOD_ID, "gameplay/ocelot_gift"));
+    public static final ResourceKey<LootTable> OCELOT_GIFT = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath(MintyBlends.ID, "gameplay/ocelot_gift"));
 
     // vanilla loot tables
     private static final ResourceKey<LootTable> SNIFFER_DIGGING_LOOT_TABLE_KEY = BuiltInLootTables.SNIFFER_DIGGING;
