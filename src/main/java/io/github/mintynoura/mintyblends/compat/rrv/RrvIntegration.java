@@ -6,6 +6,7 @@ import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 
 // TODO: stack sensitive brews
+// TODO: cycling blending recipes
 public class RrvIntegration implements ReliableRecipeViewerPlugin {
     @Override
     public void onIntegrationInitialize() {

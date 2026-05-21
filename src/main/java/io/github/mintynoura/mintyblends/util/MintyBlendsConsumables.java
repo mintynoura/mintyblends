@@ -28,7 +28,7 @@ public class MintyBlendsConsumables {
     public static final Consumable CUREFLOWER = Consumable.builder()
             .onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.WITHER)).build();
     public static final Consumable RENDFLOWER = Consumable.builder()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MintyBlendsStatusEffects.RENDING, 400, 0), 0.9f)).build();
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MintyBlendsStatusEffects.RENDING, 400, 0))).build();
     public static final Consumable MINT_TEA = Consumables.defaultDrink()
             .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1800, 0)))
             .onConsume(new ExtinguishConsumeEffect(Optional.of(ParticleTypes.SNOWFLAKE), false)).build();

@@ -18,7 +18,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -41,6 +43,19 @@ public abstract class LivingEntityMixin extends Entity {
     private boolean mintyBlends$fluidWalkerEffect(boolean original, @Local(argsOnly = true, name = "fluid") FluidState fluid) {
         if (fluid.is(FluidTags.WATER) && this.hasEffect(MintyBlendsStatusEffects.WATERWALKER)) return true;
         if (fluid.is(FluidTags.LAVA) && this.hasEffect(MintyBlendsStatusEffects.LAVAWALKER)) return true;
+        return original;
+    }
+
+    @ModifyReturnValue(method = "shouldTravelInFluid", at = @At("RETURN"))
+    private boolean mintyBlends$disableFluidWalkerTraveling(boolean original, @Local(argsOnly = true, name = "fluidState") FluidState fluidState) {
+        if (fluidState.is(FluidTags.WATER) && this.hasEffect(MintyBlendsStatusEffects.WATERWALKER)) return false;
+        if (fluidState.is(FluidTags.LAVA) && this.hasEffect(MintyBlendsStatusEffects.LAVAWALKER)) return false;
+        return original;
+    }
+
+    @ModifyReturnValue(method = "getLiquidCollisionShape", at = @At("RETURN"))
+    private VoxelShape mintyBlends$disableFluidWalkerSinking(VoxelShape original) {
+        if (this.hasEffect(MintyBlendsStatusEffects.LAVAWALKER) || this.hasEffect(MintyBlendsStatusEffects.WATERWALKER)) return Block.column(16.0, 0.0, 13.0);
         return original;
     }
 
