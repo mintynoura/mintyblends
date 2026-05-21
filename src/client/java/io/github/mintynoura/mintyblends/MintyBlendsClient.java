@@ -2,7 +2,6 @@ package io.github.mintynoura.mintyblends;
 
 import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
 import io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration;
-import io.github.mintynoura.mintyblends.compat.rrv.RrvClientIntegration;
 import io.github.mintynoura.mintyblends.particle.KettleSteamParticle;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
@@ -62,9 +61,6 @@ public class MintyBlendsClient implements ClientModInitializer {
 
 		if (FabricLoader.getInstance().isModLoaded("eiv")) {
 			EivClientIntegration.onIntegrationInitialize();
-		}
-		if (FabricLoader.getInstance().isModLoaded("rrv")) {
-			RrvClientIntegration.onIntegrationInitialize();
 		}
 	}
 }

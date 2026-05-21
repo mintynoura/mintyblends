@@ -6,7 +6,7 @@
       "fabric:type": "fabric:components",
       "base": "mintyblends:copper_censer",
       "components": {
-        "mintyblends:censer_contents": {
+        "mintyblends:censer": {
           "ingredients": [
             "blend.mintyblends.reaching"
           ],
@@ -25,7 +25,7 @@
   "result": {
     "id": "mintyblends:copper_censer",
     "components": {
-      "mintyblends:censer_contents": {
+      "mintyblends:censer": {
         "ingredients": [
           "blend.mintyblends.strong_reaching"
         ],

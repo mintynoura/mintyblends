@@ -10,7 +10,7 @@
   "result": {
     "id": "mintyblends:iron_censer",
     "components": {
-      "mintyblends:censer_contents": {
+      "mintyblends:censer": {
         "range": 3.0,
         "ingredients": [
           "blend.mintyblends.stealth"

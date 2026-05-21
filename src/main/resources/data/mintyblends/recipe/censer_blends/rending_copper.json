@@ -10,7 +10,7 @@
   "result": {
     "id": "mintyblends:copper_censer",
     "components": {
-      "mintyblends:censer_contents": {
+      "mintyblends:censer": {
         "ingredients": [
           "blend.mintyblends.rending"
         ],

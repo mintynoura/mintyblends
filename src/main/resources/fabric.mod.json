@@ -28,6 +28,9 @@
 		],
 		"rrv": [
 			"io.github.mintynoura.mintyblends.compat.rrv.RrvIntegration"
+		],
+		"rrv_client": [
+			"io.github.mintynoura.mintyblends.compat.rrv.RrvClientIntegration"
 		]
 	},
 	"mixins": [

@@ -7,11 +7,15 @@ import cc.cassian.rrv.common.recipe.inventory.RecipeViewScreen;
 import cc.cassian.rrv.common.recipe.inventory.SlotContent;
 import cc.cassian.rrv.common.recipe.rendering.AnimationTicker;
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,22 +25,30 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
 
     private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/progress.png");
 
+    private final Identifier id;
     private final List<SlotContent> ingredients;
     private final SlotContent container;
     private final SlotContent result;
     private final int brewingTime;
     private final AnimationTicker brewingTicker;
 
-
-    public KettleBrewingClientRecipe(KettleBrewingServerRecipe serverRecipe) {
+    public KettleBrewingClientRecipe(RecipeHolder<KettleBrewingRecipe> recipeHolder) {
+        this.id = recipeHolder.id().identifier();
         this.ingredients = new ArrayList<>();
+        recipeHolder.value().getIngredients().forEach(ingredient -> this.ingredients.add(SlotContent.of(ingredient)));
+        this.container = SlotContent.of(recipeHolder.value().getContainer());
+        this.result = SlotContent.of(recipeHolder.value().getResult());
+        this.brewingTime = recipeHolder.value().getBrewingTime();
+        this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.ID, "brewing_ticker"), this.brewingTime);
+    }
 
-        serverRecipe.getIngredients().forEach(ingredient ->
-                ingredients.add(SlotContent.of(ingredient)));
-
-        this.container = SlotContent.of(serverRecipe.getContainer());
-        this.result = SlotContent.of(serverRecipe.getResult());
-        this.brewingTime = serverRecipe.getBrewingTime();
+    public KettleBrewingClientRecipe(Identifier id, List<Ingredient> ingredients, ItemStackTemplate container, ItemStackTemplate result, int brewingTime) {
+        this.id = id;
+        this.ingredients = new ArrayList<>();
+        ingredients.forEach(ingredient -> this.ingredients.add(SlotContent.of(ingredient)));
+        this.container = SlotContent.of(container);
+        this.result = SlotContent.of(result);
+        this.brewingTime = brewingTime;
 
         this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.ID, "brewing_ticker"), this.brewingTime);
     }
@@ -47,13 +59,18 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
     }
 
     @Override
+    public Identifier getId() {
+        return id;
+    }
+
+    @Override
     public void bindSlots(RecipeViewMenu.SlotFillContext slotFillContext) {
-        for (int i = 0; i < ingredients.size() && i < this.getType().getSlotCount() - 1; i++) {
-            slotFillContext.bindSlot(i, ingredients.get(i));
+        for (int i = 0; i < this.ingredients.size() && i < this.getType().getSlotCount() - 1; i++) {
+            slotFillContext.bindSlot(i, this.ingredients.get(i));
         }
 
-        slotFillContext.bindSlot(4, container);
-        slotFillContext.bindSlot(5, result);
+        slotFillContext.bindSlot(4, this.container);
+        slotFillContext.bindSlot(5, this.result);
     }
 
     @Override

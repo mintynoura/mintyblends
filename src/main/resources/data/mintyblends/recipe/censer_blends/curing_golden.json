@@ -11,7 +11,7 @@
   "result": {
     "id": "mintyblends:golden_censer",
     "components": {
-      "mintyblends:censer_contents": {
+      "mintyblends:censer": {
         "range": 7.0,
         "ingredients": [
           "blend.mintyblends.clear_negative"

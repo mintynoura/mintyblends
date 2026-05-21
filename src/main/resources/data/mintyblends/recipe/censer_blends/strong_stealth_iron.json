@@ -6,7 +6,7 @@
       "fabric:type": "fabric:components",
       "base": "mintyblends:iron_censer",
       "components": {
-        "mintyblends:censer_contents": {
+        "mintyblends:censer": {
           "range": 3.0,
           "ingredients": [
             "blend.mintyblends.stealth"
@@ -26,7 +26,7 @@
   "result": {
     "id": "mintyblends:iron_censer",
     "components": {
-      "mintyblends:censer_contents": {
+      "mintyblends:censer": {
         "range": 3.0,
         "ingredients": [
           "blend.mintyblends.strong_stealth"

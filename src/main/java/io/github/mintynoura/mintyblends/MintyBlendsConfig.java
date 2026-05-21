@@ -43,6 +43,9 @@ public class MintyBlendsConfig extends ReflectiveConfig {
         @Comment("The reduction in visibility range for the Stealth effect, per level")
         @SerializedName("rending_damage_modifier")
         public final TrackedValue<Float> stealthRangeModifier = this.value(0.2f);
+        @Comment("The modifier increase in gravity for the Fast Falling effect, per level")
+        @SerializedName("fast_falling_gravity_modifier")
+        public final TrackedValue<Float> fastFallingGravityModifier = this.value(0.5f);
 
         @Comment("A Map to use for status effect conversions, formatted as <\"key\" = \"value\"> pairs. The \"key\" is considered a positive effect, and the \"value\" is considered a negative effect")
         @SerializedName("status_effect_map")
@@ -53,6 +56,9 @@ public class MintyBlendsConfig extends ReflectiveConfig {
                 .put("minecraft:resistance", "mintyblends:rending")
                 .put("minecraft:speed", "minecraft:slowness")
                 .put("minecraft:strength", "minecraft:weakness")
+                .put("minecraft:invisibility", "minecraft:glowing")
+                .put("minecraft:night_vision", "minecraft:blindness")
+                .put("minecraft:slow_falling", "mintyblends:fast_falling")
                 .build();
     }
 }
