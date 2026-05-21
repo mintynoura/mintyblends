@@ -23,7 +23,9 @@ public class MintyBlendsStatusEffects {
     public static final Holder<MobEffect> WATERWALKER = register("waterwalker", new MintyBlendsStatusEffect(MobEffectCategory.BENEFICIAL, 0xa6f0ff));
     public static final Holder<MobEffect> FAST_FALLING = register("fast_falling", new MintyBlendsStatusEffect(MobEffectCategory.HARMFUL, 0xb9ddf3)
             .addAttributeModifier(Attributes.GRAVITY, Identifier.fromNamespaceAndPath(MintyBlends.ID, "effect.fast_falling"),
-                    MintyBlends.CONFIG.statusEffectSection.fastFallingGravityModifier.value(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                    MintyBlends.CONFIG.statusEffectSection.fastFallingGravityModifier.value(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Identifier.fromNamespaceAndPath(MintyBlends.ID, "effect.fast_falling"),
+                    MintyBlends.CONFIG.statusEffectSection.fastFallingFallDamageModifier.value(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static Holder<MobEffect> register(String name, MobEffect effect) {
         return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(MintyBlends.ID, name), effect);

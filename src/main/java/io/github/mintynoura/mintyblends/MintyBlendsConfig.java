@@ -10,7 +10,7 @@ import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 public class MintyBlendsConfig extends ReflectiveConfig {
     @Comment("The modifier Sugar applies to potion effect durations when used as a blending ingredient")
     @SerializedName("sugar_duration_modifier")
-    @FloatRange(min = 1.0f, max = 10.0f)
+    @FloatRange(min = 0.1f, max = 10.0f)
     public final TrackedValue<Float> sugarDurationModifier = this.value(1.5f);
     @Comment("Whether or not to increase the default Potion stack size")
     @SerializedName("modify_potion_stack_size")
@@ -37,15 +37,18 @@ public class MintyBlendsConfig extends ReflectiveConfig {
         @Comment("The entity reach attribute increase for the Reaching effect, per level")
         @SerializedName("reaching_entity_range_increase")
         public final TrackedValue<Float> reachingEntityRangeModifier = this.value(2f);
-        @Comment("The damage attribute increase for the Rending effect, per level")
+        @Comment("The damage increase multiplier for the Rending effect, per level")
         @SerializedName("rending_damage_modifier")
         public final TrackedValue<Float> rendingDamageModifier = this.value(0.2f);
         @Comment("The reduction in visibility range for the Stealth effect, per level")
         @SerializedName("rending_damage_modifier")
         public final TrackedValue<Float> stealthRangeModifier = this.value(0.2f);
-        @Comment("The modifier increase in gravity for the Fast Falling effect, per level")
+        @Comment("The increase multiplier in gravity for the Fast Falling effect, per level")
         @SerializedName("fast_falling_gravity_modifier")
         public final TrackedValue<Float> fastFallingGravityModifier = this.value(0.5f);
+        @Comment("The increase multiplier in fall damage for the Fast Falling effect, per level")
+        @SerializedName("fast_falling_damage_modifier")
+        public final TrackedValue<Float> fastFallingFallDamageModifier = this.value(0.5f);
 
         @Comment("A Map to use for status effect conversions, formatted as <\"key\" = \"value\"> pairs. The \"key\" is considered a positive effect, and the \"value\" is considered a negative effect")
         @SerializedName("status_effect_map")
