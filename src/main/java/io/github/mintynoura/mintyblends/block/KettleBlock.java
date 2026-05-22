@@ -7,6 +7,7 @@ import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -17,6 +18,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.FireChargeItem;
 import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -69,14 +71,13 @@ public class KettleBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
     }
 
-    public static boolean canBeLit(BlockState state, Level level, BlockPos pos) {
-        return tryLight(state, level, pos);
+    public static boolean canBeLit(BlockState state) {
+        return tryLight(state);
     }
 
-    private static boolean tryLight(BlockState state, Level level, BlockPos pos) {
-        KettleBlockEntity blockEntity = (KettleBlockEntity) level.getBlockEntity(pos);
+    private static boolean tryLight(BlockState state) {
         if (!state.getValue(LIT)) {
-            blockEntity.light();
+            state.setValue(LIT, true);
             return true;
         } else return false;
     }
@@ -117,17 +118,22 @@ public class KettleBlock extends BaseEntityBlock {
         ItemStack heldStack = player.getItemInHand(hand);
         boolean isFireCharge = heldStack.getItem() instanceof FireChargeItem;
         boolean isFlintAndSteel = heldStack.getItem() instanceof FlintAndSteelItem;
-        KettleBlockEntity blockEntity = (KettleBlockEntity) level.getBlockEntity(pos);
         if ((isFireCharge || isFlintAndSteel) && !state.getValue(LIT)) {
-            blockEntity.light();
             if (isFireCharge) {
                 level.playSound(player, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
                 player.getItemInHand(hand).shrink(1);
             } else {
                 level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
-                player.getItemInHand(hand).hurtWithoutBreaking(1, player);
+                player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
             }
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+            level.setBlock(pos, state.setValue(LIT, true), 11);
+            return InteractionResult.SUCCESS;
+        }
+        if (heldStack.getItem() instanceof ShovelItem && state.getValue(LIT)) {
+            level.playSound(null, pos, MintyBlendsSoundEvents.BLOCK_KETTLE_EXTINGUISH, SoundSource.BLOCKS);
+            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+            level.setBlock(pos, state.setValue(LIT, false), 11);
             return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {
@@ -189,11 +195,13 @@ public class KettleBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        if (level.isClientSide()) {
-            return null;
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (blockState.getValue(LIT)) {
+                return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (_, pos, state, blockEntity) -> blockEntity.tick(serverLevel, pos, state));
+            }
         }
-        return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+        return null;
     }
 
     @Override

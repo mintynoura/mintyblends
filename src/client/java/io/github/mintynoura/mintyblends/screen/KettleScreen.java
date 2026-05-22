@@ -33,9 +33,8 @@ public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
         if (menu.isBrewing()) {
             context.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, menu.getArrowProgress(), 16, 24, 16);
         }
-        if (menu.getLitUses() > 0) {
-            int currentHeight = menu.getLitProgress() - 1;
-            context.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 50 + 16 - currentHeight, 0, 16 - currentHeight, 16, currentHeight, 16, 16);
+        if (menu.isLit()) {
+            context.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 51, 0, 1, 16, 15, 16, 16);
         }
     }
 

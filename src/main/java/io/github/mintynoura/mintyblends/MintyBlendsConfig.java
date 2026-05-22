@@ -8,6 +8,10 @@ import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 
 public class MintyBlendsConfig extends ReflectiveConfig {
+    @Comment("The amount of time (in ticks) that blends should take to brew in a Kettle. Does not affect recipes")
+    @SerializedName("kettle_blend_brewing_time")
+    @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+    public final TrackedValue<Integer> kettleBlendBrewingTime = this.value(400);
     @Comment("The modifier Sugar applies to potion effect durations when used as a blending ingredient")
     @SerializedName("sugar_duration_modifier")
     @FloatRange(min = 0.1f, max = 10.0f)

@@ -37,7 +37,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     private PlacementInfo placementInfo;
 
     public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
-    public static final int defaultBrewingTime = 200;
+    public static final int defaultBrewingTime = 400;
 
     public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStackTemplate result, ItemStackTemplate container, int brewingTime) {
         this.ingredients = ingredients;

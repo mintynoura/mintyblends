@@ -37,6 +37,7 @@ import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
+// TODO: censer uses, remove durability
 public record CenserComponent(float range, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
     public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             ExtraCodecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),

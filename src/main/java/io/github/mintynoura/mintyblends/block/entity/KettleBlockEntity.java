@@ -1,5 +1,6 @@
 package io.github.mintynoura.mintyblends.block.entity;
 
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.KettleBlock;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
@@ -22,7 +23,6 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -49,12 +49,10 @@ import java.util.*;
 @NullMarked
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
-    // TODO: remove burner extinguishing, add different container and result slot?
+    // TODO: different container and result slot?
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     private int progress = 0;
     private int brewTime;
-    private int litUses = 0;
-    public static final int maxLitUses = 4;
     private static final int[] INGREDIENT_SLOTS = new int[]{0, 1, 2, 3};
     public static final int OUTPUT_SLOT = 4;
 
@@ -70,7 +68,6 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 return switch (index) {
                     case 0 -> KettleBlockEntity.this.progress;
                     case 1 -> KettleBlockEntity.this.brewTime;
-                    case 2 -> KettleBlockEntity.this.litUses;
                     default -> 0;
                 };
             }
@@ -83,9 +80,6 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                         break;
                     case 1:
                         KettleBlockEntity.this.brewTime = value;
-                        break;
-                    case 2:
-                        KettleBlockEntity.this.litUses = value;
                         break;
                 }
             }
@@ -117,7 +111,6 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         ContainerHelper.loadAllItems(view, inventory);
         progress = view.getIntOr("kettle.progress", 0);
         brewTime = view.getIntOr("kettle.brew_time", 0);
-        litUses = view.getIntOr("kettle.lit_uses", 0);
         customName = parseCustomNameSafe(view, "CustomName");
     }
 
@@ -127,7 +120,6 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         ContainerHelper.saveAllItems(view, inventory);
         view.putInt("kettle.progress", progress);
         view.putInt("kettle.brew_time", brewTime);
-        view.putInt("kettle.lit_uses", litUses);
         view.storeNullable("CustomName", ComponentSerialization.CODEC, this.customName);
     }
 
@@ -162,31 +154,34 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         return new KettleMenu(syncId, playerInventory, this, this.containerData);
     }
 
-    public void light() {
-        this.litUses = maxLitUses;
-    }
 
     public boolean isLit() {
-        return this.litUses > 0;
+        if (this.level == null) {
+            return false;
+        }
+        return this.level.getBlockState(this.worldPosition).getValue(KettleBlock.LIT);
     }
 
-    private boolean hasRecipe() {
+    private void resetProgress() {
+        this.progress = 0;
+    }
+
+    public boolean hasRecipe() {
         Optional<RecipeHolder<KettleBrewingRecipe>> recipeEntry = getRecipe();
         return recipeEntry.isPresent();
     }
 
-    private Optional<RecipeHolder<KettleBrewingRecipe>> getRecipe() {
+    public Optional<RecipeHolder<KettleBrewingRecipe>> getRecipe() {
         if (level != null) {
             return level.getServer().getRecipeManager().getRecipeFor(MintyBlendsRecipes.KETTLE_BREWING_RECIPE_TYPE, new KettleBrewingRecipeInput(getIngredients()), level);
         } else return Optional.empty();
     }
 
-    private int getBrewingTime(RecipeHolder<KettleBrewingRecipe> recipeEntry) {
+    public int getBrewingTime(RecipeHolder<KettleBrewingRecipe> recipeEntry) {
         return recipeEntry.value().getBrewingTime();
     }
 
-    private boolean canCraftRecipe(
-            HolderLookup.Provider registries,
+    public boolean canCraftRecipe(
             RecipeHolder<KettleBrewingRecipe> recipe,
             KettleBrewingRecipeInput recipeInput,
             NonNullList<ItemStack> inventory) {
@@ -201,7 +196,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         } else return false;
     }
 
-    private boolean canBlend(KettleBrewingRecipeInput recipeInput, NonNullList<ItemStack> inventory) {
+    public boolean canBlend(KettleBrewingRecipeInput recipeInput, NonNullList<ItemStack> inventory) {
         ItemStack container = inventory.get(OUTPUT_SLOT);
         ItemStack itemStack;
         boolean hasContainer = false;
@@ -226,34 +221,34 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         }
     }
 
-    public void tick(Level level, BlockPos pos, BlockState state) {
-        boolean changed = state.getValue(KettleBlock.LIT) ^ this.isLit();
+    public void tick(Level level, BlockPos pos, BlockState blockState) {
+        boolean changed = blockState.getValue(KettleBlock.LIT) ^ this.isLit();
         if (changed) {
-            state = state.setValue(KettleBlock.LIT, this.isLit());
-            level.setBlock(pos, state, Block.UPDATE_ALL);
+            blockState = blockState.setValue(KettleBlock.LIT, this.isLit());
+            level.setBlock(pos, blockState, Block.UPDATE_ALL);
         }
         if (this.isLit()) {
-            if (hasRecipe() && canCraftRecipe(level.registryAccess(), getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
+            if (hasRecipe() && canCraftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
                 this.progress++;
                 this.brewTime = this.getBrewingTime(getRecipe().get());
-                setChanged(level, pos, state);
+                setChanged(level, pos, blockState);
                 if (this.progress == this.brewTime) {
                     craftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
-                    postCraft(level, state);
+                    postCraft(level, blockState);
                 }
             } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
                 this.progress++;
-                this.brewTime = KettleBrewingRecipe.defaultBrewingTime;
-                setChanged(level, pos, state);
+                this.brewTime = MintyBlends.CONFIG.kettleBlendBrewingTime.value();
+                setChanged(level, pos, blockState);
                 if (this.progress == this.brewTime) {
                     blend(new KettleBrewingRecipeInput(getIngredients()));
-                   postCraft(level, state);
+                   postCraft(level, blockState);
                 }
-            } else this.progress = 0;
-        } else this.progress = 0;
+            } else this.resetProgress();
+        } else this.resetProgress();
     }
 
-    private void craftRecipe(
+    public void craftRecipe(
             RecipeHolder<KettleBrewingRecipe> recipe,
             KettleBrewingRecipeInput recipeInput
     ) {
@@ -268,46 +263,8 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         }
     }
 
-    private void blend(KettleBrewingRecipeInput recipeInput) {
-//        ItemStack itemStack;
-//        Set<MobEffectInstance> statusEffectSet = new HashSet<>();
-//        Set<Identifier> herbalEffectSet = new HashSet<>();
-//        Set<String> ingredientSet = new HashSet<>();
-//        List<ItemStack> recipeRemainders = new ArrayList<>();
-//        List<ConsumeEffect> consumeEffects = new ArrayList<>();
-//        for (int i = 0; i < recipeInput.size(); i++) {
-//            Item item = recipeInput.getItem(i).getItem();
-//            if (item.getCraftingRemainder() != null) recipeRemainders.add(item.getCraftingRemainder().create());
-//        }
-//        for (int i = 0; i < recipeInput.size(); i++) {
-//            itemStack = recipeInput.getItem(i);
-//            if (!itemStack.isEmpty()) {
-//                if (itemStack.is(MintyBlendsTags.Items.BLENDING_INGREDIENTS)) {
-//                    if (itemStack.getItem() != Items.AIR) {
-//                        ingredientSet.add(itemStack.getItem().getDescriptionId());
-//                    }
-//                    if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(MintyBlendsTags.Items.HERBS)) {
-//                        SuspiciousEffectHolder suspiciousStewIngredient = SuspiciousEffectHolder.tryGet(itemStack.getItem());
-//                        if (suspiciousStewIngredient != null) {
-//                            MobEffectInstance statusEffect = new MobEffectInstance(suspiciousStewIngredient.getSuspiciousEffects().effects().getFirst().createEffectInstance());
-//                            statusEffectSet.add(statusEffect);
-//                        }
-//                    }
-//                    if (itemStack.has(MintyBlendsComponents.HERB_COMPONENT)) {
-//                        Identifier herbalEffect = itemStack.get(MintyBlendsComponents.HERB_COMPONENT).herbalEffect();
-//                        herbalEffectSet.add(herbalEffect);
-//                    }
-//                    if (itemStack.has(DataComponents.CONSUMABLE)) {
-//                        consumeEffects.addAll(itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects());
-//                    }
-//                }
-//            }
-//        }
-//        HerbalBrewComponent herbalBrewComponent = new HerbalBrewComponent(List.copyOf(herbalEffectSet), List.copyOf(statusEffectSet), List.copyOf(ingredientSet));
-//        Consumable consumableComponent = new Consumable(1.6f, ItemUseAnimation.DRINK, SoundEvents.GENERIC_DRINK, false, consumeEffects);
+    public void blend(KettleBrewingRecipeInput recipeInput) {
         ItemStack herbalBrew = BlendUtils.blendBrew(recipeInput, level.getRandom());
-//        herbalBrew.set(MintyBlendsComponents.HERBAL_BREW_COMPONENT, herbalBrewComponent);
-//        herbalBrew.set(DataComponents.CONSUMABLE, consumableComponent);
         if (level instanceof ServerLevel serverLevel) {
             for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
                 DefaultDispenseItemBehavior.spawnItem(serverLevel, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
@@ -319,7 +276,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         this.setItem(OUTPUT_SLOT, herbalBrew);
     }
 
-    private void postCraft(Level level, BlockState state) {
+    public void postCraft(Level level, BlockState state) {
         RandomSource random = level.getRandom();
         Direction direction = state.getValue(HorizontalDirectionalBlock.FACING).getClockWise();
         double h = random.nextDouble() * 0.6 - 0.3;
@@ -328,19 +285,6 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         for (int count = 0; count < 3; count++) {
             ((ServerLevel) level).sendParticles(MintyBlendsParticleTypes.KETTLE_STEAM, worldPosition.getX() + 0.5 + i, worldPosition.getY() + 1, worldPosition.getZ() + 0.5 + k, 1, 0, 0.1, 0, 0);
         }
-        if (this.litUses == 1) {
-            level.playSound(
-                    null,
-                    worldPosition.getX() + 0.5,
-                    worldPosition.getY() + 0.5,
-                    worldPosition.getZ() + 0.5,
-                    MintyBlendsSoundEvents.BLOCK_KETTLE_EXTINGUISH,
-                    SoundSource.BLOCKS,
-                    0.7F + random.nextFloat(),
-                    random.nextFloat() * 0.7F + 0.5f
-            );
-        }
-        this.litUses -= 1;
         this.progress = 0;
     }
 

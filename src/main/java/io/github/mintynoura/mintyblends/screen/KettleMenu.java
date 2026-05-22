@@ -59,8 +59,8 @@ public class KettleMenu extends AbstractContainerMenu {
         return containerData.get(0) > 0;
     }
 
-    public int getLitUses() {
-        return this.containerData.get(2);
+    public boolean isLit() {
+        return this.kettleBlockEntity.isLit();
     }
 
     public int getArrowProgress() {
@@ -69,13 +69,6 @@ public class KettleMenu extends AbstractContainerMenu {
         int arrowPixelSize = 24;
 
         return brewTime != 0 && progress != 0 ? progress * arrowPixelSize / brewTime : 0;
-    }
-
-    public int getLitProgress() {
-        int litUses = this.containerData.get(2);
-        int litPixelSize = 16;
-
-        return litUses != 0 ? litUses * litPixelSize / KettleBlockEntity.maxLitUses : 0;
     }
 
     @Override
