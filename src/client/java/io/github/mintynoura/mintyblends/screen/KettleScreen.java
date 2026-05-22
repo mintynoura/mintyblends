@@ -25,16 +25,17 @@ public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
         this.titleLabelX = (imageWidth - this.font.width(this.title)) / 2;
     }
 
+    // TODO: fix weird lit texture artifact
     @Override
     public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         if (menu.isBrewing()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 79, y + 34, 0, 0, menu.getArrowProgress(), 16, 24, 16);
+            context.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 69, y + 31, 0, 0, menu.getArrowProgress(), 25, 44, 25);
         }
         if (menu.isLit()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 51, 0, 1, 16, 15, 16, 16);
+            context.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 59, 0, 0, 10, 12, 10, 12);
         }
     }
 

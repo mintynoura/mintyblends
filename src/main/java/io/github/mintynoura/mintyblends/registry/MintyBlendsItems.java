@@ -33,7 +33,7 @@ public class MintyBlendsItems {
     public static final Item MEDICINAL_LEAVES = registerItem("medicinal_leaves", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.MEDICINAL_HERB, MintyBlendsConsumables.MEDICINAL_HERB));
     public static final Item CULINARY_LEAVES = registerItem("culinary_leaves", Item::new, new Item.Properties()
-            .food(MintyBlendsFoods.CULINARY_HERB));
+            .food(MintyBlendsFoods.CULINARY_HERB, MintyBlendsConsumables.CULINARY_HERB));
     public static final Item SAGEBRUSH_LEAVES = registerItem("sagebrush_leaves", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.SAGEBRUSH, MintyBlendsConsumables.SAGEBRUSH));
 

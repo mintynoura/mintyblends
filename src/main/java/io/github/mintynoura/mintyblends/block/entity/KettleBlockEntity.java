@@ -47,14 +47,15 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
 @NullMarked
+// TODO: fix crafting recipe not stacking results properly
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
-    // TODO: different container and result slot?
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inventory = NonNullList.withSize(6, ItemStack.EMPTY);
     private int progress = 0;
     private int brewTime;
     private static final int[] INGREDIENT_SLOTS = new int[]{0, 1, 2, 3};
-    public static final int OUTPUT_SLOT = 4;
+    public static final int CONTAINER_SLOT = 4;
+    public static final int OUTPUT_SLOT = 5;
 
     @Nullable
     private Component customName;
@@ -187,20 +188,23 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             NonNullList<ItemStack> inventory) {
         if (recipe != null) {
             ItemStack itemStack = recipe.value().assemble(recipeInput);
-            if (itemStack.isEmpty()) {
+            if (itemStack.isEmpty() || (!ItemStack.isSameItemSameComponents(itemStack, inventory.get(OUTPUT_SLOT)) && !inventory.get(OUTPUT_SLOT).isEmpty())) {
                 return false;
             } else {
-                ItemStack container = inventory.get(OUTPUT_SLOT);
+                ItemStack container = inventory.get(CONTAINER_SLOT);
                 return ItemStack.isSameItemSameComponents(container, recipe.value().getContainer().create());
             }
         } else return false;
     }
 
-    public boolean canBlend(KettleBrewingRecipeInput recipeInput, NonNullList<ItemStack> inventory) {
-        ItemStack container = inventory.get(OUTPUT_SLOT);
+    public boolean canBlend(KettleBrewingRecipeInput recipeInput, NonNullList<ItemStack> inventory, Level level) {
+        ItemStack container = inventory.get(CONTAINER_SLOT);
         ItemStack itemStack;
         boolean hasContainer = false;
         boolean hasIngredients = false;
+        if (!inventory.get(OUTPUT_SLOT).isEmpty() && !ItemStack.isSameItemSameComponents(BlendUtils.blendBrew(recipeInput, level.getRandom()), inventory.get(OUTPUT_SLOT))) {
+            return false;
+        }
         if (ItemStack.isSameItemSameComponents(container, KettleBrewingRecipe.defaultContainer.create())) {
             hasContainer = true;
         }
@@ -233,37 +237,44 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 this.brewTime = this.getBrewingTime(getRecipe().get());
                 setChanged(level, pos, blockState);
                 if (this.progress == this.brewTime) {
-                    craftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
+                    craftRecipe(level, getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
                     postCraft(level, blockState);
                 }
-            } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory)) {
+            } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory, level)) {
                 this.progress++;
                 this.brewTime = MintyBlends.CONFIG.kettleBlendBrewingTime.value();
                 setChanged(level, pos, blockState);
                 if (this.progress == this.brewTime) {
-                    blend(new KettleBrewingRecipeInput(getIngredients()));
-                   postCraft(level, blockState);
+                    blend(new KettleBrewingRecipeInput(getIngredients()), level);
+                    postCraft(level, blockState);
                 }
             } else this.resetProgress();
         } else this.resetProgress();
     }
 
     public void craftRecipe(
+            Level level,
             RecipeHolder<KettleBrewingRecipe> recipe,
             KettleBrewingRecipeInput recipeInput
     ) {
-        List<ItemStack> recipeRemainders = BlendUtils.recipeRemainders(recipeInput);
+        ItemStack result = recipe.value().assemble(recipeInput);
+        if (level instanceof ServerLevel serverLevel) {
+            for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
+                DefaultDispenseItemBehavior.spawnItem(serverLevel, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
+            }
+        }
         for (int i = 0; i <= OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);
         }
-        ItemStack result = recipe.value().assemble(recipeInput);
-        this.setItem(OUTPUT_SLOT, result);
-        for (ItemStack remainder : recipeRemainders) {
-            DefaultDispenseItemBehavior.spawnItem(level, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
+        if (this.getItem(OUTPUT_SLOT).isEmpty()) {
+            this.setItem(OUTPUT_SLOT, result);
+        } else {
+            result.grow(this.getItem(OUTPUT_SLOT).getCount());
+            this.setItem(OUTPUT_SLOT, result);
         }
     }
 
-    public void blend(KettleBrewingRecipeInput recipeInput) {
+    public void blend(KettleBrewingRecipeInput recipeInput, Level level) {
         ItemStack herbalBrew = BlendUtils.blendBrew(recipeInput, level.getRandom());
         if (level instanceof ServerLevel serverLevel) {
             for (ItemStack remainder : BlendUtils.recipeRemainders(recipeInput)) {
@@ -273,7 +284,11 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         for (int i = 0; i < OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);
         }
-        this.setItem(OUTPUT_SLOT, herbalBrew);
+        if (this.getItem(OUTPUT_SLOT).isEmpty()) {
+            this.setItem(OUTPUT_SLOT, herbalBrew);
+        } else {
+            this.getItem(OUTPUT_SLOT).grow(1);
+        }
     }
 
     public void postCraft(Level level, BlockState state) {

@@ -39,7 +39,8 @@ public class KettleMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.inventory, 1, 49, 26));
         this.addSlot(new Slot(this.inventory, 2, 31, 44));
         this.addSlot(new Slot(this.inventory, 3, 49, 44));
-        this.addSlot(new ContainerSlot(this.inventory, 4, 116, 35));
+        this.addSlot(new ContainerSlot(this.inventory, 4, 80, 35));
+        this.addSlot(new Slot(this.inventory, 5, 116, 35));
 
         int m;
         int l;
@@ -66,7 +67,7 @@ public class KettleMenu extends AbstractContainerMenu {
     public int getArrowProgress() {
         int progress = this.containerData.get(0);
         int brewTime = this.containerData.get(1);
-        int arrowPixelSize = 24;
+        int arrowPixelSize = 44;
 
         return brewTime != 0 && progress != 0 ? progress * arrowPixelSize / brewTime : 0;
     }

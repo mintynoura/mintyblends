@@ -23,6 +23,8 @@ public class MintyBlendsConsumables {
             .onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.SLOWNESS)).build();
     public static final Consumable MEDICINAL_HERB = Consumables.defaultFood()
             .onConsume(new HealConsumeEffect(2f)).build();
+    public static final Consumable CULINARY_HERB = Consumable.builder()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SATURATION, 4, 0), 0.5f)).build();
     public static final Consumable SAGEBRUSH = Consumables.defaultFood()
             .onConsume(new RemoveStatusEffectsConsumeEffect(HolderSet.direct(MobEffects.WEAKNESS, MintyBlendsStatusEffects.RENDING))).build();
     public static final Consumable CUREFLOWER = Consumable.builder()

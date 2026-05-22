@@ -8,10 +8,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public class MintyBlendsTags {
     public static class Items {
-
         public static final TagKey<Item> HERBS = createTag("herbs");
         public static final TagKey<Item> HERBAL_LEAVES = createTag("herbal_leaves");
         public static final TagKey<Item> BLENDING_INGREDIENTS = createTag("blending_ingredients");
@@ -28,10 +28,15 @@ public class MintyBlendsTags {
         public static final TagKey<Block> HERBS = createTag("herbs");
         public static final TagKey<Block> CUREFLOWER_GROWN_ON = createTag("cureflower_grown_on");
         public static final TagKey<Block> RENDFLOWER_GROWN_ON = createTag("rendflower_grown_on");
+        public static TagKey<Block> SUPPORTS_LAVA_LOTUS;
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
+    }
+
+    public static class Fluids {
+        public static TagKey<Fluid> SUPPORTS_LAVA_LOTUS;
     }
 
     public static class Biomes {
