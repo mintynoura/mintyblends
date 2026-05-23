@@ -23,6 +23,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -47,7 +48,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
 @NullMarked
-// TODO: fix crafting recipe not stacking results properly
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(6, ItemStack.EMPTY);
@@ -187,13 +187,14 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
             KettleBrewingRecipeInput recipeInput,
             NonNullList<ItemStack> inventory) {
         if (recipe != null) {
-            ItemStack itemStack = recipe.value().assemble(recipeInput);
-            if (itemStack.isEmpty() || (!ItemStack.isSameItemSameComponents(itemStack, inventory.get(OUTPUT_SLOT)) && !inventory.get(OUTPUT_SLOT).isEmpty())) {
+            ItemStack result = recipe.value().assemble(recipeInput);
+            if (result.isEmpty() || (!ItemStack.isSameItemSameComponents(result, inventory.get(OUTPUT_SLOT)) && !inventory.get(OUTPUT_SLOT).isEmpty())) {
                 return false;
-            } else {
-                ItemStack container = inventory.get(CONTAINER_SLOT);
-                return ItemStack.isSameItemSameComponents(container, recipe.value().getContainer().create());
             }
+            ItemStack container = inventory.get(CONTAINER_SLOT);
+            boolean hasContainer = ItemStack.isSameItemSameComponents(container, recipe.value().getContainer().create());
+            int resultCount = inventory.get(OUTPUT_SLOT).getCount() + result.getCount();
+            return hasContainer && resultCount <= result.getMaxStackSize();
         } else return false;
     }
 
@@ -225,31 +226,34 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         }
     }
 
-    public void tick(Level level, BlockPos pos, BlockState blockState) {
-        boolean changed = blockState.getValue(KettleBlock.LIT) ^ this.isLit();
+    public void tick(Level level, BlockPos pos, BlockState blockState, KettleBlockEntity entity) {
+        boolean changed = blockState.getValue(KettleBlock.LIT) ^ entity.isLit();
         if (changed) {
-            blockState = blockState.setValue(KettleBlock.LIT, this.isLit());
+            blockState = blockState.setValue(KettleBlock.LIT, entity.isLit());
             level.setBlock(pos, blockState, Block.UPDATE_ALL);
         }
-        if (this.isLit()) {
+        if (entity.isLit()) {
             if (hasRecipe() && canCraftRecipe(getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()), inventory)) {
-                this.progress++;
-                this.brewTime = this.getBrewingTime(getRecipe().get());
+                entity.progress++;
+                entity.brewTime = entity.getBrewingTime(getRecipe().get());
                 setChanged(level, pos, blockState);
-                if (this.progress == this.brewTime) {
+                if (entity.progress == entity.brewTime) {
                     craftRecipe(level, getRecipe().get(), new KettleBrewingRecipeInput(getIngredients()));
-                    postCraft(level, blockState);
+                    postCraft(level, blockState, entity);
                 }
             } else if (!hasRecipe() && canBlend(new KettleBrewingRecipeInput(getIngredients()), inventory, level)) {
-                this.progress++;
-                this.brewTime = MintyBlends.CONFIG.kettleBlendBrewingTime.value();
+                entity.progress++;
+                entity.brewTime = MintyBlends.CONFIG.kettleBlendBrewingTime.value();
                 setChanged(level, pos, blockState);
-                if (this.progress == this.brewTime) {
+                if (entity.progress == entity.brewTime) {
                     blend(new KettleBrewingRecipeInput(getIngredients()), level);
-                    postCraft(level, blockState);
+                    postCraft(level, blockState, entity);
                 }
-            } else this.resetProgress();
-        } else this.resetProgress();
+            } else entity.resetProgress();
+        } else entity.resetProgress();
+        if (entity.progress > 0) {
+            entity.progress = Mth.clamp(entity.progress, 0, entity.brewTime);
+        }
     }
 
     public void craftRecipe(
@@ -263,14 +267,13 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
                 DefaultDispenseItemBehavior.spawnItem(serverLevel, remainder, 6, Direction.UP, Vec3.atCenterOf(worldPosition));
             }
         }
-        for (int i = 0; i <= OUTPUT_SLOT; i++) {
+        for (int i = 0; i < OUTPUT_SLOT; i++) {
             KettleBlockEntity.this.removeItem(i, 1);
         }
         if (this.getItem(OUTPUT_SLOT).isEmpty()) {
             this.setItem(OUTPUT_SLOT, result);
         } else {
-            result.grow(this.getItem(OUTPUT_SLOT).getCount());
-            this.setItem(OUTPUT_SLOT, result);
+            this.getItem(OUTPUT_SLOT).grow(result.getCount());
         }
     }
 
@@ -291,7 +294,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         }
     }
 
-    public void postCraft(Level level, BlockState state) {
+    public void postCraft(Level level, BlockState state, KettleBlockEntity entity) {
         RandomSource random = level.getRandom();
         Direction direction = state.getValue(HorizontalDirectionalBlock.FACING).getClockWise();
         double h = random.nextDouble() * 0.6 - 0.3;
@@ -300,7 +303,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         for (int count = 0; count < 3; count++) {
             ((ServerLevel) level).sendParticles(MintyBlendsParticleTypes.KETTLE_STEAM, worldPosition.getX() + 0.5 + i, worldPosition.getY() + 1, worldPosition.getZ() + 0.5 + k, 1, 0, 0.1, 0, 0);
         }
-        this.progress = 0;
+        entity.progress = 0;
     }
 
     @Override

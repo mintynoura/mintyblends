@@ -73,8 +73,8 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
 
     @Override
     public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        int brewProgress = Math.round(this.brewingTicker.getProgress() * 24.0F);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 77, 20, 0, 0, brewProgress, 16, 24, 16);
+        int brewProgress = Math.round(this.brewingTicker.getProgress() * 44);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 42, 8, 0, 0, brewProgress, 25, 44, 25);
     }
 
     @Override

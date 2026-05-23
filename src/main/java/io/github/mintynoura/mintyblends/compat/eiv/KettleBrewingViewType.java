@@ -21,17 +21,17 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public int getDisplayWidth() {
-        return 133;
+        return 109;
     }
 
     @Override
     public int getDisplayHeight() {
-        return 61;
+        return 51;
     }
 
     @Override
     public Identifier getGuiTexture() {
-        return Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/eiv/kettle.png");
+        return Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/recipe/kettle.png");
     }
 
     @Override
@@ -41,14 +41,14 @@ public class KettleBrewingViewType implements IEivRecipeViewType {
 
     @Override
     public void placeSlots(RecipeViewMenu.SlotDefinition slotDefinition) {
-        slotDefinition.addItemSlot(0, 29, 12);
-        slotDefinition.addItemSlot(1, 47, 12);
-        slotDefinition.addItemSlot(2, 29, 30);
-        slotDefinition.addItemSlot(3, 47, 30);
+        slotDefinition.addItemSlot(0, 4, 4);
+        slotDefinition.addItemSlot(1, 22, 4);
+        slotDefinition.addItemSlot(2, 4, 22);
+        slotDefinition.addItemSlot(3, 22, 22);
         // container here
-        slotDefinition.addItemSlot(4, 112, 21);
+        slotDefinition.addItemSlot(4, 53, 13);
         // result here
-        slotDefinition.addItemSlot(5, 1, 2);
+        slotDefinition.addItemSlot(5, 89, 13);
     }
 
     @Override

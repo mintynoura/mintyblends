@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.placement.*;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class MintyBlendsPlacedFeatures {
     public static final ResourceKey<PlacedFeature> CATNIP_PLACED_FEATURE_KEY = createKey("catnip");
     public static final ResourceKey<PlacedFeature> CULINARY_HERB_PLACED_FEATURE_KEY = createKey("culinary_herb");

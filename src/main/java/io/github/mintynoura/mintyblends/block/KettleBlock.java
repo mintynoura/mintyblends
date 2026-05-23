@@ -198,7 +198,7 @@ public class KettleBlock extends BaseEntityBlock {
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
         if (level instanceof ServerLevel serverLevel) {
             if (blockState.getValue(LIT)) {
-                return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (_, pos, state, blockEntity) -> blockEntity.tick(serverLevel, pos, state));
+                return createTickerHelper(type, MintyBlendsBlockEntities.KETTLE_BLOCK_ENTITY, (_, pos, state, blockEntity) -> blockEntity.tick(serverLevel, pos, state, blockEntity));
             }
         }
         return null;

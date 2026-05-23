@@ -13,8 +13,6 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -39,17 +37,6 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
         this.container = SlotContent.of(recipeHolder.value().getContainer());
         this.result = SlotContent.of(recipeHolder.value().getResult());
         this.brewingTime = recipeHolder.value().getBrewingTime();
-        this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.ID, "brewing_ticker"), this.brewingTime);
-    }
-
-    public KettleBrewingClientRecipe(Identifier id, List<Ingredient> ingredients, ItemStackTemplate container, ItemStackTemplate result, int brewingTime) {
-        this.id = id;
-        this.ingredients = new ArrayList<>();
-        ingredients.forEach(ingredient -> this.ingredients.add(SlotContent.of(ingredient)));
-        this.container = SlotContent.of(container);
-        this.result = SlotContent.of(result);
-        this.brewingTime = brewingTime;
-
         this.brewingTicker = AnimationTicker.create(Identifier.fromNamespaceAndPath(MintyBlends.ID, "brewing_ticker"), this.brewingTime);
     }
 
@@ -90,8 +77,8 @@ public class KettleBrewingClientRecipe implements ReliableClientRecipe {
 
     @Override
     public void renderRecipe(RecipeViewScreen screen, RecipePosition recipePosition, GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        int brewProgress = Math.round(this.brewingTicker.getProgress() * 24.0F);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 77, 20, 0, 0, brewProgress, 16, 24, 16);
+        int brewProgress = Math.round(this.brewingTicker.getProgress() * 44);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, 42, 8, 0, 0, brewProgress, 25, 44, 25);
     }
 
     @Override

@@ -10,6 +10,7 @@ public class MintyBlendsFoods {
     public static final FoodProperties SAGEBRUSH = herbalLeaf();
     public static final FoodProperties CUREFLOWER = netherFlower();
     public static final FoodProperties RENDFLOWER = netherFlower();
+    public static final FoodProperties INFERNALILY = netherFlower();
     public static final FoodProperties MINT_TEA = herbalTea();
     public static final FoodProperties GLOW_BERRY_TEA = berryTea();
     public static final FoodProperties SWEET_BERRY_TEA = berryTea();

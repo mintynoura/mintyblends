@@ -15,11 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumables;
 
 import java.util.List;
@@ -37,13 +33,16 @@ public class MintyBlendsItems {
     public static final Item SAGEBRUSH_LEAVES = registerItem("sagebrush_leaves", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.SAGEBRUSH, MintyBlendsConsumables.SAGEBRUSH));
 
-    public static final Item CUREFLOWER = registerItem("cureflower", settings -> new BlockItem(MintyBlendsBlocks.CUREFLOWER, settings), new Item.Properties()
+    public static final Item CUREFLOWER = registerItem("cureflower", properties -> new BlockItem(MintyBlendsBlocks.CUREFLOWER, properties), new Item.Properties()
             .useBlockDescriptionPrefix()
             .food(MintyBlendsFoods.CUREFLOWER, MintyBlendsConsumables.CUREFLOWER));
-    public static final Item RENDFLOWER = registerItem("rendflower", settings -> new BlockItem(MintyBlendsBlocks.RENDFLOWER, settings), new Item.Properties()
+    public static final Item RENDFLOWER = registerItem("rendflower", properties -> new BlockItem(MintyBlendsBlocks.RENDFLOWER, properties), new Item.Properties()
             .useBlockDescriptionPrefix()
             .food(MintyBlendsFoods.RENDFLOWER, MintyBlendsConsumables.RENDFLOWER));
-    public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", settings -> new BlockItem(MintyBlendsBlocks.HORTENSIA_CROP, settings), new Item.Properties().useItemDescriptionPrefix());
+    public static final Item INFERNALILY = registerItem("infernalily", properties -> new PlaceOnWaterBlockItem(MintyBlendsBlocks.INFERNALILY, properties), new Item.Properties()
+            .useBlockDescriptionPrefix()
+            .food(MintyBlendsFoods.INFERNALILY, MintyBlendsConsumables.INFERNALILY));
+    public static final Item HORTENSIA_SEEDS = registerItem("hortensia_seeds", properties -> new BlockItem(MintyBlendsBlocks.HORTENSIA_CROP, properties), new Item.Properties().useItemDescriptionPrefix());
 
     public static final Item HERBAL_BREW = registerItem("herbal_brew", Item::new, new Item.Properties()
             .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(List.of(), List.of()))
@@ -94,9 +93,9 @@ public class MintyBlendsItems {
             .component(MintyBlendsComponents.CENSER, new CenserComponent(3f, List.of(), List.of(), List.of()))
             .durability(4));
 
-    public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties settings) {
+    public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
         ResourceKey<Item> itemRegistryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
-        Item item = factory.apply(settings.setId(itemRegistryKey));
+        Item item = factory.apply(properties.setId(itemRegistryKey));
         Registry.register(BuiltInRegistries.ITEM, itemRegistryKey, item);
         return item;
     }
@@ -121,6 +120,7 @@ public class MintyBlendsItems {
                     output.accept(MintyBlendsBlocks.SILENT_FLOWER);
                     output.accept(CUREFLOWER);
                     output.accept(RENDFLOWER);
+                    output.accept(INFERNALILY);
                     output.accept(HORTENSIA_SEEDS);
                     output.accept(MintyBlendsBlocks.PURPLE_HORTENSIA);
                     output.accept(MintyBlendsBlocks.PINK_HORTENSIA);

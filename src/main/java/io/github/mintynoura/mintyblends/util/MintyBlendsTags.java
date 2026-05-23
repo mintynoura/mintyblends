@@ -28,7 +28,7 @@ public class MintyBlendsTags {
         public static final TagKey<Block> HERBS = createTag("herbs");
         public static final TagKey<Block> CUREFLOWER_GROWN_ON = createTag("cureflower_grown_on");
         public static final TagKey<Block> RENDFLOWER_GROWN_ON = createTag("rendflower_grown_on");
-        public static TagKey<Block> SUPPORTS_LAVA_LOTUS;
+        public static TagKey<Block> SUPPORTS_INFERNALILY = createTag("supports_infernalily");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
@@ -36,7 +36,7 @@ public class MintyBlendsTags {
     }
 
     public static class Fluids {
-        public static TagKey<Fluid> SUPPORTS_LAVA_LOTUS;
+        public static TagKey<Fluid> SUPPORTS_INFERNALILY = TagKey.create(Registries.FLUID, Identifier.fromNamespaceAndPath(MintyBlends.ID, "supports_infernalily"));
     }
 
     public static class Biomes {

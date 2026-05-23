@@ -26,7 +26,7 @@ import static net.minecraft.world.level.block.Blocks.litBlockEmission;
 
 // TODO: placeable brews and censers
 public class MintyBlendsBlocks {
-    public static final Block MINT = registerBlock("mint", settings -> new HerbBlock(MobEffects.FIRE_RESISTANCE, 3f, settings), BlockBehaviour.Properties.of()
+    public static final Block MINT = registerBlock("mint", properties -> new HerbBlock(MobEffects.FIRE_RESISTANCE, 3f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -35,7 +35,7 @@ public class MintyBlendsBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block CATNIP = registerBlock("catnip", settings -> new HerbBlock(MobEffects.SPEED, 5f, settings), BlockBehaviour.Properties.of()
+    public static final Block CATNIP = registerBlock("catnip", properties -> new HerbBlock(MobEffects.SPEED, 5f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -44,7 +44,7 @@ public class MintyBlendsBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", settings -> new HerbBlock(MobEffects.INSTANT_HEALTH, 0.05f, settings), BlockBehaviour.Properties.of()
+    public static final Block MEDICINAL_HERB = registerBlock("medicinal_herb", properties -> new HerbBlock(MobEffects.INSTANT_HEALTH, 0.05f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -53,7 +53,7 @@ public class MintyBlendsBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block CULINARY_HERB = registerBlock("culinary_herb", settings -> new HerbBlock(MobEffects.SATURATION, 0.35f, settings), BlockBehaviour.Properties.of()
+    public static final Block CULINARY_HERB = registerBlock("culinary_herb", properties -> new HerbBlock(MobEffects.SATURATION, 0.35f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -62,7 +62,7 @@ public class MintyBlendsBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY),
             true);
-    public static final Block SAGEBRUSH = registerBlock("sagebrush", settings -> new DesertHerbBlock(MobEffects.STRENGTH, 5f, settings), BlockBehaviour.Properties.of()
+    public static final Block SAGEBRUSH = registerBlock("sagebrush", properties -> new DesertHerbBlock(MobEffects.STRENGTH, 5f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
@@ -72,7 +72,7 @@ public class MintyBlendsBlocks {
                     .pushReaction(PushReaction.DESTROY),
             true);
 
-    public static final Block CUREFLOWER = registerBlock("cureflower", settings -> new NetherFlowerBlock(MobEffects.REGENERATION, 7f, settings), BlockBehaviour.Properties.of()
+    public static final Block CUREFLOWER = registerBlock("cureflower", properties -> new NetherFlowerBlock(MobEffects.REGENERATION, 7f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.NETHER)
                     .noCollision()
                     .instabreak()
@@ -80,7 +80,7 @@ public class MintyBlendsBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block RENDFLOWER = registerBlock("rendflower", settings -> new NetherFlowerBlock(MintyBlendsStatusEffects.RENDING, 9f, settings), BlockBehaviour.Properties.of()
+    public static final Block RENDFLOWER = registerBlock("rendflower", properties -> new NetherFlowerBlock(MintyBlendsStatusEffects.RENDING, 9f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .noCollision()
                     .instabreak()
@@ -88,19 +88,26 @@ public class MintyBlendsBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY),
             false);
-    public static final Block SILENT_FLOWER = registerBlock("silent_flower", settings -> new FlowerBlock(MintyBlendsStatusEffects.STEALTH, 7f, settings), BlockBehaviour.Properties.of()
+    public static final Block SILENT_FLOWER = registerBlock("silent_flower", properties -> new FlowerBlock(MintyBlendsStatusEffects.STEALTH, 7f, properties), BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
                     .noCollision()
                     .instabreak()
                     .sound(SoundType.GRASS)
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
-                    .lightLevel(state -> 3),
+                    .lightLevel(_ -> 3),
             true);
+    public static final Block INFERNALILY = registerBlock("infernalily", properties -> new InfernalilyBlock(MobEffects.FIRE_RESISTANCE, 7f, properties), BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.CRIMSON_HYPHAE)
+                    .instabreak()
+                    .sound(SoundType.LILY_PAD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY),
+            false);
 
-    public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", settings -> new FlowerPotBlock(CUREFLOWER, settings), Blocks.flowerPotProperties(), false);
-    public static final Block POTTED_RENDFLOWER = registerBlock("potted_rendflower", settings -> new FlowerPotBlock(RENDFLOWER, settings), Blocks.flowerPotProperties(), false);
-    public static final Block POTTED_SILENT_FLOWER = registerBlock("potted_silent_flower", settings -> new FlowerPotBlock(SILENT_FLOWER, settings), Blocks.flowerPotProperties(), false);
+    public static final Block POTTED_CUREFLOWER = registerBlock("potted_cureflower", properties -> new FlowerPotBlock(CUREFLOWER, properties), Blocks.flowerPotProperties(), false);
+    public static final Block POTTED_RENDFLOWER = registerBlock("potted_rendflower", properties -> new FlowerPotBlock(RENDFLOWER, properties), Blocks.flowerPotProperties(), false);
+    public static final Block POTTED_SILENT_FLOWER = registerBlock("potted_silent_flower", properties -> new FlowerPotBlock(SILENT_FLOWER, properties), Blocks.flowerPotProperties(), false);
 
     public static final Block HORTENSIA_CROP = registerBlock("hortensia_crop", HortensiaCropBlock::new, BlockBehaviour.Properties.of()
                     .mapColor(MapColor.PLANT)
@@ -145,9 +152,9 @@ public class MintyBlendsBlocks {
                     .noOcclusion(),
             true);
 
-    public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings, boolean shouldRegisterItem) {
+    public static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, boolean shouldRegisterItem) {
         ResourceKey<Block> blockRegistryKey = keyOfBlock(name);
-        Block block = factory.apply(settings.setId(blockRegistryKey));
+        Block block = factory.apply(properties.setId(blockRegistryKey));
         if (shouldRegisterItem) {
             registerBlockItem(name, block);
         }

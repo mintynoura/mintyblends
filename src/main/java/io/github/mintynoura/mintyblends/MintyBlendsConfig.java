@@ -66,6 +66,7 @@ public class MintyBlendsConfig extends ReflectiveConfig {
                 .put("minecraft:invisibility", "minecraft:glowing")
                 .put("minecraft:night_vision", "minecraft:blindness")
                 .put("minecraft:slow_falling", "mintyblends:fast_falling")
+                .put("mintyblends:waterwalker", "mintyblends:lavawalker")
                 .build();
     }
 }

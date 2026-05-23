@@ -1,6 +1,5 @@
 package io.github.mintynoura.mintyblends.recipe;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
@@ -9,6 +8,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -120,8 +120,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                 instance -> instance.group(
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
                                 ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                                ItemStackTemplate.CODEC.fieldOf("container").orElse(defaultContainer).forGetter(recipe -> recipe.container),
-                                Codec.INT.fieldOf("brewing_time").orElse(defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
+                                ItemStackTemplate.CODEC.optionalFieldOf("container", defaultContainer).forGetter(recipe -> recipe.container),
+                                ExtraCodecs.POSITIVE_INT.optionalFieldOf("brewing_time", defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
                         )
                         .apply(instance, KettleBrewingRecipe::new)
         );
