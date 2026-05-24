@@ -16,6 +16,7 @@ public class MintyBlendsDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+		pack.addProvider(MintyBlendsRecipeProvider::new);
 //		pack.addProvider(WorldgenProvider::new);
 //		pack.addProvider(TradeTagsProvider::new);
 //		pack.addProvider(TradeProvider::new);

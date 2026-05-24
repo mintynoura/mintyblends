@@ -11,7 +11,7 @@
 //import net.minecraft.core.HolderLookup;
 //import net.minecraft.core.registries.Registries;
 //import net.minecraft.data.recipes.RecipeOutput;
-//import net.minecraft.data.recipes.RecipeProvider;
+//import net.minecraft.data.recipes.MintyBlendsRecipeProvider;
 //import net.minecraft.tags.ItemTags;
 //import net.minecraft.world.item.Item;
 //import net.minecraft.world.item.Items;
@@ -30,8 +30,8 @@
 //    }
 //
 //    @Override
-//    protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
-//        return new RecipeProvider(wrapperLookup, exporter) {
+//    protected MintyBlendsRecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
+//        return new MintyBlendsRecipeProvider(wrapperLookup, exporter) {
 //            @Override
 //            public void buildRecipes() {
 //                HolderGetter<Item> holderGetter = wrapperLookup.lookupOrThrow(Registries.ITEM);
