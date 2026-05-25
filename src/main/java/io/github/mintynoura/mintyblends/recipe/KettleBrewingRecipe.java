@@ -26,7 +26,6 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
 
     private final List<Ingredient> ingredients;
@@ -36,7 +35,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     @Nullable
     private PlacementInfo placementInfo;
 
-    public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION.builtInRegistryHolder(), 1, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
+    public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
     public static final int defaultBrewingTime = 400;
 
     public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStackTemplate result, ItemStackTemplate container, int brewingTime) {
