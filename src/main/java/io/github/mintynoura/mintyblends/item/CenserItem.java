@@ -10,6 +10,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,34 +27,45 @@ import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class CenserItem extends Item {
-    public CenserItem(Properties settings) {
-        super(settings);
+    public final CenserComponent EMPTY = new CenserComponent(0, 5f, List.of(), List.of(), List.of());
+    public final int BAR_COLOR = ARGB.colorFromFloat(1.0f, 0.0f, 0.75f, 0.77f);
+    private final int MAX_USES;
+    public CenserItem(int maxUses, Properties properties) {
+        super(properties);
+        this.MAX_USES = maxUses;
     }
 
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack itemStack = super.getDefaultInstance();
-        itemStack.set(MintyBlendsComponents.CENSER, new CenserComponent(5f, List.of(), List.of(), List.of()));
+        itemStack.set(MintyBlendsComponents.CENSER, EMPTY);
         return itemStack;
+    }
+
+    public int getMaxUses() {
+        return MAX_USES;
     }
 
     @Override
     public InteractionResult use(Level level, Player user, InteractionHand hand) {
         ItemStack censer = user.getItemInHand(hand);
         ItemStack flintAndSteel = user.getOffhandItem();
+        CenserComponent component = censer.getOrDefault(MintyBlendsComponents.CENSER, EMPTY);
 
         if (!(flintAndSteel.getItem() instanceof FlintAndSteelItem) || !censer.has(MintyBlendsComponents.CENSER)) {
-            return InteractionResult.FAIL;
+            return InteractionResult.PASS;
+        }
+        if (component.uses() == 0) {
+            return InteractionResult.PASS;
         }
 
-        CenserComponent component = censer.get(MintyBlendsComponents.CENSER);
 
         float diameter = 2 * component.range();
         List<LivingEntity> entitiesList = level.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(user.position(), diameter, diameter, diameter), livingEntity -> livingEntity.isAlive() && livingEntity != user && !livingEntity.is(MintyBlendsTags.EntityTypes.IGNORES_CENSER));
         for (LivingEntity targetEntity : entitiesList) {
             applyIncense(targetEntity, censer);
         }
-        censer.hurtAndBreak(1, user, EquipmentSlot.MAINHAND);
+        component.decrementUse(censer, component, 1);
         flintAndSteel.hurtAndBreak(1, user, EquipmentSlot.OFFHAND);
         level.playSound(user, user.blockPosition(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
         level.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
@@ -65,7 +78,24 @@ public class CenserItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        CenserComponent component = stack.getOrDefault(MintyBlendsComponents.CENSER, EMPTY);
+        return component.uses() > 0;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        CenserComponent component = stack.getOrDefault(MintyBlendsComponents.CENSER, EMPTY);
+        return Mth.clamp(Math.round(component.uses() * 13.0f / getMaxUses()), 0, 13);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        return BAR_COLOR;
+    }
+
     public void applyIncense(LivingEntity entity, ItemStack stack) {
-        stack.get(MintyBlendsComponents.CENSER).applyIncense(entity, stack);
+        stack.getOrDefault(MintyBlendsComponents.CENSER, EMPTY).applyIncense(entity, stack);
     }
 }

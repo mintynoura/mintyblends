@@ -83,15 +83,16 @@ public class MintyBlendsItems {
 
 
 
-    public static final Item COPPER_CENSER = registerItem("copper_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(5f, List.of(), List.of(), List.of()))
-            .durability(3));
-    public static final Item GOLDEN_CENSER = registerItem("golden_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(7f, List.of(), List.of(), List.of()))
-            .durability(2));
-    public static final Item IRON_CENSER = registerItem("iron_censer", CenserItem::new, new Item.Properties()
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(3f, List.of(), List.of(), List.of()))
-            .durability(4));
+    public static final Item COPPER_CENSER = registerItem("copper_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.copperMaxUses.value(), properties
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.copperRange.value(), List.of(), List.of(), List.of()))));
+    public static final Item IRON_CENSER = registerItem("iron_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.ironMaxUses.value(), properties
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.ironRange.value(), List.of(), List.of(), List.of()))));
+    public static final Item GOLDEN_CENSER = registerItem("golden_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.goldenMaxUses.value(), properties
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.goldenRange.value(), List.of(), List.of(), List.of()))));
+
+    public static Item registerItem(String name, Function<Item.Properties, Item> factory) {
+        return registerItem(name, factory, new Item.Properties());
+    }
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
         ResourceKey<Item> itemRegistryKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));

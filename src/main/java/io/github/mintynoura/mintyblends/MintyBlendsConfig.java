@@ -32,7 +32,37 @@ public class MintyBlendsConfig extends ReflectiveConfig {
     @IntegerRange(min = 0, max = Integer.MAX_VALUE)
     public final TrackedValue<Integer> ocelotCatnipCooldown = this.value(6000);
 
-    @SerializedName("StatusEffects")
+    @SerializedName("censers")
+    public final CenserSection censerSection = new CenserSection();
+    public static final class CenserSection extends Section {
+        @Comment("The amount of uses for Copper Censers")
+        @SerializedName("copper_max_uses")
+        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+        public final TrackedValue<Integer> copperMaxUses = this.value(3);
+        @Comment("The application radius for Copper Censers")
+        @SerializedName("copper_range")
+        @FloatRange(min = 0.0f, max = 64.0f)
+        public final TrackedValue<Float> copperRange = this.value(5f);
+        @Comment("The amount of uses for Iron Censers")
+        @SerializedName("iron_max_uses")
+        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+        public final TrackedValue<Integer> ironMaxUses = this.value(4);
+        @Comment("The application radius for Iron Censers")
+        @SerializedName("iron_range")
+        @FloatRange(min = 0.0f, max = 64.0f)
+        public final TrackedValue<Float> ironRange = this.value(3f);
+        @Comment("The amount of uses for Golden Censers")
+        @SerializedName("golden_max_uses")
+        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+        public final TrackedValue<Integer> goldenMaxUses = this.value(2);
+        @Comment("The application radius for Golden Censers")
+        @SerializedName("golden_range")
+        @FloatRange(min = 0.0f, max = 64.0f)
+        public final TrackedValue<Float> goldenRange = this.value(7f);
+
+    }
+
+    @SerializedName("status_effects")
     public final StatusEffectSection statusEffectSection = new StatusEffectSection();
     public static final class StatusEffectSection extends Section {
         @Comment("The block reach attribute increase for the Reaching effect, per level")

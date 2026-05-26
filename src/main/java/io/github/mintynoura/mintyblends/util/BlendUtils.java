@@ -3,6 +3,7 @@ package io.github.mintynoura.mintyblends.util;
 import io.github.mintynoura.mintyblends.item.CenserItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
+import io.github.mintynoura.mintyblends.item.component.consume_effects.HealConsumeEffect;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipeInput;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsItems;
@@ -33,6 +34,7 @@ public class BlendUtils {
         List<String> ingredients = new ArrayList<>();
         Set<ConsumeEffect> consumeEffects = new HashSet<>();
         float durationModifier = 1f;
+        float healStack = 0;
         for (int i = 0; i < recipeInput.size(); i++) {
             ItemStack itemStack = recipeInput.getItem(i);
             if (!itemStack.isEmpty()) {
@@ -49,6 +51,8 @@ public class BlendUtils {
                         for (ConsumeEffect consumeEffect : itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects()) {
                             if (consumeEffect instanceof ApplyStatusEffectsConsumeEffect(List<MobEffectInstance> effects, float probability)) {
                                 if (random.nextFloat() < probability) mobEffects.addAll(effects);
+                            } else if (consumeEffect instanceof HealConsumeEffect(float amount)) {
+                                healStack += amount;
                             } else consumeEffects.add(consumeEffect);
                         }
                     }
@@ -58,9 +62,8 @@ public class BlendUtils {
                 }
             }
         }
-        if (!mobEffects.isEmpty()) {
-            stackEffects(mobEffects, appliedMobEffects, durationModifier);
-        }
+        if (healStack > 0) consumeEffects.add(new HealConsumeEffect(healStack));
+        if (!mobEffects.isEmpty()) stackEffects(mobEffects, appliedMobEffects, durationModifier);
         ItemStack herbalBrew = new ItemStack(MintyBlendsItems.HERBAL_BREW);
         herbalBrew.set(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(List.copyOf(appliedMobEffects), ingredients));
         herbalBrew.set(DataComponents.CONSUMABLE, new Consumable(1.6f, ItemUseAnimation.DRINK, SoundEvents.GENERIC_DRINK, false, List.copyOf(consumeEffects)));
@@ -74,11 +77,14 @@ public class BlendUtils {
         List<String> ingredients = new ArrayList<>();
         Set<ConsumeEffect> consumeEffects = new HashSet<>();
         float durationModifier = 1f;
+        float healStack = 0;
+        int maxUses = 1;
         for (int i = 0; i < recipeInput.size(); i++) {
             ItemStack itemStack = recipeInput.getItem(i);
             if (!itemStack.isEmpty()) {
-                if (itemStack.is(MintyBlendsTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem) {
+                if (itemStack.is(MintyBlendsTags.Items.CENSERS) && itemStack.getItem() instanceof CenserItem censerItem) {
                     censer = new ItemStack(itemStack.getItem());
+                    maxUses = censerItem.getMaxUses();
                 } else if (itemStack.is(MintyBlendsTags.Items.BLENDING_INGREDIENTS)) {
                     ingredients.add(itemStack.getItem().getDescriptionId());
                     if (itemStack.is(ItemTags.SMALL_FLOWERS) || itemStack.is(MintyBlendsTags.Items.HERBS)) {
@@ -91,9 +97,9 @@ public class BlendUtils {
                     if (itemStack.has(DataComponents.CONSUMABLE) && !itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects().isEmpty()) {
                         for (ConsumeEffect consumeEffect : itemStack.get(DataComponents.CONSUMABLE).onConsumeEffects()) {
                             if (consumeEffect instanceof ApplyStatusEffectsConsumeEffect(List<MobEffectInstance> effects, float probability)) {
-                                if (random.nextFloat() < probability) {
-                                    mobEffects.addAll(effects);
-                                }
+                                if (random.nextFloat() < probability) mobEffects.addAll(effects);
+                            } else if (consumeEffect instanceof HealConsumeEffect(float amount)) {
+                                healStack += amount;
                             } else consumeEffects.add(consumeEffect);
                         }
                     }
@@ -103,10 +109,9 @@ public class BlendUtils {
                 }
             }
         }
-        if (!mobEffects.isEmpty()) {
-            stackEffects(mobEffects, appliedMobEffects, durationModifier);
-        }
-        censer.set(MintyBlendsComponents.CENSER, new CenserComponent(censer.get(MintyBlendsComponents.CENSER).range(), List.copyOf(appliedMobEffects), ingredients, List.copyOf(consumeEffects))) ;
+        if (healStack > 0) consumeEffects.add(new HealConsumeEffect(healStack));
+        if (!mobEffects.isEmpty()) stackEffects(mobEffects, appliedMobEffects, durationModifier);
+        censer.set(MintyBlendsComponents.CENSER, new CenserComponent(maxUses ,censer.get(MintyBlendsComponents.CENSER).range(), List.copyOf(appliedMobEffects), ingredients, List.copyOf(consumeEffects)));
         return censer;
     }
 

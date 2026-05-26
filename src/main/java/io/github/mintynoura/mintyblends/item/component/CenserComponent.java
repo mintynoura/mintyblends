@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
@@ -37,15 +39,17 @@ import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-// TODO: censer uses, remove durability
-public record CenserComponent(float range, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
+public record CenserComponent(int uses, float range, List<MobEffectInstance> potionEffects, List<String> ingredients, List<ConsumeEffect> consumeEffects) implements TooltipProvider {
     public static final Codec<CenserComponent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("uses", 0).forGetter(CenserComponent::uses),
             ExtraCodecs.POSITIVE_FLOAT.optionalFieldOf("range", 5f).forGetter(CenserComponent::range),
             MobEffectInstance.CODEC.listOf().optionalFieldOf("potion_effects", List.of()).forGetter(CenserComponent::potionEffects),
             Codec.STRING.listOf().optionalFieldOf("ingredients", List.of()).forGetter(CenserComponent::ingredients),
             ConsumeEffect.CODEC.listOf().optionalFieldOf("consume_effects", List.of()).forGetter(CenserComponent::consumeEffects)
             ).apply(builder, CenserComponent::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, CenserComponent> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT,
+            CenserComponent::uses,
             ByteBufCodecs.FLOAT,
             CenserComponent::range,
             MobEffectInstance.STREAM_CODEC.apply(ByteBufCodecs.list()),
@@ -57,9 +61,22 @@ public record CenserComponent(float range, List<MobEffectInstance> potionEffects
             CenserComponent::new
     );
 
-    @Override
+    public CenserComponent emptyWithRange(float range) {
+        return new CenserComponent(0, range, List.of(), List.of(), List.of());
+    }
+
+    public void decrementUse(ItemStack itemStack, CenserComponent component, int amount) {
+        if (component.uses() == 1) {
+            itemStack.set(MintyBlendsComponents.CENSER, emptyWithRange(component.range()));
+        } else itemStack.set(MintyBlendsComponents.CENSER, new CenserComponent(component.uses() - amount, component.range(), component.potionEffects(), component.ingredients(), component.consumeEffects()));
+    }
+
     public float range() {
         return range;
+    }
+
+    public int uses() {
+        return uses;
     }
 
     public List<MobEffectInstance> potionEffects() {
