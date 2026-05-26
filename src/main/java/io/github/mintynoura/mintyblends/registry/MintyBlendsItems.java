@@ -84,11 +84,14 @@ public class MintyBlendsItems {
 
 
     public static final Item COPPER_CENSER = registerItem("copper_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.copperMaxUses.value(), properties
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.copperRange.value(), List.of(), List.of(), List.of()))));
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.copperRange.value(), List.of(), List.of(), List.of()))
+            .stacksTo(1)));
     public static final Item IRON_CENSER = registerItem("iron_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.ironMaxUses.value(), properties
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.ironRange.value(), List.of(), List.of(), List.of()))));
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.ironRange.value(), List.of(), List.of(), List.of()))
+            .stacksTo(1)));
     public static final Item GOLDEN_CENSER = registerItem("golden_censer", properties -> new CenserItem(MintyBlends.CONFIG.censerSection.goldenMaxUses.value(), properties
-            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.goldenRange.value(), List.of(), List.of(), List.of()))));
+            .component(MintyBlendsComponents.CENSER, new CenserComponent(0, MintyBlends.CONFIG.censerSection.goldenRange.value(), List.of(), List.of(), List.of()))
+            .stacksTo(1)));
 
     public static Item registerItem(String name, Function<Item.Properties, Item> factory) {
         return registerItem(name, factory, new Item.Properties());
