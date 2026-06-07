@@ -68,7 +68,7 @@ public class CenserItem extends Item {
         component.decrementUse(censer, component, 1);
         flintAndSteel.hurtAndBreak(1, user, EquipmentSlot.OFFHAND);
         level.playSound(user, user.blockPosition(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
-        level.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.ITEM_CENSER_BURN, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+        level.playSound(user, user.blockPosition(), MintyBlendsSoundEvents.CENSER_BURN, SoundSource.PLAYERS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
 
         level.gameEvent(user, GameEvent.ITEM_INTERACT_FINISH, user.blockPosition());
         if (!level.isClientSide()) {

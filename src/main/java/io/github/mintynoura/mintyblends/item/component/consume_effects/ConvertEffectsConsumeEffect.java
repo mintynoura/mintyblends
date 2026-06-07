@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsConsumeEffects;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsSoundEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -51,6 +52,13 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
     );
     public static Map<Holder<MobEffect>, Holder<MobEffect>> conversionMap = new HashMap<>();
 
+    public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, boolean particlesOnlyWhenConverted) {
+        this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(ParticleTypes.WITCH), particlesOnlyWhenConverted, Optional.of(Holder.direct(MintyBlendsSoundEvents.BREW_CONVERT_EFFECT)));
+    }
+    public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, ParticleOptions particle, boolean particlesOnlyWhenConverted) {
+        this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(particle), particlesOnlyWhenConverted, Optional.of(Holder.direct(MintyBlendsSoundEvents.BREW_CONVERT_EFFECT)));
+    }
+
     @Override
     public Type<? extends ConsumeEffect> getType() {
         return MintyBlendsConsumeEffects.CONVERT_EFFECTS;
@@ -95,7 +103,7 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
             }
         }
         if ((!particlesOnlyWhenConverted || anyConverted) && level instanceof ServerLevel serverLevel)
-            particle.ifPresent(particleOptions -> serverLevel.sendParticles(particleOptions, user.getX(), user.getY(0.5), user.getZ(), 5, 0.25, 0.25, 0.25, 0));
+            particle.ifPresent(particleOptions -> serverLevel.sendParticles(particleOptions, user.getX(), user.getY(0.5), user.getZ(), 5, 0.5, 0.25, 0.5, 0));
         return anyConverted;
     }
 

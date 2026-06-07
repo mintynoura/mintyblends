@@ -17,6 +17,7 @@ public class MintyBlendsRecipeProvider extends FabricRecipeProvider {
         super(output, registriesFuture);
     }
 
+    // TODO: datagen stack sensitive brews
     @Override
     protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         return new RecipeProvider(registries, output) {

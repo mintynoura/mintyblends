@@ -131,7 +131,7 @@ public class KettleBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         if (heldStack.getItem() instanceof ShovelItem && state.getValue(LIT)) {
-            level.playSound(null, pos, MintyBlendsSoundEvents.BLOCK_KETTLE_EXTINGUISH, SoundSource.BLOCKS);
+            level.playSound(null, pos, MintyBlendsSoundEvents.KETTLE_EXTINGUISH, SoundSource.BLOCKS);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             level.setBlock(pos, state.setValue(LIT, false), 11);
             return InteractionResult.SUCCESS;
@@ -151,7 +151,7 @@ public class KettleBlock extends BaseEntityBlock {
                         pos.getX() + 0.5,
                         pos.getY() + 0.5,
                         pos.getZ() + 0.5,
-                        MintyBlendsSoundEvents.BLOCK_KETTLE_AMBIENT,
+                        MintyBlendsSoundEvents.KETTLE_AMBIENT,
                         SoundSource.BLOCKS,
                         0.5F + random.nextFloat(),
                         random.nextFloat() * 0.7F + 0.5f,

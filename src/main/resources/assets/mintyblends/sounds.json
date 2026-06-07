@@ -27,5 +27,16 @@
         "pitch": 1.5
       }
     ]
+  },
+  "item.brew.convert_effect": {
+    "subtitle": "subtitles.mintyblends.item.brew.convert_effect",
+    "sounds": [
+      {
+        "name": "block.trial_spawner.spawn_item",
+        "type": "event",
+        "volume": 0.9,
+        "pitch": 1.3
+      }
+    ]
   }
 }

@@ -4,6 +4,7 @@ import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.item.CenserItem;
 import io.github.mintynoura.mintyblends.item.component.CenserComponent;
 import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
+import io.github.mintynoura.mintyblends.util.MintyBlendsBlends;
 import io.github.mintynoura.mintyblends.util.MintyBlendsConsumables;
 import io.github.mintynoura.mintyblends.util.MintyBlendsFoods;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -143,6 +144,7 @@ public class MintyBlendsItems {
                     output.accept(BEETROOT_SALAD);
                     output.accept(STEAK_TARTARE);
                     output.accept(PUMPKIN_STEW);
+                    output.accept(MintyBlendsBlends.REVERSAL_TEA);
                 })
                 .build()
         );

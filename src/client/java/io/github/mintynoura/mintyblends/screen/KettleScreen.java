@@ -15,8 +15,8 @@ public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
     private static final Identifier PROGRESS_TEXTURE = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/progress.png");
     private static final Identifier LIT = Identifier.fromNamespaceAndPath(MintyBlends.ID, "textures/gui/sprites/container/kettle/lit.png");
 
-    public KettleScreen(KettleMenu handler, Inventory inventory, Component title) {
-        super(handler, inventory, title);
+    public KettleScreen(KettleMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
     }
 
     @Override
@@ -26,23 +26,23 @@ public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         if (menu.isBrewing()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 69, y + 30, 0, 0, menu.getArrowProgress(), 25, 44, 25);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, PROGRESS_TEXTURE, x + 69, y + 30, 0, 0, menu.getArrowProgress(), 25, 44, 25);
         }
         if (menu.isLit()) {
-            context.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 58, 0, 0, 10, 12, 10, 12);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, LIT, x + 83, y + 58, 0, 0, 10, 12, 10, 12);
         }
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
-        super.extractBackground(context, mouseX, mouseY, deltaTicks);
-        extractBackground(context, mouseX, mouseY, deltaTicks);
-        super.extractRenderState(context, mouseX, mouseY, deltaTicks);
-        extractTooltip(context, mouseX, mouseY);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
+        extractBackground(graphics, mouseX, mouseY, a);
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+        extractTooltip(graphics, mouseX, mouseY);
     }
 }
