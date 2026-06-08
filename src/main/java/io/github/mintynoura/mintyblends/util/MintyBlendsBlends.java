@@ -13,7 +13,7 @@ import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import java.util.List;
 
 public class MintyBlendsBlends {
-    public static final ItemStack REVERSAL_TEA = singleEffectBrew(new HerbalBrewComponent(List.of(), List.of("blend.mintyblends.convert_negative_to_positive")), new ConvertEffectsConsumeEffect(false, true, true));
+    public static final ItemStack REVERSAL_TEA = singleEffectBrew(new HerbalBrewComponent(List.of(), List.of("blend.mintyblends.convert_negative_to_positive")), new ConvertEffectsConsumeEffect(false, true));
 
     public static ItemStack singleEffectBrew(HerbalBrewComponent brew, ConsumeEffect consumeEffect) {
         ItemStack itemStack = new ItemStack(MintyBlendsItems.HERBAL_BREW);

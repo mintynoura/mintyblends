@@ -14,8 +14,9 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
 
 public class CenserBlendRecipe extends CustomRecipe {
-    public static MapCodec<CenserBlendRecipe> MAP_CODEC = MapCodec.unit(new CenserBlendRecipe());
-    public static StreamCodec<RegistryFriendlyByteBuf, CenserBlendRecipe> STREAM_CODEC = StreamCodec.unit(new CenserBlendRecipe());
+    public static final CenserBlendRecipe INSTANCE = new CenserBlendRecipe();
+    public static final MapCodec<CenserBlendRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, CenserBlendRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
     public boolean matches(CraftingInput input, @NonNull Level level) {

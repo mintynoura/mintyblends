@@ -52,11 +52,16 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
     );
     public static Map<Holder<MobEffect>, Holder<MobEffect>> conversionMap = new HashMap<>();
 
-    public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, boolean particlesOnlyWhenConverted) {
-        this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(ParticleTypes.WITCH), particlesOnlyWhenConverted, Optional.of(Holder.direct(MintyBlendsSoundEvents.BREW_CONVERT_EFFECT)));
+    public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive) {
+        this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(ParticleTypes.WITCH), true, Optional.of(Holder.direct(MintyBlendsSoundEvents.BREW_CONVERT_EFFECT)));
     }
+
     public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, ParticleOptions particle, boolean particlesOnlyWhenConverted) {
         this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(particle), particlesOnlyWhenConverted, Optional.of(Holder.direct(MintyBlendsSoundEvents.BREW_CONVERT_EFFECT)));
+    }
+
+    public ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean negativeToPositive, ParticleOptions particle, boolean particlesOnlyWhenConverted, Holder<SoundEvent> sound) {
+        this(positiveToNegative, negativeToPositive, Optional.empty(), Optional.of(particle), particlesOnlyWhenConverted, Optional.of(sound));
     }
 
     @Override
@@ -70,10 +75,9 @@ public record ConvertEffectsConsumeEffect(boolean positiveToNegative, boolean ne
         Holder<MobEffect> mobEffect;
         List<MobEffectInstance> effectsToRemove = new ArrayList<>();
         List<MobEffectInstance> effectsToAdd = new ArrayList<>();
-
+        effectConversions.ifPresent(conversions -> conversions.forEach(effectConversion -> conversionMap.put(effectConversion.effect, effectConversion.convertedEffect)));
         if (!conversionMap.isEmpty()) {
             if (positiveToNegative || effectConversions.isPresent()) {
-                effectConversions.ifPresent(conversions -> conversions.forEach(effectConversion -> conversionMap.put(effectConversion.effect, effectConversion.convertedEffect)));
                 for (MobEffectInstance effect : user.getActiveEffects()) {
                     mobEffect = effect.getEffect();
                     if (!effect.isAmbient() && conversionMap.containsKey(mobEffect) && !user.hasEffect(conversionMap.get(mobEffect))) {
