@@ -12,25 +12,26 @@ import net.minecraft.world.level.material.Fluid;
 
 public class MintyBlendsTags {
     public static class Items {
-        public static final TagKey<Item> HERBS = createTag("herbs");
-        public static final TagKey<Item> HERBAL_LEAVES = createTag("herbal_leaves");
-        public static final TagKey<Item> BLENDING_INGREDIENTS = createTag("blending_ingredients");
-        public static final TagKey<Item> FRYABLE_GREENS = createTag("fryable_greens");
-        public static final TagKey<Item> CENSERS = createTag("censers");
-        public static final TagKey<Item> CAT_LOVED = createTag("cat_loved");
+        public static final TagKey<Item> HERBS = bind("herbs");
+        public static final TagKey<Item> HERBAL_LEAVES = bind("herbal_leaves");
+        public static final TagKey<Item> BLENDING_INGREDIENTS = bind("blending_ingredients");
+        public static final TagKey<Item> FRYABLE_GREENS = bind("fryable_greens");
+        public static final TagKey<Item> CENSERS = bind("censers");
+        public static final TagKey<Item> CAT_LOVED = bind("cat_loved");
+        public static final TagKey<Item> INFERNALILY_FERTILIZERS = bind("infernalily_fertilizers");
 
-        private static TagKey<Item> createTag(String name) {
+        private static TagKey<Item> bind(String name) {
             return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 
     public static class Blocks {
-        public static final TagKey<Block> HERBS = createTag("herbs");
-        public static final TagKey<Block> CUREFLOWER_GROWN_ON = createTag("cureflower_grown_on");
-        public static final TagKey<Block> RENDFLOWER_GROWN_ON = createTag("rendflower_grown_on");
-        public static TagKey<Block> SUPPORTS_INFERNALILY = createTag("supports_infernalily");
+        public static final TagKey<Block> HERBS = bind("herbs");
+        public static final TagKey<Block> CUREFLOWER_GROWN_ON = bind("cureflower_grown_on");
+        public static final TagKey<Block> RENDFLOWER_GROWN_ON = bind("rendflower_grown_on");
+        public static TagKey<Block> SUPPORTS_INFERNALILY = bind("supports_infernalily");
 
-        private static TagKey<Block> createTag(String name) {
+        private static TagKey<Block> bind(String name) {
             return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
@@ -40,25 +41,25 @@ public class MintyBlendsTags {
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> PRODUCES_PURPLE_HORTENSIAS = createTag("produces_purple_hortensias");
-        public static final TagKey<Biome> PRODUCES_PINK_HORTENSIAS = createTag("produces_pink_hortensias");
-        public static final TagKey<Biome> PRODUCES_BLUE_HORTENSIAS = createTag("produces_blue_hortensias");
+        public static final TagKey<Biome> PRODUCES_PURPLE_HORTENSIAS = bind("produces_purple_hortensias");
+        public static final TagKey<Biome> PRODUCES_PINK_HORTENSIAS = bind("produces_pink_hortensias");
+        public static final TagKey<Biome> PRODUCES_BLUE_HORTENSIAS = bind("produces_blue_hortensias");
 
-        public static final TagKey<Biome> HAS_MINT = createTag("has_mint");
-        public static final TagKey<Biome> HAS_CATNIP = createTag("has_catnip");
-        public static final TagKey<Biome> HAS_MEDICINAL_HERB = createTag("has_medicinal_herb");
-        public static final TagKey<Biome> HAS_CULINARY_HERB = createTag("has_culinary_herb");
-        public static final TagKey<Biome> HAS_SAGEBRUSH = createTag("has_sagebrush");
+        public static final TagKey<Biome> HAS_MINT = bind("has_mint");
+        public static final TagKey<Biome> HAS_CATNIP = bind("has_catnip");
+        public static final TagKey<Biome> HAS_MEDICINAL_HERB = bind("has_medicinal_herb");
+        public static final TagKey<Biome> HAS_CULINARY_HERB = bind("has_culinary_herb");
+        public static final TagKey<Biome> HAS_SAGEBRUSH = bind("has_sagebrush");
 
-        private static TagKey<Biome> createTag(String name) {
+        private static TagKey<Biome> bind(String name) {
             return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }
 
     public static class EntityTypes {
-        public static final TagKey<EntityType<?>> IGNORES_CENSER = createTag("ignores_censer");
+        public static final TagKey<EntityType<?>> IGNORES_CENSER = bind("ignores_censer");
 
-        private static TagKey<EntityType<?>> createTag(String name) {
+        private static TagKey<EntityType<?>> bind(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, name));
         }
     }

@@ -3,20 +3,18 @@ package io.github.mintynoura.mintyblends.registry;
 import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.*;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -184,5 +182,23 @@ public class MintyBlendsBlocks {
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.PURPLE_HORTENSIA, 100, 60);
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.PINK_HORTENSIA, 100, 60);
         FlammableBlockRegistry.getDefaultInstance().add(MintyBlendsBlocks.BLUE_HORTENSIA, 100, 60);
+
+        if (MintyBlends.CONFIG.blazePowderDispenserBehavior.value()) {
+            DispenserBlock.registerBehavior(Items.BLAZE_POWDER, new OptionalDispenseItemBehavior() {
+                @Override
+                protected ItemStack execute(final BlockSource source, final ItemStack dispensed) {
+                    this.setSuccess(true);
+                    Level level = source.level();
+                    BlockPos target = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+                    if (!InfernalilyBlock.dispenserSpread(dispensed, level, target)) {
+                        this.setSuccess(false);
+                    } else if (!level.isClientSide()) {
+                        level.levelEvent(1505, target, 15);
+                    }
+
+                    return dispensed;
+                }
+            });
+        }
     }
 }

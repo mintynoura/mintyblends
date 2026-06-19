@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "mintyblends:block/infernalily"
+      },
+      {
+        "model": "mintyblends:block/infernalily",
+        "y": 90
+      },
+      {
+        "model": "mintyblends:block/infernalily",
+        "y": 180
+      },
+      {
+        "model": "mintyblends:block/infernalily",
+        "y": 270
+      }
+    ]
+  }
+}

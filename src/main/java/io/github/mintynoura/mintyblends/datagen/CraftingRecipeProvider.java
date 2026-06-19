@@ -12,8 +12,8 @@ import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
-public class MintyBlendsRecipeProvider extends FabricRecipeProvider {
-    public MintyBlendsRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class CraftingRecipeProvider extends FabricRecipeProvider {
+    public CraftingRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
@@ -34,6 +34,6 @@ public class MintyBlendsRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public String getName() {
-        return "MintyBlendsRecipeProvider";
+        return "CraftingRecipeProvider";
     }
 }

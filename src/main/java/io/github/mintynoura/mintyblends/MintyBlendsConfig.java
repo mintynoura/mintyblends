@@ -8,6 +8,9 @@ import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueMap;
 
 public class MintyBlendsConfig extends ReflectiveConfig {
+    @Comment("Whether or not to Blaze Powder in a Dispenser should act as fertilizer for Infernalilies. Note that this will not apply for every item in the #infernalily_fertilizers tag, only Blaze Powder.")
+    @SerializedName("blaze_powder_dispenser_behavior")
+    public final TrackedValue<Boolean> blazePowderDispenserBehavior = this.value(true);
     @Comment("The amount of time (in ticks) that blends should take to brew in a Kettle. Does not affect recipes")
     @SerializedName("kettle_blend_brewing_time")
     @IntegerRange(min = 1, max = Integer.MAX_VALUE)
