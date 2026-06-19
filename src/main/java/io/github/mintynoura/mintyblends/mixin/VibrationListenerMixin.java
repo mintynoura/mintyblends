@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsStatusEffects;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,6 +52,6 @@ public abstract class VibrationListenerMixin {
         MobEffectInstance effectInstance = entity.getEffect(MintyBlendsStatusEffects.STEALTH);
         if (effectInstance == null) return 0;
 
-        return (effectInstance.getAmplifier() + 1) * 2;
+        return (effectInstance.getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthVibrationModifier.value();
     }
 }

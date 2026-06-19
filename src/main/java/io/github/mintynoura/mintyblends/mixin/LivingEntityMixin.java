@@ -69,7 +69,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyReturnValue(method = "getVisibilityPercent", at = @At("RETURN"))
     private double mintyBlends$modifyStealthDetection(double original) {
-        return this.hasEffect(MintyBlendsStatusEffects.STEALTH) ? original * (1 - (this.getEffect(MintyBlendsStatusEffects.STEALTH).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthRangeModifier.value()) : original;
+        return this.hasEffect(MintyBlendsStatusEffects.STEALTH) ? original * (1 - (this.getEffect(MintyBlendsStatusEffects.STEALTH).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthVisibilityModifier.value()) : original;
     }
 
     @Inject(method = "dropFromLootTable(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;Z)V", at = @At("TAIL"), cancellable = true)

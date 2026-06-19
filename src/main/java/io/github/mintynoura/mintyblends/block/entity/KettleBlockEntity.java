@@ -205,7 +205,7 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
         ItemStack itemStack;
         boolean hasContainer = false;
         boolean hasIngredients = false;
-        if (!inventory.get(OUTPUT_SLOT).isEmpty() && !ItemStack.isSameItemSameComponents(BlendUtils.blendBrew(recipeInput, level.getRandom()), inventory.get(OUTPUT_SLOT))) {
+        if (!inventory.get(OUTPUT_SLOT).isEmpty() && (!ItemStack.isSameItemSameComponents(BlendUtils.blendBrew(recipeInput, level.getRandom()), inventory.get(OUTPUT_SLOT)) || inventory.get(OUTPUT_SLOT).getCount() >= inventory.get(OUTPUT_SLOT).getMaxStackSize())) {
             return false;
         }
         if (ItemStack.isSameItemSameComponents(container, KettleBrewingRecipe.defaultContainer.create())) {

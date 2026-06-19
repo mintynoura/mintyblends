@@ -48,6 +48,7 @@ public class MintyBlendsItems {
     public static final Item HERBAL_BREW = registerItem("herbal_brew", Item::new, new Item.Properties()
             .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(List.of(), List.of()))
             .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
+            .stacksTo(MintyBlends.CONFIG.brewStackSize.value())
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
 
@@ -134,17 +135,27 @@ public class MintyBlendsItems {
                     output.accept(COPPER_CENSER);
                     output.accept(IRON_CENSER);
                     output.accept(GOLDEN_CENSER);
-                    output.accept(HERBAL_BREW);
+                    output.accept(MINT_JELLY);
+                    output.accept(BEETROOT_SALAD);
+                    output.accept(STEAK_TARTARE);
+                    output.accept(PUMPKIN_STEW);
                     output.accept(MINT_TEA);
                     output.accept(GLOW_BERRY_TEA);
                     output.accept(SWEET_BERRY_TEA);
                     output.accept(WILDFLOWER_TEA);
                     output.accept(TORCHFLOWER_TEA);
-                    output.accept(MINT_JELLY);
-                    output.accept(BEETROOT_SALAD);
-                    output.accept(STEAK_TARTARE);
-                    output.accept(PUMPKIN_STEW);
-                    output.accept(MintyBlendsBlends.REVERSAL_TEA);
+                    output.accept(HERBAL_BREW);
+                    output.accept(MintyBlendsBlends.CONVERT_NEGATIVE_TO_POSITIVE_TEA);
+                    output.accept(MintyBlendsBlends.CONVERT_POSITIVE_TO_NEGATIVE_TEA);
+                    output.accept(MintyBlendsBlends.CLEAR_ALL_EFFECTS_TEA);
+                    output.accept(MintyBlendsBlends.CLEAR_NEGATIVE_TEA);
+                    output.accept(MintyBlendsBlends.CLEAR_POSITIVE_TEA);
+                    output.accept(MintyBlendsBlends.REACHING_TEA);
+                    output.accept(MintyBlendsBlends.STRONG_REACHING_TEA);
+                    output.accept(MintyBlendsBlends.RENDING_TEA);
+                    output.accept(MintyBlendsBlends.STRONG_RENDING_TEA);
+                    output.accept(MintyBlendsBlends.STEALTH_TEA);
+                    output.accept(MintyBlendsBlends.STRONG_STEALTH_TEA);
                 })
                 .build()
         );

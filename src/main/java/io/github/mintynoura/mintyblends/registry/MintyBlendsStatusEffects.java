@@ -26,6 +26,9 @@ public class MintyBlendsStatusEffects {
                     MintyBlends.CONFIG.statusEffectSection.fastFallingGravityModifier.value(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.FALL_DAMAGE_MULTIPLIER, Identifier.fromNamespaceAndPath(MintyBlends.ID, "effect.fast_falling"),
                     MintyBlends.CONFIG.statusEffectSection.fastFallingFallDamageModifier.value(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final Holder<MobEffect> STALWART = register("stalwart", new MintyBlendsStatusEffect(MobEffectCategory.BENEFICIAL, 0xb9ddf3)
+            .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, Identifier.fromNamespaceAndPath(MintyBlends.ID, "effect.stalwart"),
+                    MintyBlends.CONFIG.statusEffectSection.stalwartKnockbackResistance.value(), AttributeModifier.Operation.ADD_VALUE));
 
     public static Holder<MobEffect> register(String name, MobEffect effect) {
         return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(MintyBlends.ID, name), effect);

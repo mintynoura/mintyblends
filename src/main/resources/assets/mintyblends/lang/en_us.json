@@ -54,7 +54,7 @@
   "subtitles.mintyblends.item.censer.burn": "Censer burns",
   "subtitles.mintyblends.item.brew.convert_effect": "Effect converts",
 
-  "blend.mintyblends.clear_effects": "Clearing Blend",
+  "blend.mintyblends.clear_all_effects": "Clearing Blend",
   "blend.mintyblends.clear_negative": "Curing Blend",
   "blend.mintyblends.clear_positive": "Fatiguing Blend",
   "blend.mintyblends.convert_negative_to_positive": "Bane Reversal Blend",
@@ -104,7 +104,7 @@
   "lore.mintyblends.beetroot_salad": "A filling dish made with Beetroots.",
   "lore.mintyblends.pumpkin_stew": "A filling dish made with Pumpkin.",
   "lore.mintyblends.copper_censer": "A standard Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
-  "lore.mintyblends.iron_censer": "A durable Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
+  "lore.mintyblends.iron_censer": "An efficient Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
   "lore.mintyblends.golden_censer": "A long-reaching Censer, it can be crafted alongside various herbs and flowers. Its blend can be lit while holding a Flint and Steel.",
 
   "lore.mintyblends.fried_greens": "A nourishing dish made from leafy greens and herbs.",

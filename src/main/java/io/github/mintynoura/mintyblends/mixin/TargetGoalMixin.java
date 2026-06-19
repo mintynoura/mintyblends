@@ -22,7 +22,7 @@ public abstract class TargetGoalMixin {
     @ModifyReturnValue(method = "getFollowDistance", at = @At("RETURN"))
     private double mintyBlends$modifyStealthRange(double original) {
         if (this.mob != null && this.targetMob != null) {
-            return this.targetMob.hasEffect(MintyBlendsStatusEffects.STEALTH) ? original * (1 - (this.targetMob.getEffect(MintyBlendsStatusEffects.STEALTH).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthRangeModifier.value()) : original;
+            return this.targetMob.hasEffect(MintyBlendsStatusEffects.STEALTH) ? original * (1 - (this.targetMob.getEffect(MintyBlendsStatusEffects.STEALTH).getAmplifier() + 1) * MintyBlends.CONFIG.statusEffectSection.stealthVisibilityModifier.value()) : original;
         } else return original;
     }
 }
