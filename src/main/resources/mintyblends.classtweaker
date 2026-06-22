@@ -1,0 +1,4 @@
+classTweaker v2 official
+
+transitive-extend-enum net/minecraft/world/inventory/RecipeBookType MINTYBLENDS_KETTLE_BREWING
+transitive-extend-enum net/minecraft/client/gui/screens/recipebook/SearchRecipeBookCategory MINTYBLENDS_KETTLE_BREWING
