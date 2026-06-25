@@ -13,6 +13,7 @@
 	"license": "MIT",
 	"icon": "assets/mintyblends/icon.png",
 	"environment": "*",
+	"accessWidener": "mintyblends.classtweaker",
 	"entrypoints": {
 		"main": [
 			"io.github.mintynoura.mintyblends.MintyBlends"

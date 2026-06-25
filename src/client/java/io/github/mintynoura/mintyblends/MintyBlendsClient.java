@@ -2,6 +2,7 @@ package io.github.mintynoura.mintyblends;
 
 import io.github.mintynoura.mintyblends.block.HortensiaCropBlock;
 import io.github.mintynoura.mintyblends.compat.eiv.EivClientIntegration;
+import io.github.mintynoura.mintyblends.networking.SendKettleRecipeBookValues;
 import io.github.mintynoura.mintyblends.particle.KettleSteamParticle;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
@@ -9,13 +10,17 @@ import io.github.mintynoura.mintyblends.registry.MintyBlendsMenus;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
 import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.ClientRecipeBook;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
@@ -26,6 +31,16 @@ public class MintyBlendsClient implements ClientModInitializer {
 	private static final int TEMPERATE_CLIMATE_COLOR = 0xff9951df;
 	private static final int COLD_CLIMATE_COLOR = 0xfff0429c;
 	private static final int WARM_CLIMATE_COLOR = 0xff4294dd;
+
+	public static void handleRecipeBookPayload(SendKettleRecipeBookValues payload) {
+		if (Minecraft.getInstance().player != null) {
+			Minecraft.getInstance().execute(() -> {
+				ClientRecipeBook recipeBook = Minecraft.getInstance().player.getRecipeBook();
+				recipeBook.setOpen(RecipeBookType.MINTYBLENDS_KETTLE_BREWING, payload.open());
+				recipeBook.setFiltering(RecipeBookType.MINTYBLENDS_KETTLE_BREWING, payload.filtering());
+			});
+		}
+	}
 
 	@Override
 	public void onInitializeClient() {
@@ -62,5 +77,7 @@ public class MintyBlendsClient implements ClientModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("eiv")) {
 			EivClientIntegration.onIntegrationInitialize();
 		}
+
+		ClientPlayNetworking.registerGlobalReceiver(SendKettleRecipeBookValues.TYPE, (payload, _) -> handleRecipeBookPayload(payload));
 	}
 }

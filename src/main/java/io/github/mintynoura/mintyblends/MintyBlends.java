@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends;
 
 import io.github.mintynoura.mintyblends.compat.farmersdelight.FarmersDelightCompat;
+import io.github.mintynoura.mintyblends.networking.SendKettleRecipeBookValues;
 import io.github.mintynoura.mintyblends.registry.*;
 import io.github.mintynoura.mintyblends.util.MintyBlendsTags;
 import io.github.mintynoura.mintyblends.worldgen.MintyBlendsPlacedFeatures;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
@@ -48,6 +50,8 @@ public class MintyBlends implements ModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
 			FarmersDelightCompat.registerItems();
 		}
+
+		PayloadTypeRegistry.clientboundPlay().register(SendKettleRecipeBookValues.TYPE, SendKettleRecipeBookValues.STREAM_CODEC);
 	}
 
 	public static void addBiomeFeatures() {

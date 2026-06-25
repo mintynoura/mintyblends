@@ -145,17 +145,17 @@ public class MintyBlendsItems {
                     output.accept(WILDFLOWER_TEA);
                     output.accept(TORCHFLOWER_TEA);
                     output.accept(HERBAL_BREW);
-                    output.accept(MintyBlendsBlends.CONVERT_NEGATIVE_TO_POSITIVE_TEA);
-                    output.accept(MintyBlendsBlends.CONVERT_POSITIVE_TO_NEGATIVE_TEA);
-                    output.accept(MintyBlendsBlends.CLEAR_ALL_EFFECTS_TEA);
-                    output.accept(MintyBlendsBlends.CLEAR_NEGATIVE_TEA);
-                    output.accept(MintyBlendsBlends.CLEAR_POSITIVE_TEA);
-                    output.accept(MintyBlendsBlends.REACHING_TEA);
-                    output.accept(MintyBlendsBlends.STRONG_REACHING_TEA);
-                    output.accept(MintyBlendsBlends.RENDING_TEA);
-                    output.accept(MintyBlendsBlends.STRONG_RENDING_TEA);
-                    output.accept(MintyBlendsBlends.STEALTH_TEA);
-                    output.accept(MintyBlendsBlends.STRONG_STEALTH_TEA);
+                    output.accept(MintyBlendsBlends.CONVERT_NEGATIVE_TO_POSITIVE_TEA.create());
+                    output.accept(MintyBlendsBlends.CONVERT_POSITIVE_TO_NEGATIVE_TEA.create());
+                    output.accept(MintyBlendsBlends.CLEAR_ALL_EFFECTS_TEA.create());
+                    output.accept(MintyBlendsBlends.CLEAR_NEGATIVE_TEA.create());
+                    output.accept(MintyBlendsBlends.CLEAR_POSITIVE_TEA.create());
+                    output.accept(MintyBlendsBlends.REACHING_TEA.create());
+                    output.accept(MintyBlendsBlends.STRONG_REACHING_TEA.create());
+                    output.accept(MintyBlendsBlends.RENDING_TEA.create());
+                    output.accept(MintyBlendsBlends.STRONG_RENDING_TEA.create());
+                    output.accept(MintyBlendsBlends.STEALTH_TEA.create());
+                    output.accept(MintyBlendsBlends.STRONG_STEALTH_TEA.create());
                 })
                 .build()
         );

@@ -42,36 +42,42 @@ public class MintyBlendsConfig extends ReflectiveConfig {
     @SerializedName("censers")
     public final CenserSection censerSection = new CenserSection();
     public static final class CenserSection extends Section {
-        @Comment("The amount of uses for Copper Censers")
-        @SerializedName("copper_max_uses")
-        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
-        public final TrackedValue<Integer> copperMaxUses = this.value(3);
         @Comment("The application radius for Copper Censers")
         @SerializedName("copper_range")
         @FloatRange(min = 0.0f, max = 64.0f)
         public final TrackedValue<Float> copperRange = this.value(5f);
-        @Comment("The amount of uses for Iron Censers")
-        @SerializedName("iron_max_uses")
+        @Comment("The amount of uses for Copper Censers")
+        @SerializedName("copper_max_uses")
         @IntegerRange(min = 1, max = Integer.MAX_VALUE)
-        public final TrackedValue<Integer> ironMaxUses = this.value(4);
-        @Comment("The application radius for Iron Censers")
-        @SerializedName("iron_range")
-        @FloatRange(min = 0.0f, max = 64.0f)
-        public final TrackedValue<Float> ironRange = this.value(3f);
-        @Comment("The amount of uses for Golden Censers")
-        @SerializedName("golden_max_uses")
-        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
-        public final TrackedValue<Integer> goldenMaxUses = this.value(2);
+        public final TrackedValue<Integer> copperMaxUses = this.value(3);
         @Comment("The application radius for Golden Censers")
         @SerializedName("golden_range")
         @FloatRange(min = 0.0f, max = 64.0f)
         public final TrackedValue<Float> goldenRange = this.value(7f);
+        @Comment("The amount of uses for Golden Censers")
+        @SerializedName("golden_max_uses")
+        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+        public final TrackedValue<Integer> goldenMaxUses = this.value(2);
+        @Comment("The application radius for Iron Censers")
+        @SerializedName("iron_range")
+        @FloatRange(min = 0.0f, max = 64.0f)
+        public final TrackedValue<Float> ironRange = this.value(3f);
+        @Comment("The amount of uses for Iron Censers")
+        @SerializedName("iron_max_uses")
+        @IntegerRange(min = 1, max = Integer.MAX_VALUE)
+        public final TrackedValue<Integer> ironMaxUses = this.value(4);
 
     }
 
     @SerializedName("status_effects")
     public final StatusEffectSection statusEffectSection = new StatusEffectSection();
     public static final class StatusEffectSection extends Section {
+        @Comment("The increase multiplier in fall damage for the Fast Falling effect, per level")
+        @SerializedName("fast_falling_damage_modifier")
+        public final TrackedValue<Float> fastFallingFallDamageModifier = this.value(0.5f);
+        @Comment("The increase multiplier in gravity for the Fast Falling effect, per level")
+        @SerializedName("fast_falling_gravity_modifier")
+        public final TrackedValue<Float> fastFallingGravityModifier = this.value(0.5f);
         @Comment("The block reach attribute increase for the Reaching effect, per level")
         @SerializedName("reaching_block_range_increase")
         public final TrackedValue<Float> reachingBlockRangeModifier = this.value(2f);
@@ -81,34 +87,28 @@ public class MintyBlendsConfig extends ReflectiveConfig {
         @Comment("The damage increase multiplier for the Rending effect, per level")
         @SerializedName("rending_damage_modifier")
         public final TrackedValue<Float> rendingDamageModifier = this.value(0.2f);
-        @Comment("The reduction in visibility range for the Stealth effect, per level")
-        @SerializedName("stealth_visibility_modifier")
-        public final TrackedValue<Float> stealthVisibilityModifier = this.value(0.2f);
-        @Comment("The reduction in vibration emitting distance for the Stealth effect in blocks, per level")
-        @SerializedName("stealth_vibration_modifier")
-        public final TrackedValue<Float> stealthVibrationModifier = this.value(2.0f);
-        @Comment("The increase multiplier in gravity for the Fast Falling effect, per level")
-        @SerializedName("fast_falling_gravity_modifier")
-        public final TrackedValue<Float> fastFallingGravityModifier = this.value(0.5f);
-        @Comment("The increase multiplier in fall damage for the Fast Falling effect, per level")
-        @SerializedName("fast_falling_damage_modifier")
-        public final TrackedValue<Float> fastFallingFallDamageModifier = this.value(0.5f);
         @Comment("The knockback resistance increase for the Stalwart effect, per level")
         @SerializedName("stalwart_knockback_resistance")
         public final TrackedValue<Float> stalwartKnockbackResistance = this.value(0.2f);
+        @Comment("The reduction in vibration emitting distance for the Stealth effect in blocks, per level")
+        @SerializedName("stealth_vibration_modifier")
+        public final TrackedValue<Float> stealthVibrationModifier = this.value(2.0f);
+        @Comment("The reduction in visibility range for the Stealth effect, per level")
+        @SerializedName("stealth_visibility_modifier")
+        public final TrackedValue<Float> stealthVisibilityModifier = this.value(0.2f);
 
         @Comment("A Map to use for status effect conversions, formatted as <\"key\" = \"value\"> pairs. The \"key\" is considered a positive effect, and the \"value\" is considered a negative effect")
         @SerializedName("status_effect_map")
         public final TrackedValue<ValueMap<String>> statusEffectMap = this.map("")
                 .put("minecraft:haste", "minecraft:mining_fatigue")
+                .put("minecraft:invisibility", "minecraft:glowing")
                 .put("minecraft:luck", "minecraft:unluck")
+                .put("minecraft:night_vision", "minecraft:blindness")
                 .put("minecraft:regeneration", "minecraft:poison")
                 .put("minecraft:resistance", "mintyblends:rending")
+                .put("minecraft:slow_falling", "mintyblends:fast_falling")
                 .put("minecraft:speed", "minecraft:slowness")
                 .put("minecraft:strength", "minecraft:weakness")
-                .put("minecraft:invisibility", "minecraft:glowing")
-                .put("minecraft:night_vision", "minecraft:blindness")
-                .put("minecraft:slow_falling", "mintyblends:fast_falling")
                 .put("mintyblends:waterwalker", "mintyblends:lavawalker")
                 .build();
     }

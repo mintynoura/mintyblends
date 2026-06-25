@@ -1,10 +1,14 @@
 {
 	"required": true,
 	"package": "io.github.mintynoura.mintyblends.mixin.client",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_25",
 	"client": [
 	],
 	"injectors": {
 		"defaultRequire": 1
-	}
+	},
+	"mixins": [
+		"GhostSlotsInvoker",
+		"SearchRecipeBookCategoryMixin"
+	]
 }

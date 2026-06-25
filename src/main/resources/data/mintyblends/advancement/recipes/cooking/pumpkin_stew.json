@@ -21,7 +21,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmersdelight:cooking/pumpkin_stew"
+        "recipe": "mintyblends:cooking/pumpkin_stew"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -34,7 +34,7 @@
   ],
   "rewards": {
     "recipes": [
-      "farmersdelight:cooking/pumpkin_stew"
+      "mintyblends:cooking/pumpkin_stew"
     ]
   }
 }

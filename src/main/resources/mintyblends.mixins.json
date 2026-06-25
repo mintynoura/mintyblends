@@ -8,6 +8,10 @@
     "DispenserLightingMixin",
     "LivingEntityMixin",
     "OcelotMixin",
+    "RecipeBookSettingsMixin",
+    "RecipeBookTypeMixin",
+    "RecipeBookTypeSettingsInvoker",
+    "ServerRecipeBookMixin",
     "SnifferMixin",
     "TargetGoalMixin",
     "VibrationListenerMixin"

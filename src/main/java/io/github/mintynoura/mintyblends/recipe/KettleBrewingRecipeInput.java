@@ -10,7 +10,7 @@ import org.jspecify.annotations.NonNull;
 public class KettleBrewingRecipeInput implements RecipeInput {
 
     private final NonNullList<ItemStack> stacks;
-    private final StackedItemContents matcher = new StackedItemContents();
+    private final StackedItemContents stackedContents = new StackedItemContents();
     private final int stackCount;
 
 
@@ -23,7 +23,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
         for (ItemStack itemStack : stacks) {
             if (!itemStack.isEmpty()) {
                 i++;
-                this.matcher.accountStack(itemStack, 1);
+                this.stackedContents.accountStack(itemStack, 1);
             }
         }
 
@@ -44,7 +44,7 @@ public class KettleBrewingRecipeInput implements RecipeInput {
     }
 
     public StackedItemContents getRecipeMatcher() {
-        return this.matcher;
+        return this.stackedContents;
     }
 
     @Override

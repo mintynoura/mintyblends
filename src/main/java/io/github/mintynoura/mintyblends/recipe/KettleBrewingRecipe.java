@@ -1,7 +1,9 @@
 package io.github.mintynoura.mintyblends.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsBlocks;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
@@ -20,6 +22,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -32,17 +36,19 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     private final ItemStackTemplate result;
     private final ItemStackTemplate container;
     private final int brewingTime;
+    private final String group;
     @Nullable
     private PlacementInfo placementInfo;
 
     public static final ItemStackTemplate defaultContainer = new ItemStackTemplate(Items.POTION, DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build());
     public static final int defaultBrewingTime = 400;
 
-    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStackTemplate result, ItemStackTemplate container, int brewingTime) {
+    public KettleBrewingRecipe(List<Ingredient> ingredients, ItemStackTemplate result, ItemStackTemplate container, int brewingTime, String group) {
         this.ingredients = ingredients;
         this.result = result;
         this.container = container;
         this.brewingTime = brewingTime;
+        this.group = group;
     }
 
     public List<Ingredient> getIngredients() {
@@ -62,7 +68,7 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public boolean matches(KettleBrewingRecipeInput recipeInput, @NonNull Level world) {
+    public boolean matches(KettleBrewingRecipeInput recipeInput, @NonNull Level level) {
         if (recipeInput.getStackCount() != this.ingredients.size()) {
             return false;
         } else {
@@ -82,8 +88,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public @NonNull String group() {
-        return "";
+    public String group() {
+        return this.group;
     }
 
     @Override
@@ -105,13 +111,21 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
     }
 
     @Override
-    public @Nullable RecipeBookCategory recipeBookCategory() {
-        return null;
+    public RecipeBookCategory recipeBookCategory() {
+        return MintyBlendsRecipes.KETTLE_BREWING_RECIPE_CATEGORY;
     }
 
     @Override
-    public boolean isSpecial() {
-        return true;
+    public List<RecipeDisplay> display() {
+        return List.of(
+                new KettleBrewingRecipeDisplay(
+                        this.ingredients.stream().map(Ingredient::display).toList(),
+                        new SlotDisplay.ItemStackSlotDisplay(this.container),
+                        new SlotDisplay.ItemStackSlotDisplay(this.result),
+                        new SlotDisplay.ItemSlotDisplay(MintyBlendsBlocks.KETTLE.asItem()),
+                        this.brewingTime
+                )
+        );
     }
 
     public static class Serializer {
@@ -120,7 +134,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                                 Ingredient.CODEC.listOf(1, 4).fieldOf("ingredients").forGetter(recipe -> recipe.ingredients),
                                 ItemStackTemplate.CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                                 ItemStackTemplate.CODEC.optionalFieldOf("container", defaultContainer).forGetter(recipe -> recipe.container),
-                                ExtraCodecs.POSITIVE_INT.optionalFieldOf("brewing_time", defaultBrewingTime).forGetter(recipe -> recipe.brewingTime)
+                                ExtraCodecs.POSITIVE_INT.optionalFieldOf("brewing_time", defaultBrewingTime).forGetter(recipe -> recipe.brewingTime),
+                                Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group)
                         )
                         .apply(instance, KettleBrewingRecipe::new)
         );
@@ -133,6 +148,8 @@ public class KettleBrewingRecipe implements Recipe<KettleBrewingRecipeInput> {
                 recipe -> recipe.container,
                 ByteBufCodecs.INT,
                 recipe -> recipe.brewingTime,
+                ByteBufCodecs.STRING_UTF8,
+                recipe -> recipe.group,
                 KettleBrewingRecipe::new
         );
     }

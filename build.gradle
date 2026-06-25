@@ -110,6 +110,8 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
 	}
+
+	exclude("**/datagen/**")
 }
 
 publishing {

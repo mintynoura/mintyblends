@@ -1,0 +1,43 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "group": "convert",
+  "ingredients": [
+    "mintyblends:cureflower",
+    "minecraft:glow_berries",
+    "minecraft:slime_ball",
+    "minecraft:red_mushroom"
+  ],
+  "result": {
+    "components": {
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "on_consume_effects": [
+          {
+            "type": "mintyblends:convert_effects",
+            "particle": {
+              "type": "minecraft:witch"
+            },
+            "particles_only_when_converted": true,
+            "positive_to_negative": false,
+            "sound": {
+              "sound_id": "mintyblends:item.brew.convert_effect"
+            }
+          }
+        ],
+        "sound": "minecraft:entity.generic.drink"
+      },
+      "minecraft:food": {
+        "can_always_eat": true,
+        "nutrition": 0,
+        "saturation": 0.0
+      },
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.convert_negative_to_positive"
+        ]
+      }
+    },
+    "id": "mintyblends:herbal_brew"
+  }
+}

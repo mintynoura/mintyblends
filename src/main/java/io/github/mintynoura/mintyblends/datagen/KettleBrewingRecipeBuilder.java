@@ -1,5 +1,6 @@
 package io.github.mintynoura.mintyblends.datagen;
 
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -7,8 +8,10 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -19,10 +22,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KettleBrewingRecipeBuilder implements RecipeBuilder {
     private final HolderGetter<Item> items;
@@ -30,6 +30,8 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
     private final ItemStackTemplate result;
     private ItemStackTemplate container;
     private final int brewingTime;
+    @Nullable
+    private String group;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     public KettleBrewingRecipeBuilder(HolderGetter<Item> items, ItemStackTemplate result, ItemStackTemplate container, int brewingTime) {
@@ -107,6 +109,7 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public RecipeBuilder group(@Nullable String group) {
+        this.group = group;
         return this;
     }
 
@@ -119,7 +122,13 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
     public void save(RecipeOutput output, ResourceKey<Recipe<?>> location) {
         Advancement.Builder advancement = Advancement.Builder.recipeAdvancement().addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location)).rewards(new AdvancementRewards.Builder().addRecipe(location)).requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
-        KettleBrewingRecipe recipe = new KettleBrewingRecipe(this.ingredients, this.result, this.container, this.brewingTime);
+        KettleBrewingRecipe recipe = new KettleBrewingRecipe(this.ingredients, this.result, this.container, this.brewingTime, Objects.requireNonNullElse(this.group, ""));
         output.accept(location, recipe, advancement.build(location.identifier().withPrefix("recipes/")));
+    }
+
+    @Override
+    public void save(RecipeOutput output, String id) {
+        ResourceKey<Recipe<?>> overriddenKey = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, id));
+        this.save(output, overriddenKey);
     }
 }

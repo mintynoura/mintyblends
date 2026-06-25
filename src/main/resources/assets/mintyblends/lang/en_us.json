@@ -1,6 +1,7 @@
 {
   "mintyblends.container.kettle": "Kettle",
   "itemGroup.mintyblends": "Minty Blends",
+  "mintyblends.gui.recipebook.toggleRecipes.brewable": "Showing Brewable",
 
   "block.mintyblends.mint": "Mint",
   "block.mintyblends.catnip": "Catnip",

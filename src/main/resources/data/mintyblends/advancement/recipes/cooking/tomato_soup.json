@@ -21,7 +21,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmersdelight:cooking/tomato_soup"
+        "recipe": "mintyblends:cooking/tomato_soup"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -34,7 +34,7 @@
   ],
   "rewards": {
     "recipes": [
-      "farmersdelight:cooking/tomato_soup"
+      "mintyblends:cooking/tomato_soup"
     ]
   }
 }
