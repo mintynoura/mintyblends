@@ -1,0 +1,70 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "container": {
+    "components": {
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink"
+      },
+      "minecraft:food": {
+        "can_always_eat": true,
+        "nutrition": 0,
+        "saturation": 0.0
+      },
+      "minecraft:item_name": {
+        "fallback": "Rending Tea",
+        "translate": "item.mintyblends.rending_tea"
+      },
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.rending"
+        ],
+        "potion_effects": [
+          {
+            "duration": 3600,
+            "id": "mintyblends:rending",
+            "show_icon": true
+          }
+        ]
+      }
+    },
+    "id": "mintyblends:herbal_brew"
+  },
+  "ingredients": [
+    "mintyblends:rendflower",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "components": {
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink"
+      },
+      "minecraft:food": {
+        "can_always_eat": true,
+        "nutrition": 0,
+        "saturation": 0.0
+      },
+      "minecraft:item_name": {
+        "fallback": "Strong Rending Tea",
+        "translate": "item.mintyblends.strong_rending_tea"
+      },
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.strong_rending"
+        ],
+        "potion_effects": [
+          {
+            "amplifier": 1,
+            "duration": 1800,
+            "id": "mintyblends:rending",
+            "show_icon": true
+          }
+        ]
+      }
+    },
+    "id": "mintyblends:herbal_brew"
+  }
+}

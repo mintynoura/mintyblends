@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NullMarked
@@ -132,13 +133,14 @@ public class KettleMenu extends RecipeBookMenu {
                 for (int i = 0; i < 4; i++) {
                     KettleMenu.this.getSlot(i).set(ItemStack.EMPTY);
                 }
+                KettleMenu.this.getResultSlot().set(ItemStack.EMPTY);
             }
 
             @Override
             public boolean recipeMatches(RecipeHolder<KettleBrewingRecipe> recipe) {
                 return recipe.value().matches(new KettleBrewingRecipeInput(KettleMenu.this.kettleBlockEntity.getIngredients()), level);
             }
-        }, 2, 2, getInputSlots(), getInputSlots(), inventory, ((RecipeHolder<KettleBrewingRecipe>) recipe), useMaxItems, allowDroppingItemsToClear);
+        }, 2, 2, getInputSlots(), getClearedSlots(), inventory, ((RecipeHolder<KettleBrewingRecipe>) recipe), useMaxItems, allowDroppingItemsToClear);
     }
 
     @Override
@@ -159,6 +161,15 @@ public class KettleMenu extends RecipeBookMenu {
 
     public List<Slot> getInputSlots() {
         return this.slots.subList(0, 4);
+    }
+
+    public List<Slot> getClearedSlots() {
+        List<Slot> slots = new ArrayList<>(5);
+        for (int i = 0; i < 4; i++) {
+            slots.add(this.getSlot(i));
+        }
+        slots.add(getResultSlot());
+        return slots;
     }
 
     static class ContainerSlot extends Slot {

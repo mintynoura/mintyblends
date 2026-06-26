@@ -1,21 +1,15 @@
 {
   "type": "mintyblends:kettle_brewing",
   "ingredients": [
-    "mintyblends:sagebrush_leaves",
-    "mintyblends:cureflower",
-    "minecraft:honey_bottle",
-    "minecraft:kelp"
+    "mintyblends:silent_flower",
+    "mintyblends:silent_flower",
+    "minecraft:azure_bluet"
   ],
   "result": {
     "components": {
       "minecraft:consumable": {
         "animation": "drink",
         "has_consume_particles": false,
-        "on_consume_effects": [
-          {
-            "type": "mintyblends:clear_effects_by_category"
-          }
-        ],
         "sound": "minecraft:entity.generic.drink"
       },
       "minecraft:food": {
@@ -24,12 +18,19 @@
         "saturation": 0.0
       },
       "minecraft:item_name": {
-        "fallback": "Curing Tea",
-        "translate": "item.mintyblends.clear_negative_tea"
+        "fallback": "Stealth Tea",
+        "translate": "item.mintyblends.stealth_tea"
       },
       "mintyblends:herbal_brew": {
         "ingredients": [
-          "blend.mintyblends.clear_negative"
+          "blend.mintyblends.stealth"
+        ],
+        "potion_effects": [
+          {
+            "duration": 6000,
+            "id": "mintyblends:stealth",
+            "show_icon": true
+          }
         ]
       }
     },

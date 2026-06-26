@@ -24,6 +24,10 @@
         "nutrition": 0,
         "saturation": 0.0
       },
+      "minecraft:item_name": {
+        "fallback": "Fatiguing Tea",
+        "translate": "item.mintyblends.clear_positive_tea"
+      },
       "mintyblends:herbal_brew": {
         "ingredients": [
           "blend.mintyblends.clear_positive"

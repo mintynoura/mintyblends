@@ -102,13 +102,13 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
+    public KettleBrewingRecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
 
     @Override
-    public RecipeBuilder group(@Nullable String group) {
+    public KettleBrewingRecipeBuilder group(@Nullable String group) {
         this.group = group;
         return this;
     }
@@ -116,6 +116,15 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
     @Override
     public ResourceKey<Recipe<?>> defaultId() {
         return RecipeBuilder.getDefaultRecipeId(this.result);
+    }
+
+    public void saveWithPrefix(RecipeOutput output) {
+        this.save(output, ResourceKey.create(Registries.RECIPE, (result.typeHolder().unwrapKey().orElseThrow()).identifier().withPrefix("kettle_brewing/")));
+    }
+
+    public void saveMintyBlends(RecipeOutput output, String id) {
+        ResourceKey<Recipe<?>> location = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, id).withPrefix("kettle_brewing/"));
+        this.save(output, location);
     }
 
     @Override
@@ -128,7 +137,12 @@ public class KettleBrewingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(RecipeOutput output, String id) {
-        ResourceKey<Recipe<?>> overriddenKey = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(MintyBlends.ID, id));
-        this.save(output, overriddenKey);
+        ResourceKey<Recipe<?>> defaultKey = this.defaultId();
+        ResourceKey<Recipe<?>> overriddenKey = ResourceKey.create(Registries.RECIPE, Identifier.parse(id).withPrefix("kettle_brewing/"));
+        if (overriddenKey == defaultKey) {
+            throw new IllegalStateException("Recipe " + id + " should remove its 'save' argument as it is equal to default one");
+        } else {
+            this.save(output, overriddenKey);
+        }
     }
 }

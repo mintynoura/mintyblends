@@ -1,0 +1,31 @@
+{
+  "criteria": {
+    "has_catnip_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:catnip_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:kettle_brewing/reaching_tea"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_catnip_leaves"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:kettle_brewing/reaching_tea"
+    ]
+  }
+}

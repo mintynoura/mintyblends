@@ -20,7 +20,7 @@ public class MintyBlendsLootTables {
     private static final ResourceKey<LootTable> PIGLIN_BARTERING_LOOT_TABLE_KEY = BuiltInLootTables.PIGLIN_BARTERING;
 
     public static void modify() {
-        LootTableEvents.MODIFY.register((id, tableBuilder, source, registries) -> {
+        LootTableEvents.MODIFY.register((id, tableBuilder, source, _) -> {
             if (source.isBuiltin() && SNIFFER_DIGGING_LOOT_TABLE_KEY.equals(id)) {
                 tableBuilder.modifyPools(poolBuilder -> poolBuilder.add(LootItem.lootTableItem(MintyBlendsItems.HORTENSIA_SEEDS)));
             }

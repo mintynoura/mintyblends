@@ -22,6 +22,10 @@
         "nutrition": 0,
         "saturation": 0.0
       },
+      "minecraft:item_name": {
+        "fallback": "Clearing Tea",
+        "translate": "item.mintyblends.clear_all_effects_tea"
+      },
       "mintyblends:herbal_brew": {
         "ingredients": [
           "blend.mintyblends.clear_all_effects"

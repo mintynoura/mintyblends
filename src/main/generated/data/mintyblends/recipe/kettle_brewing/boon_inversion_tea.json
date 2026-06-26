@@ -1,6 +1,5 @@
 {
   "type": "mintyblends:kettle_brewing",
-  "group": "convert",
   "ingredients": [
     "mintyblends:rendflower",
     "minecraft:lily_of_the_valley",
@@ -31,6 +30,10 @@
         "can_always_eat": true,
         "nutrition": 0,
         "saturation": 0.0
+      },
+      "minecraft:item_name": {
+        "fallback": "Boon Inversion Tea",
+        "translate": "item.mintyblends.convert_positive_to_negative_tea"
       },
       "mintyblends:herbal_brew": {
         "ingredients": [

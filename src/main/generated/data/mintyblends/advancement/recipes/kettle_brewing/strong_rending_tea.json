@@ -1,0 +1,31 @@
+{
+  "criteria": {
+    "has_rendflower": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:rendflower"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:kettle_brewing/strong_rending_tea"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rendflower"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:kettle_brewing/strong_rending_tea"
+    ]
+  }
+}

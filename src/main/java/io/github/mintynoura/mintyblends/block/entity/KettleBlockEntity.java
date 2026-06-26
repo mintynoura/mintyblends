@@ -309,8 +309,19 @@ public class KettleBlockEntity extends BlockEntity implements ImplementedInvento
     }
 
     @Override
+    public void setItem(final int slot, final ItemStack itemStack) {
+        ItemStack oldStack = this.inventory.get(slot);
+        boolean same = !itemStack.isEmpty() && ItemStack.isSameItemSameComponents(oldStack, itemStack);
+        if (!same) {
+            this.progress = 0;
+            this.setChanged();
+        }
+        ImplementedInventory.super.setItem(slot, itemStack);
+    }
+
+    @Override
     public int[] getSlotsForFace(Direction side) {
-        return side == Direction.UP ? INGREDIENT_SLOTS : new int[]{OUTPUT_SLOT};
+        return side == Direction.UP ? INGREDIENT_SLOTS : side == Direction.DOWN ? new int[]{OUTPUT_SLOT} : new int[]{CONTAINER_SLOT};
     }
 
     @Override

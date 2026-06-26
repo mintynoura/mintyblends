@@ -67,6 +67,18 @@
   "blend.mintyblends.strong_rending": "Strong Rending Blend",
   "blend.mintyblends.strong_stealth": "Strong Stealth Blend",
 
+  "item.mintyblends.clear_all_effects_tea": "Clearing Tea",
+  "item.mintyblends.clear_negative_tea": "Curing Tea",
+  "item.mintyblends.clear_positive_tea": "Fatiguing Tea",
+  "item.mintyblends.convert_negative_to_positive_tea": "Bane Reversal Tea",
+  "item.mintyblends.convert_positive_to_negative_tea": "Boon Inversion Tea",
+  "item.mintyblends.reaching_tea": "Reaching Tea",
+  "item.mintyblends.rending_tea": "Rending Tea",
+  "item.mintyblends.stealth_tea": "Stealth Tea",
+  "item.mintyblends.strong_reaching_tea": "Strong Reaching Tea",
+  "item.mintyblends.strong_rending_tea": "Strong Rending Tea",
+  "item.mintyblends.strong_stealth_tea": "Strong Stealth Tea",
+
   "tag.item.mintyblends.blending_ingredients": "Blending Ingredients",
   "tag.item.mintyblends.cat_loved": "Loved by Cats",
   "tag.item.mintyblends.censers": "Censers",

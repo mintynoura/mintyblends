@@ -1,0 +1,70 @@
+{
+  "type": "mintyblends:kettle_brewing",
+  "container": {
+    "components": {
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink"
+      },
+      "minecraft:food": {
+        "can_always_eat": true,
+        "nutrition": 0,
+        "saturation": 0.0
+      },
+      "minecraft:item_name": {
+        "fallback": "Reaching Tea",
+        "translate": "item.mintyblends.reaching_tea"
+      },
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.reaching"
+        ],
+        "potion_effects": [
+          {
+            "duration": 3600,
+            "id": "mintyblends:reaching",
+            "show_icon": true
+          }
+        ]
+      }
+    },
+    "id": "mintyblends:herbal_brew"
+  },
+  "ingredients": [
+    "mintyblends:catnip_leaves",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "components": {
+      "minecraft:consumable": {
+        "animation": "drink",
+        "has_consume_particles": false,
+        "sound": "minecraft:entity.generic.drink"
+      },
+      "minecraft:food": {
+        "can_always_eat": true,
+        "nutrition": 0,
+        "saturation": 0.0
+      },
+      "minecraft:item_name": {
+        "fallback": "Strong Reaching Tea",
+        "translate": "item.mintyblends.strong_reaching_tea"
+      },
+      "mintyblends:herbal_brew": {
+        "ingredients": [
+          "blend.mintyblends.strong_reaching"
+        ],
+        "potion_effects": [
+          {
+            "amplifier": 1,
+            "duration": 1800,
+            "id": "mintyblends:reaching",
+            "show_icon": true
+          }
+        ]
+      }
+    },
+    "id": "mintyblends:herbal_brew"
+  }
+}
