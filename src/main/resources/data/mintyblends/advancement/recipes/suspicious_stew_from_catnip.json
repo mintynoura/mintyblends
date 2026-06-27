@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_catnip": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:catnip"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:suspicious_stew_from_catnip"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_catnip"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:suspicious_stew_from_catnip"
+    ]
+  }
+}

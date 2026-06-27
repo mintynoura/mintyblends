@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_medicinal_herb": {
+      "conditions": {
+        "items": [
+          {
+            "items": "mintyblends:medicinal_herb"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mintyblends:suspicious_stew_from_medicinal_herb"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_medicinal_herb"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mintyblends:suspicious_stew_from_medicinal_herb"
+    ]
+  }
+}
