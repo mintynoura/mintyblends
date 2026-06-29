@@ -16,6 +16,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumables;
 
@@ -51,21 +53,28 @@ public class MintyBlendsItems {
             .stacksTo(MintyBlends.CONFIG.brewStackSize.value())
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
-
     public static final Item MINT_TEA = registerItem("mint_tea", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.MINT_TEA, MintyBlendsConsumables.MINT_TEA)
+            .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(
+                    List.of(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1800, 0)), List.of()))
             .usingConvertsTo(Items.GLASS_BOTTLE));
     public static final Item GLOW_BERRY_TEA = registerItem("glow_berry_tea", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.GLOW_BERRY_TEA, MintyBlendsConsumables.GLOW_BERRY_TEA)
+            .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(
+                    List.of(new MobEffectInstance(MobEffects.GLOWING, 600, 0)), List.of()))
             .usingConvertsTo(Items.GLASS_BOTTLE));
     public static final Item SWEET_BERRY_TEA = registerItem("sweet_berry_tea", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.SWEET_BERRY_TEA, Consumables.DEFAULT_DRINK)
             .usingConvertsTo(Items.GLASS_BOTTLE));
     public static final Item WILDFLOWER_TEA = registerItem("wildflower_tea", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.WILDFLOWER_TEA, MintyBlendsConsumables.WILDFLOWER_TEA)
+            .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(
+                    List.of(new MobEffectInstance(MobEffects.MINING_FATIGUE, 600, 0)), List.of()))
             .usingConvertsTo(Items.GLASS_BOTTLE));
     public static final Item TORCHFLOWER_TEA = registerItem("torchflower_tea", Item::new, new Item.Properties()
             .food(MintyBlendsFoods.TORCHFLOWER_TEA, MintyBlendsConsumables.TORCHFLOWER_TEA)
+            .component(MintyBlendsComponents.HERBAL_BREW, new HerbalBrewComponent(
+                    List.of(new MobEffectInstance(MobEffects.NIGHT_VISION, 1800, 0)), List.of()))
             .usingConvertsTo(Items.GLASS_BOTTLE));
 
     public static final Item MINT_JELLY = registerItem("mint_jelly", Item::new, new Item.Properties()
@@ -145,17 +154,8 @@ public class MintyBlendsItems {
                     output.accept(WILDFLOWER_TEA);
                     output.accept(TORCHFLOWER_TEA);
                     output.accept(HERBAL_BREW);
-                    output.accept(MintyBlendsBlends.CONVERT_NEGATIVE_TO_POSITIVE_TEA.create());
-                    output.accept(MintyBlendsBlends.CONVERT_POSITIVE_TO_NEGATIVE_TEA.create());
-                    output.accept(MintyBlendsBlends.CLEAR_ALL_EFFECTS_TEA.create());
-                    output.accept(MintyBlendsBlends.CLEAR_NEGATIVE_TEA.create());
-                    output.accept(MintyBlendsBlends.CLEAR_POSITIVE_TEA.create());
-                    output.accept(MintyBlendsBlends.REACHING_TEA.create());
-                    output.accept(MintyBlendsBlends.STRONG_REACHING_TEA.create());
-                    output.accept(MintyBlendsBlends.RENDING_TEA.create());
-                    output.accept(MintyBlendsBlends.STRONG_RENDING_TEA.create());
-                    output.accept(MintyBlendsBlends.STEALTH_TEA.create());
-                    output.accept(MintyBlendsBlends.STRONG_STEALTH_TEA.create());
+
+                    MintyBlendsBlends.blends.forEach(blend -> output.accept(blend.create()));
                 })
                 .build()
         );

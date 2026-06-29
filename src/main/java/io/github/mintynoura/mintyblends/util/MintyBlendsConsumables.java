@@ -34,15 +34,11 @@ public class MintyBlendsConsumables {
     public static final Consumable INFERNALILY = Consumable.builder()
             .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MintyBlendsStatusEffects.LAVAWALKER, 200, 0))).build();
     public static final Consumable MINT_TEA = Consumables.defaultDrink()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1800, 0)))
             .onConsume(new ExtinguishConsumeEffect(Optional.of(ParticleTypes.SNOWFLAKE), false)).build();
-    public static final Consumable GLOW_BERRY_TEA = Consumables.defaultDrink()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.GLOWING, 600, 0))).build();
+    public static final Consumable GLOW_BERRY_TEA = Consumables.defaultDrink().build();
     public static final Consumable WILDFLOWER_TEA = Consumables.defaultDrink()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 600, 0)))
             .onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.POISON)).build();
     public static final Consumable TORCHFLOWER_TEA = Consumables.defaultDrink()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 1800, 0)))
             .onConsume(new RemoveStatusEffectsConsumeEffect(MobEffects.POISON)).build();
     public static final Consumable MINT_JELLY = Consumables.defaultFood()
             .onConsume(new ExtinguishConsumeEffect(Optional.of(ParticleTypes.SNOWFLAKE), false)).build();

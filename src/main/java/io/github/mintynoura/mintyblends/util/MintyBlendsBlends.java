@@ -62,5 +62,19 @@ public class MintyBlendsBlends {
                 .build());
     }
 
+    public static List<ItemStackTemplate> blends = List.of(
+            CLEAR_ALL_EFFECTS_TEA,
+            CLEAR_NEGATIVE_TEA,
+            CLEAR_POSITIVE_TEA,
+            CONVERT_NEGATIVE_TO_POSITIVE_TEA,
+            CONVERT_POSITIVE_TO_NEGATIVE_TEA,
+            REACHING_TEA,
+            STRONG_REACHING_TEA,
+            RENDING_TEA,
+            STRONG_RENDING_TEA,
+            STEALTH_TEA,
+            STRONG_STEALTH_TEA
+    );
+
     public static void initialize() {}
 }
