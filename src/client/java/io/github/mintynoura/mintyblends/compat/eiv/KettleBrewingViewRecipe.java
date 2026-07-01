@@ -7,11 +7,14 @@ import de.crafty.eiv.common.recipe.inventory.RecipeViewScreen;
 import de.crafty.eiv.common.recipe.inventory.SlotContent;
 import de.crafty.eiv.common.recipe.rendering.AnimationTicker;
 import io.github.mintynoura.mintyblends.MintyBlends;
+import io.github.mintynoura.mintyblends.item.component.HerbalBrewComponent;
+import io.github.mintynoura.mintyblends.registry.MintyBlendsComponents;
 import io.github.mintynoura.mintyblends.screen.KettleScreen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +61,10 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
 
     @Override
     public List<SlotContent> getIngredients() {
-        return this.ingredients;
+        List<SlotContent> list = new ArrayList<>(5);
+        list.addAll(this.ingredients);
+        list.add(this.container);
+        return list;
     }
 
     @Override
@@ -93,5 +99,37 @@ public class KettleBrewingViewRecipe implements IEivViewRecipe {
             transferMap.linkSlots(i, i);
         }
         transferMap.linkSlots(4, 4);
+    }
+
+
+    public boolean redirectCheck(ItemStack stack, List<SlotContent> slotContents) {
+        for (SlotContent slotContent : slotContents) {
+            for (ItemStack validStack : slotContent.getValidContents()) {
+                if (!stack.is(validStack.getItem()))
+                    continue;
+
+                if (makeBrewCheck(stack, validStack))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean makeBrewCheck(ItemStack stack1, ItemStack stack2) {
+        if (!(stack1.has(MintyBlendsComponents.HERBAL_BREW) && stack2.has(MintyBlendsComponents.HERBAL_BREW)))
+            return true;
+
+        return stack1.getOrDefault(MintyBlendsComponents.HERBAL_BREW, HerbalBrewComponent.EMPTY).ingredients().equals(stack2.getOrDefault(MintyBlendsComponents.HERBAL_BREW, HerbalBrewComponent.EMPTY).ingredients());
+    }
+
+    @Override
+    public boolean redirectsAsIngredient(ItemStack stack) {
+        return IEivViewRecipe.super.redirectsAsIngredient(stack) && redirectCheck(stack, this.getIngredients());
+    }
+
+    @Override
+    public boolean redirectsAsResult(ItemStack stack) {
+        return IEivViewRecipe.super.redirectsAsResult(stack) && redirectCheck(stack, this.getResults());
     }
 }

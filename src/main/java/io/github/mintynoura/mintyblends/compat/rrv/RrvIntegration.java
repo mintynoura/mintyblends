@@ -7,7 +7,6 @@ import io.github.mintynoura.mintyblends.recipe.KettleBrewingRecipe;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsRecipes;
 import io.github.mintynoura.mintyblends.util.MintyBlendsBlends;
 
-// TODO: cycling blending recipes
 public class RrvIntegration implements ReliableRecipeViewerPlugin {
     @Override
     public void onIntegrationInitialize() {

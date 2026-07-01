@@ -49,6 +49,7 @@ public record HerbalBrewComponent(List<MobEffectInstance> potionEffects, List<St
       HerbalBrewComponent::new
     );
 
+    public static final HerbalBrewComponent EMPTY = new HerbalBrewComponent(List.of(), List.of());
     public List<MobEffectInstance> potionEffects() {
         return Lists.transform(this.potionEffects, MobEffectInstance::new);
     }
