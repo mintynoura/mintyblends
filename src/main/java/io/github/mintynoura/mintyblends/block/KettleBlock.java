@@ -1,6 +1,7 @@
 package io.github.mintynoura.mintyblends.block;
 
 import com.mojang.serialization.MapCodec;
+import io.github.mintynoura.mintyblends.MintyBlends;
 import io.github.mintynoura.mintyblends.block.entity.KettleBlockEntity;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsBlockEntities;
 import io.github.mintynoura.mintyblends.registry.MintyBlendsParticleTypes;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -68,7 +68,7 @@ public class KettleBlock extends BaseEntityBlock {
 
     public KettleBlock(Properties settings) {
         super(settings);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, MintyBlends.CONFIG.placeLitKettles.value()));
     }
 
     public static boolean canBeLit(BlockState state) {
@@ -105,11 +105,6 @@ public class KettleBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new KettleBlockEntity(pos, state);
-    }
-
-    @Override
-    protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
     }
 
     @Override

@@ -18,7 +18,6 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
@@ -46,8 +45,20 @@ public class KettleMenu extends RecipeBookMenu {
         this.addSlot(new Slot(this.container, 1, 49, 26));
         this.addSlot(new Slot(this.container, 2, 31, 44));
         this.addSlot(new Slot(this.container, 3, 49, 44));
-        this.addSlot(new ContainerSlot(this.container, 4, 80, 35));
-        this.addSlot(new Slot(this.container, 5, 116, 35));
+        // container slot
+        this.addSlot(new Slot(this.container, 4, 80, 35) {
+            @Override
+            public Identifier getNoItemIcon() {
+                return EMPTY_CONTAINER_SLOT_TEXTURE;
+            }
+        });
+        // result slot
+        this.addSlot(new Slot(this.container, 5, 116, 35) {
+            @Override
+            public boolean mayPlace(ItemStack itemStack) {
+                return false;
+            }
+        });
 
         int m;
         int l;
@@ -170,16 +181,5 @@ public class KettleMenu extends RecipeBookMenu {
         }
         slots.add(getResultSlot());
         return slots;
-    }
-
-    static class ContainerSlot extends Slot {
-        public ContainerSlot(Container inventory, int index, int x, int y) {
-            super(inventory, index, x, y);
-        }
-
-        @Override
-        public @Nullable Identifier getNoItemIcon() {
-            return EMPTY_CONTAINER_SLOT_TEXTURE;
-        }
     }
 }

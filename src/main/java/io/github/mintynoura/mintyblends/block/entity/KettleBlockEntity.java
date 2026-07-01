@@ -47,8 +47,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.*;
-// TODO: prevent item insertion in output slot
-// TODO: place lit kettles config
 @NullMarked
 public class KettleBlockEntity extends BlockEntity implements ImplementedInventory, Nameable, ExtendedMenuProvider<BlockPos> {
 
